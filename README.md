@@ -1,11 +1,13 @@
 <h1 align="center"style="border-bottom:none;margin:0">
-  <a name="logo" href=><img src="resources/assets/images/MS.png" alt="Musician Suite" width="192"></a>
+  <a name="logo" href="https://github.com/justinwilliamsrva/musician-suite-cr#logo">
+      <img src="resources/assets/images/MS.png" alt="Musician Suite" width="192">
+  </a>
   <br>
   <br>
   Musician Suite - CR
 </h1>
 
-<button><h3 align="center" class="button" p-style="border-bottom:none;margin:0 "><a href="">View Website</a></h3></button>
+
 
 <div align="center"><a name="menu"></a>
   <h4>
@@ -17,8 +19,8 @@
       Contribution Guidelines
     </a>
     <span> | </span>
-    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#Gig">
-      Gig Booker
+    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#MusciansFinder">
+      App 1 - Musican Finder
     </a>
   </h4>
 </div>
@@ -72,12 +74,8 @@ The Musician Suite is a collection of web services built to benefit CRRVA's comm
 3. Push up code to that branch and when your are finished with the feature, create a Pull Request
 4. From there either the owner will add comments to the pull request or it will be merged into development
 ```
-
 ---
-
 <br>
-
-
 
 <h1 align="center" style="text-align: center;border-bottom:none" name="MusciansFinder">
     Musician Finder
