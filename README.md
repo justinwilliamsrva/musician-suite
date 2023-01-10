@@ -59,7 +59,7 @@ The Musician Suite is a collection of web services built to benefit CRRVA's comm
 <h3>Steps to Add Contributions to the Repo</h3>
 
 ```
-1. Share your idea for a feature as an issue or email the owner at justinwdev@gmail.com.
+1. Add your idea for a feature or mention any problems you see as an issue or email the owner at justinwdev@gmail.com.
 2. Pull down the development branch and create a new branch based off it with your feature name
 3. Push up code to that branch using commits that tell what the commit does and end in a period.
     a. Add new hover animation to buttons.
@@ -96,8 +96,8 @@ BOOKING
 - Once submitted, the gig is sent to users who play the instruments needed and will also be added to the Dashboard
 
 EMAILS
-- User will be able to
-- User who created the gig will receive updates if anyone has agreed to their gig
+- Users will be able to click a button in the email to accept a gig. 
+- Users who created the gig will receive updates if anyone has agreed to their gig
 - All users involved will be notified if a musician has been selected
 
 USER SETTINGS
