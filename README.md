@@ -69,7 +69,7 @@ The Musician Suite is a collection of web services built to benefit CRRVA's comm
 <h3>Steps to Add Contributions to the Repo</h3>
 
 ```
-1. Share your idea as an issue or email the owner at justinwdev@gmail.com.
+1. Share your idea for a feature as an issue or email the owner at <a href="mailto: justinwdev@gmail.com">justinwdev@gmail.com.</a
 2. Pull down the development branch and create a new branch based off it with your feature name
 3. Push up code to that branch and when your are finished with the feature, create a Pull Request
 4. From there either the owner will add comments to the pull request or it will be merged into development
