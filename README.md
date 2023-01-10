@@ -29,12 +29,7 @@
 
 <br>
 
-<h1 align="center" style="text-align: center;border-bottom:none" name="Overview">
-    Overview
-    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo">
-        <img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/wwwcustom_ui/floorplan/images/branding/up_arrow.png" width="22">
-    </a>
-</h1>
+<h1 align="center" style="text-align: center;border-bottom:none" name="Overview">Overview<a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo"><img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/www/custom_ui/floorplan/images/branding/up_arrow.png" width="22"></a></h1>
 
 <h3>Client</h3>
 
@@ -59,12 +54,7 @@ The Musician Suite is a collection of web services built to benefit CRRVA's comm
 
 <br>
 
-<h1 align="center" style="text-align: center;border-bottom:none" name="Contributions">
-    Contributions Guidelines
-    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo">
-        <img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/wwwcustom_ui/floorplan/images/branding/up_arrow.png" width="22">
-    </a>
-</h1>
+<h1 align="center" style="text-align: center;border-bottom:none" name="Contributions">Contribution Guidelines <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo"><img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/www/custom_ui/floorplan/images/branding/up_arrow.png" width="22"></a></h1>
 
 <h3>Steps to Add Contributions to the Repo</h3>
 
@@ -76,13 +66,6 @@ The Musician Suite is a collection of web services built to benefit CRRVA's comm
 ```
 ---
 <br>
-
-<h1 align="center" style="text-align: center;border-bottom:none" name="MusciansFinder">
-    Musician Finder
-    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo">
-        <img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/wwwcustom_ui/floorplan/images/branding/up_arrow.png" width="22">
-    </a>
-</h1>
 
 <h1 align="center" style="text-align: center;border-bottom:none" name="MusciansFinder">Musician Finder <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo"><img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/www/custom_ui/floorplan/images/branding/up_arrow.png" width="22"></a></h1>
 
@@ -124,7 +107,3 @@ JOBS
 - If a job has not been filled 2 days before a gig, an email will be sent out to the gig maker to see if it was filled
 - If you have accepted a gig, an email will be sent to the day before the gig at 9am EST as a reminder
 ```
-
----
-
-<br>
