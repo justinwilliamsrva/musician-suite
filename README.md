@@ -1,66 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center"style="border-bottom:none;margin:0">
+  <a name="logo" href=><img src="resources/assets/images/MS.png" alt="Musician Suite" width="192"></a>
+  <br>
+  <br>
+  Musician Suite - CR
+</h1>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<button><h3 align="center" class="button" p-style="border-bottom:none;margin:0 "><a href="">View Website</a></h3></button>
 
-## About Laravel
+<div align="center"><a name="menu"></a>
+  <h4>
+    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#Overview">
+      Overview
+    </a>
+    <span> | </span>
+    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#Contributions">
+      Contribution Guidelines
+    </a>
+    <span> | </span>
+    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#Gig">
+      Gig Booker
+    </a>
+  </h4>
+</div>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<br>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<h1 align="center" style="text-align: center;border-bottom:none" name="Overview">
+    Overview
+    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo">
+        <img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/wwwcustom_ui/floorplan/images/branding/up_arrow.png" width="22">
+    </a>
+</h1>
 
-## Learning Laravel
+<h3>Client</h3>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+Classical Revolution RVA's General Director and CRRVA's musician community.
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+<h3>About</h3>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+The Musician Suite is a collection of web services built to benefit CRRVA's community of musicians. Any features or services not approved by the CRRVA will be used in other projects.
+```
 
-## Laravel Sponsors
+<h3>List of Services</h3>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
+- Musician Finder: An app that allows CRRVA musicians to find and book other musicians.
+- MORE TO COME!
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+<br>
 
-## Contributing
+<h1 align="center" style="text-align: center;border-bottom:none" name="Contributions">
+    Contributions Guidelines
+    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo">
+        <img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/wwwcustom_ui/floorplan/images/branding/up_arrow.png" width="22">
+    </a>
+</h1>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+<h3>Steps to Add Contributions to the Repo</h3>
 
-## Code of Conduct
+```
+1. Share your idea as an issue or email the owner at justinwdev@gmail.com.
+2. Pull down the development branch and create a new branch based off it with your feature name
+3. Push up code to that branch and when your are finished with the feature, create a Pull Request
+4. From there either the owner will add comments to the pull request or it will be merged into development
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+<br>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<h1 align="center" style="text-align: center;border-bottom:none" name="MusciansFinder">
+    Musician Finder
+    <a href="https://github.com/justinwilliamsrva/musician-suite-cr#logo">
+        <img align="right" border="0" src="https://raw.githubusercontent.com/CCOSTAN/Home-AssistantConfig/master/config/wwwcustom_ui/floorplan/images/branding/up_arrow.png" width="22">
+    </a>
+</h1>
+
+<h3> User Story</h3>
+
+```
+AS A Professional Musician
+I WANT to input details for an upcoming gig, email the job to interested musicians and select a musician to fill the position
+SO THAT I can quickly find quality musicians for an event and see new gigs available for my instrument in Central Virginia
+```
+
+<h3> Features</h3>
+
+```
+DESIGN
+- Dashboard and Booking page should look similar to Classical RVA Website
+- App will use a subdomain of www.classicalrevolutionrva.com
+
+BOOKING
+- Users can create a gig with basic information(Location, Date, Music etc.)
+- Users can enter in instruments needed for the gigs and amount to be payed
+- Once submitted, the gig is sent to users who play the instruments needed and will also be added to the Dashboard
+
+EMAILS
+- User will be able to
+- User who created the gig will receive updates if anyone has agreed to their gig
+- All users involved will be notified if a musician has been selected
+
+USER SETTINGS
+- Users can create their account, delete their account, and change their password
+- Users can add what instruments they play
+- Users can set payment limits(optional)
+
+DASHBOARD
+ - Users can see all available gigs, current gigs they have been approved for and gigs where they have hired someone else
+ - Users can select a musician for their gigs
+
+JOBS
+- If a job has not been filled 2 days before a gig, an email will be sent out to the gig maker to see if it was filled
+- If you have accepted a gig, an email will be sent to the day before the gig at 9am EST as a reminder
+```
+
+---
+
+<br>
