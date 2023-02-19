@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('dashboard');
-    });
+    })->name('dashboard');
 
     Route::get('/musician-finder', [GigController::class, 'index'])->name('musician-finder.dashboard');
     Route::resource('/gigs', GigController::class)->except('index');
