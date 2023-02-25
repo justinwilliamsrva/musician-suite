@@ -45,7 +45,17 @@ class GigController extends Controller
      */
     public function show($id)
     {
-        return view('musician-finder.show');
+        $user = [
+            'instruments' => ['Violin', 'Viola'],
+        ];
+
+        $jobs = [
+            ['musicianNumber' => 1, 'instruments' => ['Violin', 'Viola'] ],
+            ['musicianNumber' => 2, 'instruments' => ['Violin', 'Viola'] ],
+            ['musicianNumber' => 3, 'instruments' => ['Violin', 'Viola'] ],
+        ];
+
+        return view('musician-finder.show', ['jobs' => $jobs, 'user' => $user]);
 
     }
 
@@ -57,7 +67,16 @@ class GigController extends Controller
      */
     public function edit($id)
     {
-        return view('musician-finder.edit');
+        $jobs = [
+            ['musicianNumber' => 1],
+            ['musicianNumber' => 2],
+            ['musicianNumber' => 3],
+            ['musicianNumber' => 4],
+            ['musicianNumber' => 5],
+            ['musicianNumber' => 6],
+        ];
+
+        return view('musician-finder.edit', ['jobs' => $jobs]);
     }
 
     /**
@@ -81,5 +100,10 @@ class GigController extends Controller
     public function destroy($id)
     {
         return view('musician-finder.dashboard');
+    }
+
+    public function updateJob($id)
+    {
+        return redirect()->back();
     }
 }

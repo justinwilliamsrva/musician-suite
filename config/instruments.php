@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'instruments' => [
+        "Bass Guitar",
+        "Bassoon",
+        "Cello",
+        "Clarinet",
+        "Double Bass",
+        "Drum Kit",
+        "English Horn",
+        "Euphonium",
+        "Flute",
+        "French Horn",
+        "Guitar",
+        "Guitar - Electric",
+        "Harp",
+        "Oboe",
+        "Organ",
+        "Percussion",
+        "Piano",
+        "Piccolo",
+        "Saxophone",
+        "Tambourine",
+        "Trombone",
+        "Trumpet",
+        "Tuba",
+        "Viola",
+        "Violin",
+    ],
+];
