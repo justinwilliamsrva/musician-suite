@@ -57,7 +57,16 @@ class GigController extends Controller
      */
     public function edit($id)
     {
-        return view('musician-finder.edit');
+        $jobs = [
+            ['musicianNumber' => 1],
+            ['musicianNumber' => 2],
+            ['musicianNumber' => 3],
+            ['musicianNumber' => 4],
+            ['musicianNumber' => 5],
+            ['musicianNumber' => 6],
+        ];
+
+        return view('musician-finder.edit', ['jobs' => $jobs]);
     }
 
     /**

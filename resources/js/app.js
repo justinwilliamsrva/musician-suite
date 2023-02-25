@@ -10,7 +10,7 @@ Alpine.start();
 
 $(document).ready(function() {
     // Add Job
-    $("input[name = 'musician-number']").click(function(e) {
+    $("input[name = 'musician-number']").on('click', function(e) {
         let numberOfRequestedJobs = e.currentTarget.value;
         let numberOfCurrentJobs = ($('#jobs-list .more-job-template').length);
 
@@ -48,10 +48,19 @@ $(document).ready(function() {
     }
 
     // Clear Form
-    $('#clear-create-gig-form').click(function(){
+    $('#clear-create-gig-form').on('click', function(){
         if (confirm('Are you sure you want to clear this Gig and all musicians') == true) {
             $('#jobs-list').children('.more-job-template:not(:first-child)').remove();
             $('#create-gig-form')[0].reset();
         };
     })
+
+    // Delete Gig
+    $('#delete-gig-button').on('click', function() {
+        // show a confirmation dialog using jQuery UI
+        if (confirm('Are you sure you want to delete this gig?')) {
+            // if the user confirms, submit the delete form
+            $('#delete-gig-form').submit();
+        }
+    });
 });
