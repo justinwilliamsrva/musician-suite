@@ -32,6 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+    Route::get('/new-job-component', function () {
+        $number = request()->query('number', 1);
+        $data = [
+          'musicianNumber' => $number,
+        ];
+        return view('components.finder-components.new-job', $data)->render();
+      });
 Route::fallback(function () {
     return redirect('/dashboard');
 });

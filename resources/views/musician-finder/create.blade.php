@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-    <div class="flex flex-col justify-center">
+        <div class="flex flex-col justify-center">
             <h2 class="font-semibold text-center text-3xl text-gray-800 leading-tight">
                 {{ __('Create a Gig') }}
             </h2>
@@ -134,38 +134,8 @@
                         <h3 class="font-semibold text-center text-2xl text-gray-800 leading-tight">
                             {{ __('Musicians Needed') }}
                         </h3>
-                        <div id="job-template-block">
-                            <div class="overflow-hidden shadow sm:rounded-md">
-                                <div class="bg-white px-4 py-5 sm:p-6">
-                                    <div class="grid grid-cols-6 gap-6">
-                                        <div class="col-span-6 sm:col-span-2 lg:col-span-1 my-auto">
-                                            <label for="instrument" class="block text-sm font-medium text-gray-700">Musician #1</label>
-                                        </div>
-                                        <div class="col-span-3 sm:col-span-2 lg:col-span-1">
-                                            <label for="instrument" class="block text-sm font-medium text-gray-700">
-                                                Instrument(s)
-                                            </label>
-                                            <select name="instrument" id="cars" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                                @foreach(config('instruments.instruments') as $instrument)
-                                                    <option value="{{ $instrument }}">{{ $instrument }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-span-3 sm:col-span-2 lg:col-span-1">
-                                            <label for="payment" class="block text-sm font-medium text-gray-700">
-                                                Payment
-                                            </label>
-                                            <input id="payment-all" type="number" min="0" step="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                        </div>
-                                        <div class="col-span-6 lg:col-span-3">
-                                            <label for="extra_details" class="block text-sm font-medium text-gray-700">Extra Details</label>
-                                            <input type="text" name="extra_details" id="extra_details" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="more-jobs-list" class="flex flex-col space-y-4">
+                        <div id="jobs-list" class="flex flex-col space-y-4">
+                            @include('components.finder-components.new-job', ['musicianNumber' => 1])
                         </div>
                     </div>
                     <div class="flex justify-between">
