@@ -138,7 +138,7 @@
                             {{ __('Musicians Needed') }}
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
-                            @each('components.finder-components.edit-show-job', $jobs, 'job')
+                            @each('components.finder-components.edit-job', $jobs, 'job')
                         </div>
                     </div>
                     <div class="flex justify-between">

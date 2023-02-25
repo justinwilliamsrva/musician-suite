@@ -26,12 +26,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/finder', [GigController::class, 'index'])->name('musician-finder.dashboard');
     Route::resource('/gigs', GigController::class)->except('index');
+    Route::patch('/job/{job}', [GigController::class, 'updateJob'])->name('job.update');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
     Route::get('/new-job-component', function () {
         $number = request()->query('number', 1);
@@ -40,8 +40,9 @@ Route::middleware('auth')->group(function () {
         ];
         return view('components.finder-components.new-job', $data)->render();
       });
-Route::fallback(function () {
-    return redirect('/dashboard');
-});
+
+    Route::fallback(function () {
+        return redirect('/dashboard');
+    });
 
 require __DIR__.'/auth.php';
