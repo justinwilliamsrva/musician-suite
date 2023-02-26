@@ -14,8 +14,22 @@ return new class extends Migration
     public function up()
     {
         Schema::create('job_user', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('job_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('status')->default('pending');
             $table->timestamps();
+
+            $table->primary(['job_id', 'user_id']);
+
+            $table->foreign('job_id')
+                ->references('id')
+                ->on('jobs')
+                ->onDelete('cascade');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
