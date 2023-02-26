@@ -15,6 +15,16 @@ return new class extends Migration
     {
         Schema::create('gigs', function (Blueprint $table) {
             $table->id();
+            $table->string('event_type');
+            $table->string('street_address');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip_code');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

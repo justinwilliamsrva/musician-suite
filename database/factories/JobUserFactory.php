@@ -2,14 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Gig;
+use App\Models\Job;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Job>
  */
-class JobFactory extends Factory
+class JobUserFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,10 +20,9 @@ class JobFactory extends Factory
     public function definition()
     {
         return [
-            'instruments' => json_encode(Arr::random(config('instruments.instruments'), 1)),
-            'payment' => fake()->numberBetween(50, 200),
-            'extra_info' => fake()->paragraph(),
-            'gig_id' => Gig::inRandomOrder()->first(['id'])
+            'user_id' => User::inRandomOrder()->first(['id']),
+            'job_id' => Job::inRandomOrder()->first(['id']),
+            'status' => Arr::random(['Pending', 'Booked']),
         ];
     }
 }
