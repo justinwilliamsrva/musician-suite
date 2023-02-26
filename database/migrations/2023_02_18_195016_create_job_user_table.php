@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('job_user', function (Blueprint $table) {
             $table->unsignedBigInteger('job_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('status')->default('pending');
+            $table->string('status')->default('Applied');
             $table->timestamps();
 
             $table->primary(['job_id', 'user_id']);
