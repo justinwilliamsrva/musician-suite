@@ -19,9 +19,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory()->create(['name'=> 'Filled Outside CRRVA', 'email' => 'filledoutsideCRRVA@gmail.com', 'admin' => true]);
+        User::factory()->create(['name'=> 'Testing', 'email' => 'testing@testing.com', 'admin' => true]);
         User::factory()->create(['name'=> 'Justin Williams', 'email' => 'justinwdev@gmail.com', 'admin' => true]);
         User::factory()->create(['name'=> 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true]);
-        User::factory(9)->create();
+        User::factory(7)->create();
 
         User::all()->each(function ($user){
             Gig::factory(2)->create([
