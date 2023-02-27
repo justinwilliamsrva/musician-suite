@@ -19,12 +19,12 @@
 
     <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 lg:divide-[#212121]">
-            <!-- ALl Open Gigs -->
-            <div class="px-6 lg:px-8 pb-6 lg:pb-0 col-span-1 lg:row-span-2">
+            <!-- All Open Gigs -->
+            <div class="px-6 lg:px-8 pb-6 lg:pb-0 col-span-1">
                 <div class="sm:flex sm:items-center">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">Open Gigs</h1>
-                        <p class="mt-2 text-sm text-gray-700">List of all available jobs for every instrument including their date, location, instrument, and payment.</p>
+                        <p class="mt-2 text-sm text-gray-700">List of all available jobs for every instrument including their date, location, instrument, payment and status.</p>
                     </div>
                     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                         <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View Your Instrument(s)</button>
@@ -45,204 +45,146 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr>
-                                        <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                            Wedding
-                                            <dl class="font-normal @2xl:hidden">
-                                                <dt class="sr-only">Instrument(s)</dt>
-                                                <dd class="mt-1 text-gray-700">Violin, Viola</dd>
-                                                <dt class="sr-only @lg:hidden">Payment</dt>
-                                                <dd class="mt-1 text-gray-500">$300</dd>
-                                            </dl>
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            01/17/14 7:30pm - <br/> 01/17/14 12:00pm
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            1234 Main Street <br/> Jacksonville, VA 12345
-                                        </td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">Violin, Viola</td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">$300</td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            Unconfirmed
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                            Wedding
-                                            <dl class="font-normal @2xl:hidden">
-                                                <dt class="sr-only">Instrument(s)</dt>
-                                                <dd class="mt-1 text-gray-700">Violin, Viola</dd>
-                                                <dt class="sr-only @lg:hidden">Payment</dt>
-                                                <dd class="mt-1 text-gray-500">$300</dd>
-                                            </dl>
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            01/17/14 7:30pm - <br/> 01/17/14 12:00pm
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            1234 Main Street <br/> Jacksonville, VA 12345
-                                        </td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">Violin, Viola</td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">$300</td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            Unconfirmed
-                                        </td>
-                                    </tr>
+                                    @foreach($openJobs as $job)
+                                        <tr>
+                                            <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
+                                                {{ $job->gig->event_type }}
+                                                <dl class="font-normal @2xl:hidden">
+                                                    <dt class="sr-only">Instrument(s)</dt>
+                                                    <dd class="mt-1 text-gray-700">{{ implode(', ', json_decode($job->instruments)) }}</dd>
+                                                    <dt class="sr-only @lg:hidden">Payment</dt>
+                                                    <dd class="mt-1 text-gray-500">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</dd>
+                                                </dl>
+                                            </td>
+                                            <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                {!! date_format($job->gig->start_time, 'D, m/d/y g:i a').$job->gig->getEndTime($job->gig) !!}
+                                            </td>
+                                            <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                {{ $job->gig->street_address }} <br/> {{ $job->gig->city }}, {{ $job->gig->state }} {{ $job->gig->zip_code }}
+                                            </td>
+                                            <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ implode(', ', json_decode($job->instruments)) }}</td>
+                                            <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</td>
+                                            <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                {{ (count($job->users) > 0) ? 'Pending' : 'Open' }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-             <!-- All Gigs You Are Performing In -->
-             <div class="px-6 lg:px-8 col-span-1 lg:row-span-1 border-t-2 border-[#212121] lg:border-0 pt-6 lg:pt-0 pb-6">
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
-                        <p class="mt-2 text-sm text-gray-700">List of upcoming performances whether confirmed or pending. Click VIEW ALL to also see all previous performances.</p>
-                    </div>
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
-                    </div>
-                </div>
-                <div class="mt-8 flow-root @container">
-                    <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
-                            <table class="min-w-full divide-y divide-gray-300">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
-                                        <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
-                                        <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr>
-                                        <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                            Wedding
-                                            <dl class="font-normal @2xl:hidden">
-                                                <dt class="sr-only">Instrument(s)</dt>
-                                                <dd class="mt-1 text-gray-700">Violin, Viola</dd>
-                                                <dt class="sr-only @lg:hidden">Payment</dt>
-                                                <dd class="mt-1 text-gray-500">$300</dd>
-                                            </dl>
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            01/17/14 7:30pm - <br/> 01/17/14 12:00pm
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            1234 Main Street <br/> Jacksonville, VA 12345
-                                        </td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">Violin, Viola</td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">$300</td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            Unconfirmed
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                            Wedding
-                                            <dl class="font-normal @2xl:hidden">
-                                                <dt class="sr-only">Instrument(s)</dt>
-                                                <dd class="mt-1 text-gray-700">Violin, Viola</dd>
-                                                <dt class="sr-only @lg:hidden">Payment</dt>
-                                                <dd class="mt-1 text-gray-500">$300</dd>
-                                            </dl>
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            01/17/14 7:30pm - <br/> 01/17/14 12:00pm
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            1234 Main Street <br/> Jacksonville, VA 12345
-                                        </td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">Violin, Viola</td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">$300</td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            Unconfirmed
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+             <div class="col-span-1">
+                 <!-- All Gigs You Are Performing In -->
+                 <div class="px-6 lg:px-8 col-span-1 border-t-2 border-[#212121] lg:border-0 pt-6 lg:pt-0 pb-6">
+                    <div class="sm:flex sm:items-center">
+                        <div class="sm:flex-auto">
+                            <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
+                            <p class="mt-2 text-sm text-gray-700">List of your upcoming performances whether booked or pending.</p>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                            <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
                         </div>
                     </div>
-                </div>
-            </div>
-             <!-- All Gigs You Are Hosting -->
-             <div class="px-6 lg:px-8 col-span-1 lg:row-span-1 border-t-2 border-[#212121] pt-6">
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
-                        <p class="mt-2 text-sm text-gray-700">List of upcoming gigs you are hosting and how many jobs are still open. Click EDIT to update or delete gig and Click VIEW ALL to see previous gigs.</p>
+                    <div class="mt-8 flow-root @container">
+                        <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
+                                <table class="min-w-full divide-y divide-gray-300">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
+                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 bg-white">
+                                        @foreach($userJobs as $job)
+                                            <tr>
+                                                <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
+                                                    {{ $job->gig->event_type }}
+                                                    <dl class="font-normal @2xl:hidden">
+                                                        <dt class="sr-only">Instrument(s)</dt>
+                                                        <dd class="mt-1 text-gray-700">{{ implode(', ', json_decode($job->instruments)) }}</dd>
+                                                        <dt class="sr-only @lg:hidden">Payment</dt>
+                                                        <dd class="mt-1 text-gray-500">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</dd>
+                                                    </dl>
+                                                </td>
+                                                <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                    {!! date_format($job->gig->start_time, 'D, m/d/y g:i a').$job->gig->getEndTime($job->gig) !!}
+                                                </td>
+                                                <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                    {{ $job->gig->street_address }} <br/> {{ $job->gig->city }}, {{ $job->gig->state }} {{ $job->gig->zip_code }}
+                                                </td>
+                                                <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ implode(', ', json_decode($job->instruments)) }}</td>
+                                                <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</td>
+                                                <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                    {{ $job->pivot->status}}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
+                             </div>
+                 <!-- All Gigs You Are Hosting -->
+                 <div class="px-6 lg:px-8 col-span-1 border-t-2 border-[#212121] pt-6">
+                    <div class="sm:flex sm:items-center">
+                        <div class="sm:flex-auto">
+                            <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
+                            <p class="mt-2 text-sm text-gray-700">List of upcoming gigs you have created and how many jobs have been filled.</p>
+                        </div>
+                        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                            <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-8 flow-root @container">
-                    <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
-                            <table class="min-w-full divide-y divide-gray-300">
-                                <thead>
-                                    <tr>
+                    <div class="mt-8 flow-root @container">
+                        <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
+                                <table class="min-w-full divide-y divide-gray-300">
+                                    <thead>
+                                        <tr>
                                         <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
-                                        <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
-                                        <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
-                                    <tr>
-                                        <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                            Wedding
-                                            <dl class="font-normal @2xl:hidden">
-                                                <dt class="sr-only">Instrument(s)</dt>
-                                                <dd class="mt-1 text-gray-700">Violin, Viola</dd>
-                                                <dt class="sr-only @lg:hidden">Payment</dt>
-                                                <dd class="mt-1 text-gray-500">$300</dd>
-                                            </dl>
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            01/17/14 7:30pm - <br/> 01/17/14 12:00pm
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            1234 Main Street <br/> Jacksonville, VA 12345
-                                        </td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">Violin, Viola</td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">$300</td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            Unconfirmed
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                            Wedding
-                                            <dl class="font-normal @2xl:hidden">
-                                                <dt class="sr-only">Instrument(s)</dt>
-                                                <dd class="mt-1 text-gray-700">Violin, Viola</dd>
-                                                <dt class="sr-only @lg:hidden">Payment</dt>
-                                                <dd class="mt-1 text-gray-500">$300</dd>
-                                            </dl>
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            01/17/14 7:30pm - <br/> 01/17/14 12:00pm
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            1234 Main Street <br/> Jacksonville, VA 12345
-                                        </td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">Violin, Viola</td>
-                                        <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">$300</td>
-                                        <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                            Unconfirmed
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
+                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 bg-white">
+                                        @foreach($userGigs as $gig)
+                                            <tr>
+                                                <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
+                                                    {{ $gig->event_type }}
+                                                    <dl class="font-normal @2xl:hidden">
+                                                        <dt class="sr-only">Status</dt>
+                                                        <dd class="mt-1 text-gray-700">{{ $gig->getAllInstruments($gig) }}</dd>
+                                                        <dt class="sr-only @lg:hidden">Payment</dt>
+                                                        <dd class="mt-1 text-gray-500">{{ $gig->getPaymentRange($gig) }}</dd>
+                                                    </dl>
+                                                </td>
+                                                <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                {!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime($gig) !!}
+                                                </td>
+                                                <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                    {{ $gig->street_address }} <br/> {{ $gig->city }}, {{ $gig->state }} {{ $gig->zip_code }}
+                                                </td>
+                                                <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getAllInstruments($gig) }}</td>
+                                                <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getPaymentRange($gig) }}</td>
+                                                <td class="px-3 py-4 text-sm text-gray-500 align-top">
+                                                    {{ $gig->numberOfFilledJobs().' Jobs Filled' }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

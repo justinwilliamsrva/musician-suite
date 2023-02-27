@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Job;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GigController extends Controller
 {
@@ -13,7 +16,22 @@ class GigController extends Controller
      */
     public function index()
     {
-        return view('musician-finder.dashboard');
+        $user = User::find(Auth::id());
+        //Get all jobs that are not booked
+        $openJobs = Job::whereDoesntHave('users', function ($query) {
+            $query->where('status', 'Booked');
+        })->with('gig')->get();
+        // dd($openJobs);
+
+        //Get User's Jobs, with gig data()
+        $userJobs = $user->jobs()->with('gig')->get();
+        // dd($userJobs);
+
+        //Get User Gigs, with amount of jobs unfilled, range of payments
+        $userGigs = $user->gigs()->with('jobs')->get();
+        // dd($userGigs);
+
+        return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs]);
     }
 
     /**
