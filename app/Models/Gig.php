@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -60,5 +61,49 @@ class Gig extends Model
     public function jobs(): HasMany
     {
         return $this->hasMany(Job::class);
+    }
+
+    public function numberOfFilledJobs() {
+        $numberOfJobs = $this->jobs()->count();
+        $numberOfFilledJobs = $this->jobs()->whereRelation('users', function ($query) {
+            $query->where('status', 'Booked');
+        })->count();
+
+        return $numberOfFilledJobs.'/'.$numberOfJobs;
+
+    }
+
+    public function getAllInstruments($gig)
+    {
+        $instruments = '';
+
+        foreach($gig->jobs as $job) {
+
+            $instruments .= implode(', ', json_decode($job->instruments)).', ';
+        }
+
+        return rtrim($instruments, ', ');
+    }
+
+    public function getPaymentRange($gig)
+    {
+        $maxPayment = $gig->jobs->max('payment');
+        $minPayment = $gig->jobs->min('payment');
+
+        if ($maxPayment != $minPayment) {
+            return '$'.$minPayment.' - $'.$maxPayment;
+        }
+
+        return '$'.$maxPayment;
+
+    }
+
+    public function getEndTime($gig)
+    {
+        if (strtotime(date_format($gig->start_time, 'm/d/y')) != strtotime(date_format($gig->end_time, 'm/d/y'))) {
+            return ' - <br/>'.date_format($gig->end_time, 'D, m/d/y g:i a');
+        }
+
+        return ' - '.date_format($gig->end_time, 'g:i a');
     }
 }

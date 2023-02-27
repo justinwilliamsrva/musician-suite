@@ -8,8 +8,6 @@ use App\Models\Job;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Seeder;
-use Database\Factories\JobUserFactory;
-use Database\Factories\UserJobFactory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        User::factory()->create(['name'=> 'Filled Outside CRRVA', 'email' => 'filledoutsideCRRVA@gmail.com', 'admin' => true]);
         User::factory()->create(['name'=> 'Justin Williams', 'email' => 'justinwdev@gmail.com', 'admin' => true]);
         User::factory()->create(['name'=> 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true]);
         User::factory(9)->create();
@@ -38,15 +37,18 @@ class DatabaseSeeder extends Seeder
         });
 
         Job::all()->each(function ($job){
-            $gigId = $job->gig_id;
-            $restrictedUserId[] = Gig::find($gigId)->user_id;
-            for ($i = 0;$i < 2; $i++) {
+            $randomNumber = rand(1, 2);
+            if ($randomNumber == 1) {
+                $gigId = $job->gig_id;
+                $restrictedUserId[] = Gig::find($gigId)->user_id;
+                for ($i = 0;$i < 2; $i++) {
+                    $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
+                    $job->users()->attach($userId, ['status' => 'Applied']);
+                    $restrictedUserId[] = $userId;
+                }
                 $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
-                $job->users()->attach($userId, ['status' => 'Applied']);
-                $restrictedUserId[] = $userId;
+                $job->users()->attach($userId, ['status' => Arr::Random(['Applied', 'Booked'])]);
             }
-            $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
-            $job->users()->attach($userId, ['status' => Arr::Random(['Applied', 'Booked'])]);
         });
 
     }
