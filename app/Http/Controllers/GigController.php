@@ -17,19 +17,14 @@ class GigController extends Controller
     public function index()
     {
         $user = User::find(Auth::id());
-        //Get all jobs that are not booked
+
         $openJobs = Job::whereDoesntHave('users', function ($query) {
             $query->where('status', 'Booked');
-        })->with('gig')->get();
-        // dd($openJobs);
+        })->with('gig')->paginate(10)->fragment('openGigs');
 
-        //Get User's Jobs, with gig data()
         $userJobs = $user->jobs()->with('gig')->get();
-        // dd($userJobs);
 
-        //Get User Gigs, with amount of jobs unfilled, range of payments
         $userGigs = $user->gigs()->with('jobs')->get();
-        // dd($userGigs);
 
         return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs]);
     }

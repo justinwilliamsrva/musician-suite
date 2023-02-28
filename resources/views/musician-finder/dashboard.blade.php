@@ -20,7 +20,7 @@
     <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 lg:divide-[#212121]">
             <!-- All Open Gigs -->
-            <div class="px-6 lg:px-8 pb-6 lg:pb-0 col-span-1">
+            <div id="openGigs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1">
                 <div class="sm:flex sm:items-center">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">Open Gigs</h1>
@@ -71,13 +71,14 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $openJobs->links() }}
                         </div>
                     </div>
                 </div>
             </div>
-             <div class="col-span-1">
+            <div class="order-1 lg:order-2 col-span-1">
                  <!-- All Gigs You Are Performing In -->
-                 <div class="px-6 lg:px-8 col-span-1 border-t-2 border-[#212121] lg:border-0 pt-6 lg:pt-0 pb-6">
+                 <div class="px-6 lg:px-8 col-span-1 pb-6">
                     <div class="sm:flex sm:items-center">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
@@ -122,7 +123,7 @@
                                                 <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ implode(', ', json_decode($job->instruments)) }}</td>
                                                 <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</td>
                                                 <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                                    {{ $job->pivot->status}}
+                                                    {{ ($job->pivot->status == 'Applied') ? 'Pending' : 'Booked' }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -131,9 +132,9 @@
                             </div>
                         </div>
                     </div>
-                             </div>
+                </div>
                  <!-- All Gigs You Are Hosting -->
-                 <div class="px-6 lg:px-8 col-span-1 border-t-2 border-[#212121] pt-6">
+                 <div class="px-6 lg:px-8 col-span-1 border-y-2 lg:border-b-0 pb-6 lg:pb-0 border-[#212121] pt-8">
                     <div class="sm:flex sm:items-center">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
