@@ -78,8 +78,10 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Gig $gig)
     {
+        $this->authorize('update', $gig);
+
         $jobs = [
             ['musicianNumber' => 1],
             ['musicianNumber' => 2],
