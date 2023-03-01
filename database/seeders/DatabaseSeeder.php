@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create(['name'=> 'TestingAdmin', 'email' => 'testingadmin@testing.com', 'admin' => true]);
         User::factory()->create(['name'=> 'Testing', 'email' => 'testing@testing.com', 'admin' => false]);
         User::factory()->create(['name'=> 'Justin Williams', 'email' => 'justinwdev@gmail.com', 'admin' => true]);
-        User::factory()->create(['name'=> 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true]);
+        User::factory()->create(['name'=> 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com']);
         User::factory(7)->create();
 
         User::all()->each(function ($user){
