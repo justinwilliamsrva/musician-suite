@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col justify-center">
             <h2 class="font-semibold text-center text-3xl text-gray-800 leading-tight">
-                {{ __('Update Your Wedding') }}
+                {{ $gig->event_type.' by '.$gig->user->name }}
             </h2>
             <div class="mx-auto">
                 <a href="{{ route('musician-finder.dashboard') }}">
@@ -27,105 +27,89 @@
                         <div class="bg-white px-4 py-5 sm:p-6">
                             <div class="grid grid-cols-6 gap-6">
                                 <!-- ROW 1 -->
-                                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <div class="col-span-6 sm:col-span-6 lg:col-span-1">
                                     <label for="event_type" class="block text-sm font-medium text-gray-700">
                                         Event Type
                                     </label>
-                                    <input readonly type="text" name="event_type" id="event_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <!-- <input readonly value type="text"  id="event_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"> -->
+                                    <p>{{ $gig->event_type }}</p>
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
-                                        Start Date/Time
+                                        Date/Time
                                     </label>
-                                    <input readonly type="datetime-local" name="start_date_time" id="start_date_time" autocomplete="given-name"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                   <p>{!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime($gig) !!}</p>
                                 </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                <div class="col-span-6 sm:col-span-3 lg:col-span-3">
                                     <label for="end_date_time" class="block text-sm font-medium text-gray-700">
-                                        End Date/Time
+                                        Address
                                     </label>
-                                    <input readonly type="datetime-local" name="end_date_time" id="end_date_time" autocomplete="given-name"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <a href="{{ $gig->getGoogleMapsLink($gig) }}" target="_blank" class="underline text-blue-500">
+                                        <p>{{ $gig->street_address.', '. $gig->city.', '.$gig->state.' '.$gig->zip_code }}</p>
+                                    </a>
                                 </div>
                                 <!-- ROW 2 -->
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                    <label for="street-address" class="block text-sm font-medium text-gray-700">Street address</label>
-                                    <input readonly type="text" name="street-address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                    <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                                    <input readonly type="text" name="city" id="city" autocomplete="address-level2"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                    <label for="region" class="block text-sm font-medium text-gray-700">State</label>
-                                    <input readonly type="text" name="region" id="region" value="Virginia"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                    <label for="postal-code" class="block text-sm font-medium text-gray-700">ZIP /
-                                        Postal code</label>
-                                    <input readonly type="text" name="postal-code" id="postal-code" autocomplete="postal-code"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-                                <!-- ROW 3 -->
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label class="block text-sm font-medium text-gray-700">Payment</label>
-                                    <label class="block text-sm font-medium text-gray-700">Will all musicians receive the same payment?</label>
-                                    <fieldset class="mt-2">
-                                        <legend class="sr-only">Payment Question</legend>
-                                        <div class="flex items-center space-y-0 space-x-10">
-                                            <div class="flex items-center">
-                                                <input disabled id="payment-method-yes" name="payment-method"type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                                <label for="payment-method-yes" class="ml-3 block text-sm font-medium text-gray-700">Yes</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input disabled id="payment-method-no" name="payment-method"type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                                <label for="payment-method-no" class="ml-3 block text-sm font-medium text-gray-700">No</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <label for="payment-all" class="mr-1 block text-sm font-medium text-gray-700">Payment</label>
-                                                <input readonly id="payment-all" type="number" min="0" step="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                            </div>
-                                        </div>
-                                    </fieldset>
+                                    <p>{{ $gig->getPaymentRange($gig) }}</p>
+
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label class="block text-sm font-medium text-gray-700">Musicians</label>
-                                    <label for="city" class="block text-sm font-medium text-gray-700">How many musicians do you need to book?</label>
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Musicians</legend>
                                         <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                            <label class="border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input disabled type="radio" name="musician-number" value="1" class="sr-only" aria-labelledby="musician-number-1-label">
+                                            <label class="{{ count($gig->jobs) == 1 ? 'border-blue-500' : '' }} border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input disabled type="radio" value="1" class="sr-only" aria-labelledby="musician-number-1-label">
                                                 <span id="musician-number-1-label">1</span>
                                             </label>
-                                            <label class="border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input disabled type="radio" name="musician-number" value="2" class="sr-only" aria-labelledby="musician-number-2-label">
+                                            <label class="{{ count($gig->jobs) == 2 ? 'border-blue-500' : '' }} border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input disabled type="radio" value="2" class="sr-only" aria-labelledby="musician-number-2-label">
                                                 <span id="musician-number-2-label">2</span>
                                             </label>
-                                            <label class="border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input disabled type="radio" name="musician-number" value="3" class="sr-only" aria-labelledby="musician-number-3-label">
+                                            <label class="{{ count($gig->jobs) == 3 ? 'border-blue-500' : '' }} border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input disabled type="radio" value="3" class="sr-only" aria-labelledby="musician-number-3-label">
                                                 <span id="musician-number-3-label">3</span>
                                             </label>
-                                            <label class="border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input disabled type="radio" name="musician-number" value="4" class="sr-only" aria-labelledby="musician-number-4-label">
+                                            <label class="{{ count($gig->jobs) == 4 ? 'border-blue-500' : '' }} border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input disabled type="radio" value="4" class="sr-only" aria-labelledby="musician-number-4-label">
                                                 <span id="musician-number-4-label">4</span>
                                             </label>
-                                            <label class="border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input disabled type="radio" name="musician-number" value="5" class="sr-only" aria-labelledby="musician-number-5-label">
+                                            <label class="{{ count($gig->jobs) == 5 ? 'border-blue-500' : '' }} border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input disabled type="radio" value="5" class="sr-only" aria-labelledby="musician-number-5-label">
                                                 <span id="musician-number-5-label">5</span>
                                             </label>
-                                            <label class="border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input disabled type="radio" name="musician-number" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
+                                            <label class="{{ count($gig->jobs) == 6 ? 'border-blue-500' : '' }} border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input disabled type="radio" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
                                                 <span id="musician-number-6-label">6</span>
                                             </label>
                                         </div>
                                     </fieldset>
                                 </div>
-                                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                <div class="col-span-6 sm:col-span-6 lg:col-span-3">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea readonly id="description" name="description"class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]" ></textarea>
+                                    <textarea readonly id="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ is_null($gig->description) ? 'No Description' : $gig->description }}</textarea>
+                                </div>
+                                <!-- ROW 4 -->
+                                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
+                                    <label for="event_type" class="block text-sm font-medium text-gray-700">
+                                        Host's Name
+                                    </label>
+                                    <input readonly type="text" value="{{ $gig->user->name }}" id="event_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                    <label for="start_date_time" class="block text-sm font-medium text-gray-700">
+                                        Host's Email
+                                    </label>
+                                    <input readonly type="text" value="{{ $gig->user->email }}" id="start_date_time" autocomplete="given-name"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
+                                    <label for="end_date_time" class="block text-sm font-medium text-gray-700">
+                                        Host's Phone
+                                    </label>
+                                    <input readonly type="text" value="{{ $gig->user->phone_number }}"id="end_date_time" autocomplete="given-name"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                             </div>
                         </div>
@@ -135,8 +119,8 @@
                             {{ __('Musicians Needed') }}
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
-                            @foreach($jobs as $job)
-                                @include('components.finder-components.show-job', ['jobs' => $jobs, 'user' => $user])
+                            @foreach($gig->jobs as $job)
+                                @include('components.finder-components.show-job', ['job' => $job, 'user' => $user, 'musicianNumber' => ($loop->index +1)])
                             @endforeach
                         </div>
                     </div>

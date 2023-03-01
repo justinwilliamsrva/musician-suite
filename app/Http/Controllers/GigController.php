@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -76,20 +77,11 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Gig $gig)
     {
-        $user = [
-            'instruments' => ['Violin', 'Viola'],
-        ];
+        $user = Auth::user();
 
-        $jobs = [
-            ['musicianNumber' => 1, 'instruments' => ['Violin', 'Viola'] ],
-            ['musicianNumber' => 2, 'instruments' => ['Violin', 'Viola'] ],
-            ['musicianNumber' => 3, 'instruments' => ['Violin', 'Viola'] ],
-        ];
-
-        return view('musician-finder.show', ['jobs' => $jobs, 'user' => $user]);
-
+        return view('musician-finder.show', ['gig' => $gig, 'user' => $user]);
     }
 
     /**
@@ -137,8 +129,10 @@ class GigController extends Controller
         return view('musician-finder.dashboard');
     }
 
-    public function updateJob($id)
+    public function applyToJob(Job $job)
     {
+        $this->authorize('applyToJob', $job);
+
         return redirect()->back();
     }
 }

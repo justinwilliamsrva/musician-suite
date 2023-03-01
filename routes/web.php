@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/finder', [GigController::class, 'index'])->name('musician-finder.dashboard');
     Route::resource('/gigs', GigController::class)->except('index');
-    Route::patch('/job/{job}', [GigController::class, 'updateJob'])->name('job.update');
+    Route::patch('/job/{job}', [GigController::class, 'applyToJob'])->name('applyToJob');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
