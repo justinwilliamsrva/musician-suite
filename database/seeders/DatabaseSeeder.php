@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
         });
 
         Gig::all()->each(function ($gig){
-            Job::factory(2)->create([
+            $randomNumber = rand(1, 4);
+            Job::factory($randomNumber)->create([
                 'gig_id' => $gig->id
             ]);
         });
