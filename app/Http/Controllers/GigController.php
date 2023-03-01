@@ -20,11 +20,31 @@ class GigController extends Controller
 
         $openJobs = Job::whereDoesntHave('users', function ($query) {
             $query->where('status', 'Booked');
-        })->with('gig')->paginate(10)->fragment('openGigs');
+        })
+        ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
+        ->where('gigs.start_time', '>', now())
+        ->orderBy('gigs.start_time')
+        ->paginate(10)
+        ->fragment('openGigs');
 
-        $userJobs = $user->jobs()->with('gig')->get();
+        $userJobs = Job::whereHas('users', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->whereDoesntHave('users', function ($query) use ($user) {
+            $query->where('user_id', '<>', $user->id)
+                ->where('status', '=', 'booked');
+        })
+        ->with(['users' => function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->select('users.id', 'name', 'email', 'phone_number', 'instruments', 'admin', 'email_verified_at', 'status');
+        }])
+        ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
+        ->select('jobs.*', 'gigs.start_time')
+        ->where('gigs.start_time', '>', now())
+        ->orderBy('gigs.start_time')
+        ->get();
 
-        $userGigs = $user->gigs()->with('jobs')->get();
+        $userGigs = $user->gigs()->with('jobs')->where('start_time', '>', now())->orderBy('start_time')->get();
 
         return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs]);
     }
