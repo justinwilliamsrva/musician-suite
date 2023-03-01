@@ -116,7 +116,7 @@
                     </div>
                     <div id="jobs-list" class="flex flex-col space-y-4">
                         <h3 class="font-semibold text-center text-2xl text-gray-800 leading-tight">
-                            {{ __('Musicians Needed') }}
+                            {{ __('Musicians') }}
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
                             @foreach($gig->jobs as $job)
