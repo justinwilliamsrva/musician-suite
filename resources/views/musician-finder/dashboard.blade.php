@@ -20,11 +20,11 @@
     <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 lg:divide-[#212121]">
             <!-- All Open Gigs -->
-            <div id="openGigs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1">
-                <div class="sm:flex sm:items-center">
+            <div id="openGigs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1 ">
+                <div class="sm:flex sm:items-center min-h-[80px]">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">Open Gigs</h1>
-                        <p class="mt-2 text-sm text-gray-700">List of all available jobs for every instrument including their date, location, instrument, payment and status.</p>
+                        <p class="mt-2 text-sm text-gray-700">List of all open and pending jobs for every instrument.</p>
                     </div>
                     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
                         <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View Your Instrument(s)</button>
@@ -83,7 +83,7 @@
             <div class="order-1 lg:order-2 col-span-1">
                  <!-- All Gigs You Are Performing In -->
                  <div class="px-6 lg:px-8 col-span-1 pb-6">
-                    <div class="sm:flex sm:items-center">
+                    <div class="sm:flex sm:items-center min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
                             <p class="mt-2 text-sm text-gray-700">List of your upcoming performances whether booked or pending.</p>
@@ -143,7 +143,7 @@
                 </div>
                  <!-- All Gigs You Are Hosting -->
                  <div class="px-6 lg:px-8 col-span-1 border-y-2 lg:border-b-0 pb-6 lg:pb-0 border-[#212121] pt-8">
-                    <div class="sm:flex sm:items-center">
+                    <div class="sm:flex sm:items-center min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
                             <p class="mt-2 text-sm text-gray-700">List of upcoming gigs you have created and how many jobs have been filled.</p>
