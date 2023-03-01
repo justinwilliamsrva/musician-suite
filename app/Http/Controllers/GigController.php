@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,11 +21,31 @@ class GigController extends Controller
 
         $openJobs = Job::whereDoesntHave('users', function ($query) {
             $query->where('status', 'Booked');
-        })->with('gig')->paginate(10)->fragment('openGigs');
+        })
+        ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
+        ->where('gigs.start_time', '>', now())
+        ->orderBy('gigs.start_time')
+        ->paginate(10)
+        ->fragment('openGigs');
 
-        $userJobs = $user->jobs()->with('gig')->get();
+        $userJobs = Job::whereHas('users', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->whereDoesntHave('users', function ($query) use ($user) {
+            $query->where('user_id', '<>', $user->id)
+                ->where('status', '=', 'booked');
+        })
+        ->with(['users' => function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->select('users.id', 'name', 'email', 'phone_number', 'instruments', 'admin', 'email_verified_at', 'status');
+        }])
+        ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
+        ->select('jobs.*', 'gigs.start_time')
+        ->where('gigs.start_time', '>', now())
+        ->orderBy('gigs.start_time')
+        ->get();
 
-        $userGigs = $user->gigs()->with('jobs')->get();
+        $userGigs = $user->gigs()->with('jobs')->where('start_time', '>', now())->orderBy('start_time')->get();
 
         return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs]);
     }
@@ -56,20 +77,11 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Gig $gig)
     {
-        $user = [
-            'instruments' => ['Violin', 'Viola'],
-        ];
+        $user = Auth::user();
 
-        $jobs = [
-            ['musicianNumber' => 1, 'instruments' => ['Violin', 'Viola'] ],
-            ['musicianNumber' => 2, 'instruments' => ['Violin', 'Viola'] ],
-            ['musicianNumber' => 3, 'instruments' => ['Violin', 'Viola'] ],
-        ];
-
-        return view('musician-finder.show', ['jobs' => $jobs, 'user' => $user]);
-
+        return view('musician-finder.show', ['gig' => $gig, 'user' => $user]);
     }
 
     /**
@@ -78,8 +90,10 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Gig $gig)
     {
+        $this->authorize('update', $gig);
+
         $jobs = [
             ['musicianNumber' => 1],
             ['musicianNumber' => 2],
@@ -115,8 +129,10 @@ class GigController extends Controller
         return view('musician-finder.dashboard');
     }
 
-    public function updateJob($id)
+    public function applyToJob(Job $job)
     {
+        $this->authorize('applyToJob', $job);
+
         return redirect()->back();
     }
 }

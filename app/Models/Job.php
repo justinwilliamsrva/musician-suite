@@ -55,4 +55,9 @@ class Job extends Model
     {
         return $this->belongsTo(Gig::class);
     }
+
+    public function jobHasBeenBooked($job)
+    {
+        return ($job->users()->wherePivot('status', 'Booked')->count() > 0);
+    }
 }

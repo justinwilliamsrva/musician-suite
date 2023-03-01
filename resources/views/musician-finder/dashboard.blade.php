@@ -48,7 +48,11 @@
                                     @foreach($openJobs as $job)
                                         <tr>
                                             <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                                {{ $job->gig->event_type }}
+                                                @can('update', $job->gig)
+                                                    <a href="{{ route('gigs.edit', $job->gig->id) }}" class="underline text-blue-500">{{ $job->gig->event_type }}</a>
+                                                @else
+                                                    <a href="{{ route('gigs.show', $job->gig->id) }}" class="underline text-blue-500">{{ $job->gig->event_type }}</a>
+                                                @endcan
                                                 <dl class="font-normal @2xl:hidden">
                                                     <dt class="sr-only">Instrument(s)</dt>
                                                     <dd class="mt-1 text-gray-700">{{ implode(', ', json_decode($job->instruments)) }}</dd>
@@ -106,7 +110,11 @@
                                         @foreach($userJobs as $job)
                                             <tr>
                                                 <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                                    {{ $job->gig->event_type }}
+                                                    @can('update', $job->gig)
+                                                        <a href="{{ route('gigs.edit', $job->gig->id) }}" class="underline text-blue-500">{{ $job->gig->event_type }}</a>
+                                                    @else
+                                                        <a href="{{ route('gigs.show', $job->gig->id) }}" class="underline text-blue-500">{{ $job->gig->event_type }}</a>
+                                                    @endcan
                                                     <dl class="font-normal @2xl:hidden">
                                                         <dt class="sr-only">Instrument(s)</dt>
                                                         <dd class="mt-1 text-gray-700">{{ implode(', ', json_decode($job->instruments)) }}</dd>
@@ -123,7 +131,7 @@
                                                 <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ implode(', ', json_decode($job->instruments)) }}</td>
                                                 <td class="hidden px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</td>
                                                 <td class="px-3 py-4 text-sm text-gray-500 align-top">
-                                                    {{ ($job->pivot->status == 'Applied') ? 'Pending' : 'Booked' }}
+                                                    {{ ($job->users->first()->pivot->status == 'Applied') ? 'Pending' : 'Booked' }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -162,7 +170,7 @@
                                         @foreach($userGigs as $gig)
                                             <tr>
                                                 <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
-                                                    {{ $gig->event_type }}
+                                                    <a href="{{ route('gigs.edit', $gig->id) }}" class="underline text-blue-500">{{ $gig->event_type }}</a>
                                                     <dl class="font-normal @2xl:hidden">
                                                         <dt class="sr-only">Status</dt>
                                                         <dd class="mt-1 text-gray-700">{{ $gig->getAllInstruments($gig) }}</dd>

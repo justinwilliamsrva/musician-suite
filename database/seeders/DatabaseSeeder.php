@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory()->create(['name'=> 'Filled Outside CRRVA', 'email' => 'filledoutsideCRRVA@gmail.com', 'admin' => true]);
-        User::factory()->create(['name'=> 'Testing', 'email' => 'testing@testing.com', 'admin' => true]);
+        User::factory()->create(['name'=> 'TestingAdmin', 'email' => 'testingadmin@testing.com', 'admin' => true]);
+        User::factory()->create(['name'=> 'Testing', 'email' => 'testing@testing.com', 'admin' => false]);
         User::factory()->create(['name'=> 'Justin Williams', 'email' => 'justinwdev@gmail.com', 'admin' => true]);
         User::factory()->create(['name'=> 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true]);
         User::factory(7)->create();
@@ -32,7 +33,8 @@ class DatabaseSeeder extends Seeder
         });
 
         Gig::all()->each(function ($gig){
-            Job::factory(2)->create([
+            $randomNumber = rand(1, 4);
+            Job::factory($randomNumber)->create([
                 'gig_id' => $gig->id
             ]);
         });

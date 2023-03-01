@@ -78,7 +78,6 @@ class Gig extends Model
         $instruments = '';
 
         foreach($gig->jobs as $job) {
-
             $instruments .= implode(', ', json_decode($job->instruments)).', ';
         }
 
@@ -101,9 +100,14 @@ class Gig extends Model
     public function getEndTime($gig)
     {
         if (strtotime(date_format($gig->start_time, 'm/d/y')) != strtotime(date_format($gig->end_time, 'm/d/y'))) {
-            return ' - <br/>'.date_format($gig->end_time, 'D, m/d/y g:i a');
+            return ' - '.date_format($gig->end_time, 'D, m/d/y g:i a');
         }
 
         return ' - '.date_format($gig->end_time, 'g:i a');
+    }
+
+    public function getGoogleMapsLink($gig)
+    {
+        return 'http://maps.google.com/?q='.$gig->street_address.', '.$gig->city.', '.$gig->state.' '.$gig->zip_code;
     }
 }
