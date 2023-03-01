@@ -131,7 +131,8 @@ class GigController extends Controller
 
     public function applyToJob(Job $job)
     {
-        $this->authorize('applyToJob', $job);
+        $this->authorize('apply-to-job', $job);
+        $job->users()->attach(Auth::id(), ['status' => 'Applied']);
 
         return redirect()->back();
     }
