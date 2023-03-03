@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use DateTime;
 use App\Models\User;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

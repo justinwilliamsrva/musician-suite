@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GigController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,16 +33,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-    Route::get('/new-job-component', function () {
-        $number = request()->query('number', 1);
-        $data = [
-          'musicianNumber' => $number,
-        ];
-        return view('components.finder-components.new-job', $data)->render();
-      });
+Route::get('/new-job-component', function () {
+    $number = request()->query('number', 1);
+    $data = [
+        'musicianNumber' => $number,
+    ];
 
-    Route::fallback(function () {
-        return redirect('/dashboard');
-    });
+    return view('components.finder-components.new-job', $data)->render();
+});
+
+Route::fallback(function () {
+    return redirect('/dashboard');
+});
 
 require __DIR__.'/auth.php';

@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Gig;
-use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Job>
@@ -22,7 +22,7 @@ class JobFactory extends Factory
             'instruments' => json_encode(Arr::random(config('instruments.instruments'), 1)),
             'payment' => fake()->numberBetween(50, 200),
             'extra_info' => fake()->paragraph(),
-            'gig_id' => Gig::inRandomOrder()->first(['id'])
+            'gig_id' => Gig::inRandomOrder()->first(['id']),
         ];
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Notifications\Notifiable;
 
 class Job extends Model
 {
@@ -58,6 +57,6 @@ class Job extends Model
 
     public function jobHasBeenBooked($job)
     {
-        return ($job->users()->wherePivot('status', 'Booked')->count() > 0);
+        return $job->users()->wherePivot('status', 'Booked')->count() > 0;
     }
 }

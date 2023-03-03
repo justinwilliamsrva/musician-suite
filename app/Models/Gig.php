@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 
 class Gig extends Model
 {
@@ -63,21 +62,21 @@ class Gig extends Model
         return $this->hasMany(Job::class);
     }
 
-    public function numberOfFilledJobs() {
+    public function numberOfFilledJobs()
+    {
         $numberOfJobs = $this->jobs()->count();
         $numberOfFilledJobs = $this->jobs()->whereRelation('users', function ($query) {
             $query->where('status', 'Booked');
         })->count();
 
         return $numberOfFilledJobs.'/'.$numberOfJobs;
-
     }
 
     public function getAllInstruments($gig)
     {
         $instruments = '';
 
-        foreach($gig->jobs as $job) {
+        foreach ($gig->jobs as $job) {
             $instruments .= implode(', ', json_decode($job->instruments)).', ';
         }
 
@@ -94,7 +93,6 @@ class Gig extends Model
         }
 
         return '$'.$maxPayment;
-
     }
 
     public function getEndTime($gig)
