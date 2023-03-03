@@ -59,8 +59,11 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="region" class="block text-sm font-medium text-gray-700">State</label>
-                                    <input type="text" name="region" id="region" readonly value="Virginia"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <select name="musician_name" id="musician_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        @foreach(config('gigs.states') as $state)
+                                            <option value="{{ $state }}">{{ $state }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="postal-code" class="block text-sm font-medium text-gray-700">ZIP /
@@ -76,16 +79,16 @@
                                         <legend class="sr-only">Payment Question</legend>
                                         <div class="flex items-center space-y-0 space-x-10">
                                             <div class="flex items-center">
-                                                <input id="payment-method-yes" name="payment-method"type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input id="payment-method-yes" value="same" name="payment-method" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-yes" class="ml-3 block text-sm font-medium text-gray-700">Yes</label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input id="payment-method-no" name="payment-method"type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input id="payment-method-no" value="mixed" name="payment-method" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-no" class="ml-3 block text-sm font-medium text-gray-700">No</label>
                                             </div>
                                             <div class="flex items-center">
                                                 <label for="payment-all" class="mr-1 block text-sm font-medium text-gray-700">Payment</label>
-                                                <input id="payment-all" type="number" min="0" step="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input id="payment-all" name="payment-all" type="number" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                     </fieldset>
@@ -125,7 +128,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea id="description" name="description"class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]" ></textarea>
+                                    <textarea id="description" name="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]" ></textarea>
                                 </div>
                             </div>
                         </div>
