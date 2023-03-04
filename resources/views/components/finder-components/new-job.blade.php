@@ -1,5 +1,7 @@
 @props(['$musicianNumber'])
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <div class="overflow-hidden shadow sm:rounded-md more-job-template">
     <div class="bg-white px-4 py-5 sm:p-6">
         <div class="grid grid-cols-6 gap-6">
@@ -16,7 +18,7 @@
                 <label for="instrument" class="block text-sm font-medium text-gray-700">
                     Instrument(s)
                 </label>
-                <select name="musicians[{{ $musicianNumber }}]['instruments']" id="cars" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <select name="musicians[{{ $musicianNumber }}]['instruments']" multiple="multiple" id="instrument" class="form-control select2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     @foreach(config('gigs.instruments') as $instrument)
                         <option value="{{ $instrument }}">{{ $instrument }}</option>
                     @endforeach
@@ -35,3 +37,12 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select",
+            allowClear: true,
+        });
+    });
+</script>
