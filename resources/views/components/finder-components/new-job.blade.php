@@ -15,7 +15,7 @@
                 <label for="instrument" class="block text-sm font-medium text-gray-700">
                     Instrument(s)
                 </label>
-                <select name="musicians[{{ $musicianNumber }}]['instruments']" multiple="multiple" id="instrument" class="form-control select2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <select id="{{ 'select'.$musicianNumber }}" name="musicians[{{ $musicianNumber }}]['instruments']" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     @foreach(config('gigs.instruments') as $instrument)
                         <option value="{{ $instrument }}">{{ $instrument }}</option>
                     @endforeach
@@ -34,3 +34,7 @@
         </div>
     </div>
 </div>
+<script>
+    var number = {{ $musicianNumber }};
+        $('#select'+number).select2();
+</script>
