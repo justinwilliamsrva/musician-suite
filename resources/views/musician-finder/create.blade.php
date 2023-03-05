@@ -134,12 +134,12 @@
                             </div>
                         </div>
                     </div>
-                    <div id="jobs-list" class="flex flex-col space-y-4">
+                    <div class="flex flex-col space-y-4">
                         <h3 class="font-semibold text-center text-2xl text-gray-800 leading-tight">
                             {{ __('Musicians Needed') }}
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
-                            @include('components.finder-components.new-job', ['musicianNumber' => 1])
+                            @include('components.finder-components.new-job', ['musicianNumber' => 1, 'payment' => ''])
                         </div>
                     </div>
                     <div class="flex justify-between">

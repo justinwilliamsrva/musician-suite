@@ -20,18 +20,22 @@ $(document).ready(function() {
             let numberOfChildrenToRemove = numberOfCurrentJobs - numberOfRequestedJobs;
             removeNewJobs(numberOfChildrenToRemove);
         } else if (numberOfRequestedJobs > numberOfCurrentJobs) {
-            addNewJobs(numberOfCurrentJobs, numberOfRequestedJobs);
+            var payment = '';
+            if ($('input[name = "payment-method"]:checked').val() == 'same') {
+                payment = $("#payment-all").val() ?? '';
+            }
+            addNewJobs(numberOfCurrentJobs, numberOfRequestedJobs, payment);
         }
 
     });
-    function addNewJobs(index, numberOfRequestedJobs) {
+    function addNewJobs(index, numberOfRequestedJobs, payment) {
         $.ajax({
-            url: `${window.location.origin}/new-job-component?number=${index + 1}`,
+            url: `${window.location.origin}/new-job-component?number=${index + 1}&payment=${payment}`,
             type: 'GET',
             complete: function() {
                 index++;
                 if (index < numberOfRequestedJobs) {
-                    addNewJobs(index, numberOfRequestedJobs);
+                    addNewJobs(index, numberOfRequestedJobs, payment);
                 }
             },
             success: function(result) {
@@ -63,4 +67,31 @@ $(document).ready(function() {
             $('#delete-gig-form').submit();
         }
     });
+
+    //Payment Dom Events
+    //1.Toggle visibility payment
+    $("input[name = 'payment-method']").on('click', function(e) {
+        if (e.target.value == "mixed"){
+            return $('#payment-all').parent().css('visibility', 'hidden');
+        }
+        return $('#payment-all').parent().css('visibility', 'visible');
+
+    });
+
+    //2. Add payment to all musicians
+    var typingTimer;
+    var doneTypingInterval = 500;
+    $("#payment-all").on('input', function(){
+        if ($('input[name = "payment-method"]:checked').val() == 'same') {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(fillPayoutInfo, doneTypingInterval);
+        }
+    });
+
+    function fillPayoutInfo() {
+        $(".more-job-template").each(function(){
+            $(this).find('#payment-for-job').val($("#payment-all").val());
+       })
+    }
+
 });
