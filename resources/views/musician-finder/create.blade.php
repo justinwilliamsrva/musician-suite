@@ -62,6 +62,9 @@
                                     <label for="region" class="block text-sm font-medium text-gray-700">State</label>
                                     <select name="musician_name" id="musician_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         @foreach(config('gigs.states') as $state)
+                                            @if($state == 'Virginia')
+                                                <option value="{{ $state }}" selected>{{ $state }}</option>
+                                            @endif
                                             <option value="{{ $state }}">{{ $state }}</option>
                                         @endforeach
                                     </select>
