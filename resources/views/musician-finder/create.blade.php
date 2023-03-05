@@ -103,27 +103,27 @@
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Musicians</legend>
                                         <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                            <label class="hover:border-indigo-700 border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-indigo-700 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="1" class="sr-only" aria-labelledby="musician-number-1-label">
                                                 <span id="musician-number-1-label">1</span>
                                             </label>
-                                            <label class="hover:border-indigo-700 border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="2" class="sr-only" aria-labelledby="musician-number-2-label">
                                                 <span id="musician-number-2-label">2</span>
                                             </label>
-                                            <label class="hover:border-indigo-700 border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="3" class="sr-only" aria-labelledby="musician-number-3-label">
                                                 <span id="musician-number-3-label">3</span>
                                             </label>
-                                            <label class="hover:border-indigo-700 border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="4" class="sr-only" aria-labelledby="musician-number-4-label">
                                                 <span id="musician-number-4-label">4</span>
                                             </label>
-                                            <label class="hover:border-indigo-700 border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="5" class="sr-only" aria-labelledby="musician-number-5-label">
                                                 <span id="musician-number-5-label">5</span>
                                             </label>
-                                            <label class="hover:border-indigo-700 border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
                                                 <span id="musician-number-6-label">6</span>
                                             </label>
