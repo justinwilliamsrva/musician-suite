@@ -54,11 +54,9 @@ $(document).ready(function() {
     // Clear Form
     $('#clear-create-gig-form').on('click', function(){
         if (confirm('Are you sure you want to clear this Gig and all musicians') == true) {
-            $('#select1').select2("val", "");
-            $('form :input').val('');
-            $('form :select').val('');
             $('#jobs-list').children('.more-job-template:not(:first-child)').remove();
             $('#create-gig-form')[0].reset();
+            $('.select2-selection__rendered').children().remove();
         };
     })
 
