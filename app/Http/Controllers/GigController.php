@@ -19,7 +19,8 @@ class GigController extends Controller
     {
         $user = User::find(Auth::id());
 
-        $openJobs = Job::whereDoesntHave('users', function ($query) {
+        $openJobs = Job::select('jobs.id as job_id', 'jobs.*', 'gigs.*')
+        ->whereDoesntHave('users', function ($query) {
             $query->where('status', 'Booked');
         })
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
@@ -27,6 +28,10 @@ class GigController extends Controller
         ->orderBy('gigs.start_time')
         ->paginate(10)
         ->fragment('openGigs');
+
+        $openJobs->each(function ($job) {
+            $job->id = $job->job_id;
+        });
 
         $userJobs = Job::whereHas('users', function ($query) use ($user) {
             $query->where('user_id', $user->id);
