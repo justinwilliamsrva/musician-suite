@@ -22,7 +22,7 @@ $(document).ready(function() {
         } else if (numberOfRequestedJobs > numberOfCurrentJobs) {
             var payment = '';
             if ($('input[name = "payment-method"]:checked').val() == 'same') {
-                payment = $("#payment-all").val() ?? '';
+                payment = $("#payment-all").val();
             }
             addNewJobs(numberOfCurrentJobs, numberOfRequestedJobs, payment);
         }
@@ -54,6 +54,9 @@ $(document).ready(function() {
     // Clear Form
     $('#clear-create-gig-form').on('click', function(){
         if (confirm('Are you sure you want to clear this Gig and all musicians') == true) {
+            $('#select1').select2("val", "");
+            $('form :input').val('');
+            $('form :select').val('');
             $('#jobs-list').children('.more-job-template:not(:first-child)').remove();
             $('#create-gig-form')[0].reset();
         };
@@ -93,5 +96,7 @@ $(document).ready(function() {
             $(this).find('#payment-for-job').val($("#payment-all").val());
        })
     }
+    //3.????
 
+    //
 });
