@@ -92,24 +92,24 @@ class GigController extends Controller
             'postal_code' => 'required|digits:5|integer',
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|max:5',
+            'musicians.*.fill_status' => 'required|string',
             'musicians.*.instruments' => 'required|array|min:1|max:10',
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ]);
-
         $gig = Gig::create([
-            'event_type' => $request->event_type,
-            'start_time' => $request->start_date_time,
-            'end_time' => $request->end_date_time,
-            'street_address' => $request->street_address,
-            'city' => $request->city,
-            'state' => $request->state,
-            'zip_code' => $request->postal_code,
-            'description' => $request->description ?? '',
+            'event_type' => $validated['event_type'],
+            'start_time' => $validated['start_date_time'],
+            'end_time' => $validated['end_date_time'],
+            'street_address' => $validated['street_address'],
+            'city' => $validated['city'],
+            'state' => $validated['state'],
+            'zip_code' => $validated['postal_code'],
+            'description' => $validated['description'] ?? '',
             'user_id' => Auth::id(),
         ]);
 
-        foreach ($request->musicians as $job) {
+        foreach ($validated['musicians'] as $job) {
             $newJob = Job::create([
                 'instruments' => json_encode($job['instruments']),
                 'payment' => $job['payment'],
