@@ -19,6 +19,15 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="mt-5 md:col-span-2 md:mt-0">
             <form action="{{ route('gigs.store') }}" method="POST" id="create-gig-form">
                 @csrf
@@ -32,31 +41,31 @@
                                 <!-- ROW 1 -->
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                     <label for="event_type" class="block text-sm font-medium text-gray-700">Event Type</label>
-                                    <input type="text" name="event_type" id="event_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <input type="text" value="{{ old('event_type') }}" name="event_type" id="event_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
                                         Start Date/Time
                                     </label>
                                     <input type="datetime-local" name="start_date_time" id="start_date_time"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('start_date_time') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="end_date_time" class="block text-sm font-medium text-gray-700">
                                         End Date/Time
                                     </label>
                                     <input type="datetime-local" name="end_date_time" id="end_date_time"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('end_date_time') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <!-- ROW 2 -->
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="street_address" class="block text-sm font-medium text-gray-700">Street address</label>
-                                    <input type="text" name="street_address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <input value="{{ old('street_address') }}" type="text" name="street_address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="city" class="block text-sm font-medium text-gray-700">City</label>
                                     <input type="text" name="city" id="city"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('city') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="region" class="block text-sm font-medium text-gray-700">State</label>
@@ -72,7 +81,7 @@
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="postal_code" class="block text-sm font-medium text-gray-700">ZIP /
                                         Postal code</label>
-                                    <input type="text" name="postal_code" id="postal-code"
+                                    <input value="{{ old('postal_code') }}" type="text" name="postal_code" id="postal-code"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <!-- ROW 3 -->
@@ -132,7 +141,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea id="description" name="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]" ></textarea>
+                                    <textarea id="description" value="{{ old('description') }}" name="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]" ></textarea>
                                 </div>
                             </div>
                         </div>

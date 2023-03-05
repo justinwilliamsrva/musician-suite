@@ -6,6 +6,7 @@ use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class GigController extends Controller
@@ -79,7 +80,23 @@ class GigController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        // dd(gettype($request->musicians));
+        $validated = $request->validate([
+            'event_type' => 'required|string|min:3|max:50',
+            'start_date_time' => 'required|date',
+            'end_date_time' => 'required|date',
+            'street_address' => 'required|string|min:3|max:255',
+            'city' => 'required|string|max:30',
+            'musician-number' => 'numeric',
+            'state' => ['required', Rule::in(config('gigs.states'))],
+            'postal_code' => 'required|digits:5|integer',
+            'description' => 'string|min:3|max:255|nullable',
+            'musicians' => 'required|array|max:5',
+            'musicians.*.instruments' => 'required|array|min:1|max:10',
+            'musicians.*.payment' => 'required|numeric|min:0',
+            'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
+        ]);
+
         $gig = Gig::create([
             'event_type' => $request->event_type,
             'start_time' => $request->start_date_time,
@@ -88,7 +105,7 @@ class GigController extends Controller
             'city' => $request->city,
             'state' => $request->state,
             'zip_code' => $request->postal_code,
-            'description' => $request->description,
+            'description' => $request->description ?? '',
             'user_id' => Auth::id(),
         ]);
 
@@ -96,7 +113,7 @@ class GigController extends Controller
             $newJob = Job::create([
                 'instruments' => json_encode($job['instruments']),
                 'payment' => $job['payment'],
-                'extra_info' => $job['extra_info'],
+                'extra_info' => $job['extra_info'] ?? '',
                 'gig_id' => $gig->id,
             ]);
 
