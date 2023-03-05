@@ -6,6 +6,7 @@ use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class GigController extends Controller
@@ -19,14 +20,19 @@ class GigController extends Controller
     {
         $user = User::find(Auth::id());
 
-        $openJobs = Job::whereDoesntHave('users', function ($query) {
+        $openJobs = Job::select('jobs.id as job_id', 'jobs.*', 'gigs.*')
+        ->whereDoesntHave('users', function ($query) {
             $query->where('status', 'Booked');
         })
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
         ->where('gigs.start_time', '>', now())
         ->orderBy('gigs.start_time')
-        ->paginate(10)
-        ->fragment('openGigs');
+        ->paginate(10, ['*'], 'openJobs')
+        ->fragment('openJobs');
+
+        $openJobs->each(function ($job) {
+            $job->id = $job->job_id;
+        });
 
         $userJobs = Job::whereHas('users', function ($query) use ($user) {
             $query->where('user_id', $user->id);
@@ -43,9 +49,15 @@ class GigController extends Controller
         ->select('jobs.*', 'gigs.start_time')
         ->where('gigs.start_time', '>', now())
         ->orderBy('gigs.start_time')
-        ->get();
+        ->paginate(5, ['*'], 'userJobs')
+        ->fragment('userJobs');
 
-        $userGigs = $user->gigs()->with('jobs')->where('start_time', '>', now())->orderBy('start_time')->get();
+        $userGigs = $user->gigs()
+        ->with('jobs')
+        ->where('start_time', '>', now())
+        ->orderBy('start_time')
+        ->paginate(5, ['*'], 'userGigs')
+        ->fragment('userGigs');
 
         return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs]);
     }
@@ -68,7 +80,49 @@ class GigController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->back();
+        // dd(gettype($request->musicians));
+        $validated = $request->validate([
+            'event_type' => 'required|string|min:3|max:50',
+            'start_date_time' => 'required|date',
+            'end_date_time' => 'required|date',
+            'street_address' => 'required|string|min:3|max:255',
+            'city' => 'required|string|max:30',
+            'musician-number' => 'numeric',
+            'state' => ['required', Rule::in(config('gigs.states'))],
+            'postal_code' => 'required|digits:5|integer',
+            'description' => 'string|min:3|max:255|nullable',
+            'musicians' => 'required|array|max:5',
+            'musicians.*.instruments' => 'required|array|min:1|max:10',
+            'musicians.*.payment' => 'required|numeric|min:0',
+            'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
+        ]);
+
+        $gig = Gig::create([
+            'event_type' => $request->event_type,
+            'start_time' => $request->start_date_time,
+            'end_time' => $request->end_date_time,
+            'street_address' => $request->street_address,
+            'city' => $request->city,
+            'state' => $request->state,
+            'zip_code' => $request->postal_code,
+            'description' => $request->description ?? '',
+            'user_id' => Auth::id(),
+        ]);
+
+        foreach ($request->musicians as $job) {
+            $newJob = Job::create([
+                'instruments' => json_encode($job['instruments']),
+                'payment' => $job['payment'],
+                'extra_info' => $job['extra_info'] ?? '',
+                'gig_id' => $gig->id,
+            ]);
+
+            if ($job['fill_status'] == 'filled') {
+                $newJob->users()->attach(1, ['status' => 'Booked']);
+            }
+        }
+
+        return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully');
     }
 
     /**

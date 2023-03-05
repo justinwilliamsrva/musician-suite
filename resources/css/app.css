@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.select2-container {
+    margin-top: 4px !important;
+}
+
+.select2-selection {
+    min-height: 38px !important;
+}

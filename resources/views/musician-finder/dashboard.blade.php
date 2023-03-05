@@ -20,7 +20,7 @@
     <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 lg:divide-[#212121]">
             <!-- All Open Gigs -->
-            <div id="openGigs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1 ">
+            <div id="openJobs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1 ">
                 <div class="sm:flex sm:items-center min-h-[80px]">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">Open Gigs</h1>
@@ -75,14 +75,14 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{ $openJobs->links() }}
+                            {{ $openJobs->appends(['userGigs' => $userGigs->currentPage(), 'userJobs' => $userJobs->currentPage()])->links() }}
                         </div>
                     </div>
                 </div>
             </div>
             <div class="order-1 lg:order-2 col-span-1">
-                 <!-- All Gigs You Are Performing In -->
-                 <div class="px-6 lg:px-8 col-span-1 pb-6">
+                 <!-- All Jobs You Are Performing In -->
+                 <div id="userJob" class="px-6 lg:px-8 col-span-1 pb-6">
                     <div class="sm:flex sm:items-center min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
@@ -137,12 +137,13 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $userJobs->appends(['userGigs' => $userGigs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
                             </div>
                         </div>
                     </div>
                 </div>
                  <!-- All Gigs You Are Hosting -->
-                 <div class="px-6 lg:px-8 col-span-1 border-y-2 lg:border-b-0 pb-6 lg:pb-0 border-[#212121] pt-8">
+                 <div id="userGigs" class="px-6 lg:px-8 col-span-1 border-y-2 lg:border-b-0 pb-6 lg:pb-0 border-[#212121] pt-8">
                     <div class="sm:flex sm:items-center min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
@@ -193,6 +194,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $userGigs->appends(['userJobs' => $userJobs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
                             </div>
                         </div>
                     </div>

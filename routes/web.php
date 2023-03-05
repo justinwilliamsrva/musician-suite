@@ -35,9 +35,12 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/new-job-component', function () {
     $number = request()->query('number', 1);
-    $data = [
+    $payment = request()->query('payment', '');
+
+    $data = array_filter([
         'musicianNumber' => $number,
-    ];
+        'payment' => $payment,
+    ]);
 
     return view('components.finder-components.new-job', $data)->render();
 });

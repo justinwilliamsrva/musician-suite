@@ -18,7 +18,7 @@
                     Instrument(s)
                 </label>
                 <select name="instrument" id="cars" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    @foreach(config('instruments.instruments') as $instrument)
+                    @foreach(config('gigs.instruments') as $instrument)
                         <option value="{{ $instrument }}">{{ $instrument }}</option>
                     @endforeach
                 </select>

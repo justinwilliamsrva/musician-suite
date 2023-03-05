@@ -12,12 +12,24 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-white flex flex-col overflow-y-auto">
             <div class="flex-1 pb-4">
                 <!-- Navigation -->
                 @include('layouts.navigation')
+                <!-- Flash Message -->
+                    @if(session('success'))
+                        <div id="flash-message" class="fixed top-20 left-0 right-0 mx-auto z-10 flex justify-center mt-4">
+                            <div class="min-w-200 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-center" role="alert">
+                                <strong class="font-bold">{{ session('success') }}</strong>
+                            </div>
+                        </div>
+                    @endif
                 <!-- Header -->
                 @if (isset($header))
                     <div class="py-12">
@@ -41,4 +53,9 @@
             @include('layouts.footer')
         </div>
     </body>
+    <script>
+        setTimeout(function() {
+            $('#flash-message').fadeOut('fast');
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
 </html>
