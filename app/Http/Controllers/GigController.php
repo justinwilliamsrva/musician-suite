@@ -26,8 +26,8 @@ class GigController extends Controller
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
         ->where('gigs.start_time', '>', now())
         ->orderBy('gigs.start_time')
-        ->paginate(10)
-        ->fragment('openGigs');
+        ->paginate(10, ['*'], 'openJobs')
+        ->fragment('openJobs');
 
         $openJobs->each(function ($job) {
             $job->id = $job->job_id;
@@ -48,9 +48,15 @@ class GigController extends Controller
         ->select('jobs.*', 'gigs.start_time')
         ->where('gigs.start_time', '>', now())
         ->orderBy('gigs.start_time')
-        ->get();
+        ->paginate(5, ['*'], 'userJobs')
+        ->fragment('userJobs');
 
-        $userGigs = $user->gigs()->with('jobs')->where('start_time', '>', now())->orderBy('start_time')->get();
+        $userGigs = $user->gigs()
+        ->with('jobs')
+        ->where('start_time', '>', now())
+        ->orderBy('start_time')
+        ->paginate(5, ['*'], 'userGigs')
+        ->fragment('userGigs');
 
         return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs]);
     }
