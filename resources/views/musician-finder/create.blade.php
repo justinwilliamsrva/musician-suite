@@ -38,29 +38,29 @@
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
                                         Start Date/Time
                                     </label>
-                                    <input type="datetime-local" name="start_date_time" id="start_date_time" autocomplete="given-name"
+                                    <input type="datetime-local" name="start_date_time" id="start_date_time"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="end_date_time" class="block text-sm font-medium text-gray-700">
                                         End Date/Time
                                     </label>
-                                    <input type="datetime-local" name="end_date_time" id="end_date_time" autocomplete="given-name"
+                                    <input type="datetime-local" name="end_date_time" id="end_date_time"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <!-- ROW 2 -->
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                    <label for="street-address" class="block text-sm font-medium text-gray-700">Street address</label>
-                                    <input type="text" name="street-address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <label for="street_address" class="block text-sm font-medium text-gray-700">Street address</label>
+                                    <input type="text" name="street_address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                                    <input type="text" name="city" id="city" autocomplete="address-level2"
+                                    <input type="text" name="city" id="city"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="region" class="block text-sm font-medium text-gray-700">State</label>
-                                    <select name="musician_name" id="musician_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <select name="state" id="state" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         @foreach(config('gigs.states') as $state)
                                             @if($state == 'Virginia')
                                                 <option value="{{ $state }}" selected>{{ $state }}</option>
@@ -70,9 +70,9 @@
                                     </select>
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                    <label for="postal-code" class="block text-sm font-medium text-gray-700">ZIP /
+                                    <label for="postal_code" class="block text-sm font-medium text-gray-700">ZIP /
                                         Postal code</label>
-                                    <input type="text" name="postal-code" id="postal-code" autocomplete="postal-code"
+                                    <input type="text" name="postal_code" id="postal-code"
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <!-- ROW 3 -->

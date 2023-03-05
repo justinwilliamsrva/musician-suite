@@ -25,7 +25,7 @@
                 <!-- Flash Message -->
                     @if(session('success'))
                         <div id="flash-message" class="fixed top-20 left-0 right-0 mx-auto z-10 flex justify-center mt-4">
-                            <div class="w-72 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-center" role="alert">
+                            <div class="min-w-200 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-center" role="alert">
                                 <strong class="font-bold">{{ session('success') }}</strong>
                             </div>
                         </div>

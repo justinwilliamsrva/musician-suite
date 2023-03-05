@@ -73,9 +73,33 @@ class GigController extends Controller
      */
     public function store(Request $request)
     {
-        $event_type = 'Wedding';
+        // dd($request->all());
+        $gig = Gig::create([
+            'event_type' => $request->event_type,
+            'start_time' => $request->start_date_time,
+            'end_time' => $request->end_date_time,
+            'street_address' => $request->street_address,
+            'city' => $request->city,
+            'state' => $request->state,
+            'zip_code' => $request->postal_code,
+            'description' => $request->description,
+            'user_id' => Auth::id(),
+        ]);
 
-        return redirect()->route('musician-finder.dashboard')->with('success', $event_type.' Created Successfully');;
+        foreach ($request->musicians as $job) {
+            $newJob = Job::create([
+                'instruments' => json_encode($job['instruments']),
+                'payment' => $job['payment'],
+                'extra_info' => $job['extra_info'],
+                'gig_id' => $gig->id,
+            ]);
+
+            if ($job['fill_status'] == 'filled') {
+                $newJob->users()->attach(1, ['status' => 'Booked']);
+            }
+        }
+
+        return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully');
     }
 
     /**
