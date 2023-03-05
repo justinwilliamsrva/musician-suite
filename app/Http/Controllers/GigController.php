@@ -68,7 +68,9 @@ class GigController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->back();
+        $event_type = 'Wedding';
+
+        return redirect()->route('musician-finder.dashboard')->with('success', $event_type.' Created Successfully');;
     }
 
     /**
