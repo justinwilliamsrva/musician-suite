@@ -46,6 +46,20 @@
                 </div>
             @endif
         </div>
+        <div>
+            <x-input-label for="phone_number" :value="__('Phone Number')" />
+            <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full" :value="old('phone_number', $user->phone_number)" required autofocus autocomplete="phone_number" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
+        </div>
+        <div>
+            <x-input-label for="phone_number" :value="__('Instruments')" />
+            <select id="select2" name="instruments[]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @foreach(config('gigs.instruments') as $instrument)
+                    <option value="{{ $instrument }}" @if(in_array($instrument, json_decode($user->instruments))) selected @endif>{{ $instrument }}</option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('instruments')" />
+        </div>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
@@ -62,3 +76,6 @@
         </div>
     </form>
 </section>
+<script>
+    $('#select2').select2();
+</script>
