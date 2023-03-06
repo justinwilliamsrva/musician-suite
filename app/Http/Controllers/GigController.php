@@ -257,6 +257,6 @@ class GigController extends Controller
         $this->authorize('apply-to-job', $job);
         $job->users()->attach(Auth::id(), ['status' => 'Applied']);
 
-        return redirect()->back();
+        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the Job Successfully');;
     }
 }
