@@ -25,7 +25,9 @@ class DatabaseSeeder extends Seeder
         User::factory()->create(['name' => 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com']);
         User::factory(7)->create();
 
-        User::all()->each(function ($user) {
+        $allUsersMinusOne = User::offset(1)->limit(11)->get();
+
+        $allUsersMinusOne->each(function ($user) {
             Gig::factory(2)->create([
                 'user_id' => $user->id,
             ]);

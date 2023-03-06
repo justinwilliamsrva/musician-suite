@@ -60,4 +60,9 @@ class Job extends Model
     {
         return $job->users()->wherePivot('status', 'Booked')->count() > 0;
     }
+
+    public static function next()
+    {
+        return static::max('id') + 1;
+    }
 }

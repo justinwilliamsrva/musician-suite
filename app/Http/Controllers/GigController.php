@@ -80,7 +80,6 @@ class GigController extends Controller
      */
     public function store(Request $request)
     {
-        // dd(gettype($request->musicians));
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
             'start_date_time' => 'required|date',
@@ -148,16 +147,7 @@ class GigController extends Controller
     {
         $this->authorize('update', $gig);
 
-        $jobs = [
-            ['musicianNumber' => 1],
-            ['musicianNumber' => 2],
-            ['musicianNumber' => 3],
-            ['musicianNumber' => 4],
-            ['musicianNumber' => 5],
-            ['musicianNumber' => 6],
-        ];
-
-        return view('musician-finder.edit', ['jobs' => $jobs]);
+        return view('musician-finder.edit', ['gig' => $gig]);
     }
 
     /**
@@ -167,9 +157,78 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Gig $gig)
     {
-        return redirect()->back();
+        $this->authorize('update', $gig);
+
+        $validated = $request->validate([
+            'event_type' => 'required|string|min:3|max:50',
+            'start_date_time' => 'required|date',
+            'end_date_time' => 'required|date',
+            'street_address' => 'required|string|min:3|max:255',
+            'city' => 'required|string|max:30',
+            'musician-number' => 'numeric',
+            'state' => ['required', Rule::in(config('gigs.states'))],
+            'postal_code' => 'required|digits:5|integer',
+            'description' => 'string|min:3|max:255|nullable',
+            'musicians' => 'required|array|min:1|max:5',
+            'musicians.*.id' => 'numeric|nullable',
+            'musicians.*.fill_status' => 'string|nullable',
+            'musicians.*.musician_picked' => 'max:15|nullable',
+            'musicians.*.instruments' => 'required|array|min:1|max:10',
+            'musicians.*.payment' => 'required|numeric|min:0',
+            'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
+        ]);
+
+        $gig->fill([
+            'event_type' => $validated['event_type'],
+            'start_time' => $validated['start_date_time'],
+            'end_time' => $validated['end_date_time'],
+            'street_address' => $validated['street_address'],
+            'city' => $validated['city'],
+            'state' => $validated['state'],
+            'zip_code' => $validated['postal_code'],
+            'description' => $validated['description'] ?? '',
+        ]);
+
+        $gig->save();
+
+        foreach ($validated['musicians'] as $job) {
+            $newJob = Job::updateOrCreate([
+                'id' => $job['id'] ?? Job::next(),
+            ], [
+                'instruments' => json_encode($job['instruments']),
+                'payment' => $job['payment'],
+                'extra_info' => $job['extra_info'] ?? '',
+                'gig_id' => $gig->id,
+            ]);
+
+            $newJob->save();
+
+            if (isset($job['fill_status'])) {
+                if ($job['fill_status'] == 'filled') {
+                    $newJob->users()->attach(1, ['status' => 'Booked']);
+                }
+                if ($job['fill_status'] == 'delete') {
+                    $newJob->users()->detach();
+                    Job::destroy($newJob->id);
+                }
+            }
+            if (isset($job['musician_picked'])) {
+                if ($job['musician_picked'] == 'filled') {
+                    $newJob->users()->attach(1, ['status' => 'Booked']);
+                }
+                if ($job['musician_picked'] == 'delete') {
+                    $newJob->users()->detach();
+                    Job::destroy($newJob->id);
+                }
+                if (is_int($job['musician_picked'])) {
+                    $newJob->users()->attach($job['musician_picked'], ['status' => 'Booked']);
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', $gig->event_type.' Updated Successfully');
     }
 
     /**
@@ -178,9 +237,19 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Gig $gig)
     {
-        return view('musician-finder.dashboard');
+        $this->authorize('update', $gig);
+
+        Job::where('gig_id', $gig->id)->each(function ($job) {
+            $job->users()->detach();
+            $job->delete();
+        });
+
+        $event_type = $gig->event_type;
+        $gig->delete();
+
+        return redirect()->route('musician-finder.dashboard')->with('success', $event_type.' Deleted Successfully');
     }
 
     public function applyToJob(Job $job)

@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Job::class, 'job_user')->withPivot('status');
     }
+
+    public function isAdmin()
+    {
+        return $this->admin == 1;
+    }
 }

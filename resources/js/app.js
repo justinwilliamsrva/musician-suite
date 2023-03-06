@@ -56,7 +56,7 @@ $(document).ready(function() {
     }
     function changeMusicianNumberBorderColor($number) {
         $(".musician-number-button").each(function(){
-            if ($(this).find('input').val()== $number) {
+            if ($(this).find('input').val() == $number) {
                 $(this).addClass('border-indigo-700').removeClass('border-gray-300');
             } else {
                 $(this).removeClass('border-indigo-700').addClass('border-gray-300');
@@ -107,5 +107,10 @@ $(document).ready(function() {
         $(".more-job-template").each(function(){
             $(this).find('#payment-for-job').val($("#payment-all").val());
        })
+    }
+
+    //Edit Blade
+    if ($('input[name = "payment-method"]:checked').val() == 'mixed') {
+        $('#payment-all').parent().css('visibility', 'hidden');
     }
 });
