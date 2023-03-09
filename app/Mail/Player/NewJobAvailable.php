@@ -2,6 +2,9 @@
 
 namespace App\Mail\Player;
 
+use App\Models\Gig;
+use App\Models\Job;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -13,13 +16,36 @@ class NewJobAvailable extends Mailable
     use Queueable, SerializesModels;
 
     /**
+     * The job instance.
+     *
+     * @var Job
+     */
+    public $job;
+
+    /**
+     * The user instance.
+     *
+     * @var User
+     */
+    public $user;
+
+    /**
+     * The user instance.
+     *
+     * @var Gig
+     */
+    public $gig;
+
+    /**
      * Create a new message instance.
      *
-     * @return void
+     * @param  Job  $job
      */
-    public function __construct()
+    public function __construct(Gig $gig, Job $job, User $user)
     {
-        //
+        $this->gig = $gig;
+        $this->job = $job;
+        $this->user = $user;
     }
 
     /**
@@ -30,7 +56,7 @@ class NewJobAvailable extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'New Job Available',
+            subject: 'New Gig Available For '.$this->getInstruments(),
         );
     }
 
@@ -42,7 +68,12 @@ class NewJobAvailable extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.player.new-job-available',
+            with: [
+                'gig' => $this->gig,
+                'job' => $this->job,
+                'user' => $this->user,
+            ],
         );
     }
 
@@ -54,5 +85,10 @@ class NewJobAvailable extends Mailable
     public function attachments()
     {
         return [];
+    }
+
+    public function getInstruments()
+    {
+        return implode(', ', json_decode($this->job->instruments));
     }
 }

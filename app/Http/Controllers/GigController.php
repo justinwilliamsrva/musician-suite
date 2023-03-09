@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\NewJobAvailableJob;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
@@ -120,6 +121,8 @@ class GigController extends Controller
                 $newJob->users()->attach(1, ['status' => 'Booked']);
             }
         }
+
+        NewJobAvailableJob::dispatch($gig);
 
         return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully');
     }
