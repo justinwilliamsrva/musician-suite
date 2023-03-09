@@ -1,3 +1,7 @@
+@php
+    $oldInstruments = old('instruments', []);
+@endphp
+
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
@@ -55,7 +59,7 @@
             <x-input-label for="phone_number" :value="__('Instruments')" />
             <select id="select2" name="instruments[]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 @foreach(config('gigs.instruments') as $instrument)
-                    <option value="{{ $instrument }}" @if(in_array($instrument, json_decode($user->instruments))) selected @endif>{{ $instrument }}</option>
+                    <option value="{{ $instrument }}" @if(in_array($instrument, json_decode($job->instruments))) selected @endif>{{ $instrument }}</option>
                 @endforeach
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('instruments')" />

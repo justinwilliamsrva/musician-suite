@@ -3,7 +3,9 @@
 @php
     $musicianNumber = $key + 1;
     $jobId = $job->id ?? null;
+    $oldInstruments = old('instruments', []);
 @endphp
+
 
 <div class="overflow-hidden shadow sm:rounded-md more-job-template">
     <div class="bg-white px-4 py-5 sm:p-6">
