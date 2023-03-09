@@ -40,7 +40,7 @@
                 </label>
                 <select id="{{ 'select'.$musicianNumber }}" name="musicians[{{ $musicianNumber }}][instruments][]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     @foreach(config('gigs.instruments') as $instrument)
-                        <option value="{{ $instrument }}" @if(in_array($instrument, json_decode($job->instruments))) selected @endif>{{ $instrument }}</option>
+                        <option value="{{ $instrument }}" @if(in_array($instrument, json_decode($job->instruments)) || in_array($instrument, $oldInstruments)) selected @endif>{{ $instrument }}</option>
                     @endforeach
                 </select>
             </div>
