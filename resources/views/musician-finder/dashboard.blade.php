@@ -36,7 +36,7 @@
                             <table class="min-w-full divide-y divide-gray-300">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="min-w-[9rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                        <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
                                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
                                         <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                         <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
@@ -98,7 +98,7 @@
                                 <table class="min-w-full divide-y divide-gray-300">
                                     <thead>
                                         <tr>
-                                            <th scope="col" class="min-w-[9rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                            <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
                                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
                                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
@@ -159,7 +159,7 @@
                                 <table class="min-w-full divide-y divide-gray-300">
                                     <thead>
                                         <tr>
-                                            <th scope="col" class="min-w-[9rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                            <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
                                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
                                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                             <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
