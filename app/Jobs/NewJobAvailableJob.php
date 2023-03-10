@@ -36,15 +36,16 @@ class NewJobAvailableJob implements ShouldQueue
      */
     public function handle()
     {
-        $jobs = ($this->gig)->jobs;
+        $jobs = $this->gig->jobs;
         foreach ($jobs as $job) {
             $jobInstruments = json_decode($job->instruments);
             $userWithSameInstrument = User::where(function ($query) use ($jobInstruments) {
                 foreach ($jobInstruments as $instrument) {
-                    $query->orWhereJsonContains('instruments', $instrument);
+                    $query->orWhere('instruments', 'like', '%"'.$instrument.'"%');
                 }
-            })->get();
-
+            })
+            ->whereNotIn('id', [1, $this->gig->user_id])
+            ->get();
             foreach ($userWithSameInstrument as $user) {
                 Mail::to($user->email)->send(new NewJobAvailable($this->gig, $job, $user));
             }
