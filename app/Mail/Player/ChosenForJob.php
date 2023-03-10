@@ -2,6 +2,8 @@
 
 namespace App\Mail\Player;
 
+use App\Models\Job;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -12,14 +14,19 @@ class ChosenForJob extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public User $user;
+
+    public Job $newJob;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user, $newJob)
     {
-        //
+        $this->user = $user;
+        $this->newJob = $newJob;
     }
 
     /**
@@ -30,7 +37,7 @@ class ChosenForJob extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Chosen For Job',
+            subject: 'Congratulations! You have booked a gig.',
         );
     }
 
@@ -42,7 +49,11 @@ class ChosenForJob extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.player.chosen-for-job',
+            with: [
+                'job' => $this->newJob,
+                'user' => $this->user,
+            ],
         );
     }
 

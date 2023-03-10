@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ChosenForJobJob;
 use App\Jobs\NewJobAvailableJob;
 use App\Models\Gig;
 use App\Models\Job;
@@ -225,8 +226,9 @@ class GigController extends Controller
                     $newJob->users()->detach();
                     Job::destroy($newJob->id);
                 }
-                if (is_int($job['musician_picked'])) {
-                    $newJob->users()->attach($job['musician_picked'], ['status' => 'Booked']);
+                if (is_numeric($job['musician_picked'])) {
+                    $newJob->users()->updateExistingPivot($job['musician_picked'], ['status' => 'Booked']);
+                    ChosenForJobJob::dispatch($job['musician_picked'], $newJob);
                 }
             }
         }
