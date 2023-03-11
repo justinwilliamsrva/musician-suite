@@ -98,6 +98,11 @@ $(document).ready(function() {
         if (e.target.value == "mixed"){
             return $('#payment-all').parent().css('visibility', 'hidden');
         }
+
+        if ($('payment-all').val() != '') {
+            fillPayoutInfo();
+        }
+
         return $('#payment-all').parent().css('visibility', 'visible');
 
     });
