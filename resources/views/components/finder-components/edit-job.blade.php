@@ -35,12 +35,16 @@
                     <input type="hidden" name="musicians[{{ $musicianNumber }}][fill_status]" value="booked" />
                 @elseif($job['numberOfJobApplicants'] > 0)
                     <select name="musicians[{{ $musicianNumber }}][musician_picked]" id="musician_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <option @if($musicianPicked == '') selected @endif value="">Select a Musician</option>
-                        @foreach($job['users'] as $user)
-                            <option @if($musicianPicked == $user['id']) selected @endif value="{{ $user['id'] }}">{{ $user['name'] }}</option>
-                        @endforeach
-                        <option @if($musicianPicked == 'filled') selected @endif value="filled">--Filled Outside CRRVA--</option>
-                        <option @if($musicianPicked == 'delete') selected @endif value="delete">--Delete Job--</option>
+                        <option @if($musicianPicked == '') selected @endif value="">Select a Applicant</option>
+                        <optgroup label="Applicants">
+                            @foreach($job['users'] as $user)
+                                <option @if($musicianPicked == $user['id']) selected @endif value="{{ $user['id'] }}">{{ $user['name'] }}</option>
+                            @endforeach
+                        </optgroup>
+                        <optgroup label="Other Options">
+                            <option @if($musicianPicked == 'filled') selected @endif value="filled">Filled Outside CRRVA</option>
+                            <option @if($musicianPicked == 'delete') selected @endif value="delete">Delete Job</option>
+                        </optgroup>
                     </select>
                 @else
                 <select name="musicians[{{ $musicianNumber }}][fill_status]" id="musician_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
