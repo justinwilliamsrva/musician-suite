@@ -1,3 +1,9 @@
+@php
+    $oldMusicians = old('musicians', []);
+    $numberOfMusicians = (count($oldMusicians) > 0) ? count($oldMusicians) : $gig->jobs->count();
+    $jobsArray = (count($oldMusicians) > 0) ? $oldMusicians : $jobsArray;
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col justify-center">
@@ -47,45 +53,45 @@
                                     <label for="event_type" class="block text-sm font-medium text-gray-700">
                                         Event Type
                                     </label>
-                                    <input type="text" name="event_type" id="event_type" value="{{ $gig->event_type }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <input type="text" name="event_type" id="event_type" value="{{ old('event_type', $gig->event_type) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
                                         Start Date/Time
                                     </label>
                                     <input type="datetime-local" name="start_date_time" id="start_date_time" autocomplete="given-name"
-                                        value="{{ $gig->start_time }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('start_date_time', $gig->start_time) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="end_date_time" class="block text-sm font-medium text-gray-700">
                                         End Date/Time
                                     </label>
                                     <input type="datetime-local" name="end_date_time" id="end_date_time" autocomplete="given-name"
-                                     value="{{ $gig->end_time }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                     value="{{ old('end_date_time', $gig->end_time) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <!-- ROW 2 -->
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="street_address" class="block text-sm font-medium text-gray-700">Street address</label>
-                                    <input type="text" value="{{ $gig->street_address }}" name="street_address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <input type="text" value="{{ old('street_address', $gig->street_address) }}" name="street_address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="city" class="block text-sm font-medium text-gray-700">City</label>
                                     <input type="text" name="city" id="city"
-                                      value="{{ $gig->city }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                      value="{{ old('city', $gig->city) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="state" class="block text-sm font-medium text-gray-700">State</label>
                                     <select name="state" id="state" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         @foreach(config('gigs.states') as $state)
-                                                <option value="{{ $state }}" {{($gig->state == $state) ? 'selected': ''}}>{{ $state }}</option>
+                                                <option value="{{ $state }}" @if($state == old('state', $gig->state)) selected @endif>{{ $state }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                    <label for="postal_code" class="block text-sm font-medium text-gray-700">ZIP /
+                                    <label for="zip_code" class="block text-sm font-medium text-gray-700">ZIP /
                                         Postal code</label>
-                                    <input type="text" name="postal_code" id="postal-code"
-                                        value="{{ $gig->zip_code }}"class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <input type="text" name="zip_code" id="zip-code"
+                                        value="{{ old('zip_code', $gig->zip_code) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                 </div>
                                 <!-- ROW 3 -->
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -95,16 +101,16 @@
                                         <legend class="sr-only">Payment Question</legend>
                                         <div class="flex items-center space-y-0 space-x-10">
                                             <div class="flex items-center">
-                                                <input {{ !str_contains($gig->getPaymentRange($gig), '-') ? 'checked' : '' }} id="payment-method-yes" name="payment-method" value="same" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input {{ (old('payment-method') == 'same' || !str_contains($gig->getPaymentRange($gig), '-')) ? 'checked' : '' }} id="payment-method-yes" name="payment-method" value="same" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-yes" class="ml-3 block text-sm font-medium text-gray-700">Yes</label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input {{ str_contains($gig->getPaymentRange($gig), '-') ? 'checked' : '' }} id="payment-method-no" name="payment-method" value="mixed" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input {{ old('payment-method') == 'mixed' || str_contains($gig->getPaymentRange($gig), '-') ? 'checked' : '' }} id="payment-method-no" name="payment-method" value="mixed" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-no" class="ml-3 block text-sm font-medium text-gray-700">No</label>
                                             </div>
                                             <div class="flex items-center">
                                                 <label for="payment-all" class="mr-1 block text-sm font-medium text-gray-700">Payment</label>
-                                                <input id="payment-all" value="{{ !str_contains($gig->getPaymentRange($gig), '-') ? ltrim($gig->getPaymentRange($gig), '$') : '' }}" type="number" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input id="payment-all" name="payment-all" value="{{ old('payment-all', (!str_contains($gig->getPaymentRange($gig), '-')) ? ltrim($gig->getPaymentRange($gig), '$') : '' )}}" type="number" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                     </fieldset>
@@ -115,27 +121,27 @@
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Musicians</legend>
                                         <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                            <label class="{{ $gig->jobs->count() == 1 ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input type="radio" name="musician-number" value="1" class="sr-only" aria-labelledby="musician-number-1-label">
+                                            <label class="{{ ($numberOfMusicians == 1) ? 'border-indigo-700 musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input type="radio" @if ($numberOfMusicians == 1) name="musician-number" @endif value="1" class="sr-only" aria-labelledby="musician-number-1-label">
                                                 <span id="musician-number-1-label">1</span>
                                             </label>
-                                            <label class="{{ $gig->jobs->count() == 2 ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input type="radio" name="musician-number" value="2" class="sr-only" aria-labelledby="musician-number-2-label">
+                                            <label class="{{ ($numberOfMusicians == 2) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 2 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input type="radio" @if ($numberOfMusicians <= 2) name="musician-number" @endif value="2" class="sr-only" aria-labelledby="musician-number-2-label">
                                                 <span id="musician-number-2-label">2</span>
                                             </label>
-                                            <label class="{{ $gig->jobs->count() == 3 ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input type="radio" name="musician-number" value="3" class="sr-only" aria-labelledby="musician-number-3-label">
+                                            <label class="{{ ($numberOfMusicians == 3) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 3 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input type="radio" @if ($numberOfMusicians <= 3) name="musician-number" @endif value="3" class="sr-only" aria-labelledby="musician-number-3-label">
                                                 <span id="musician-number-3-label">3</span>
                                             </label>
-                                            <label class="{{ $gig->jobs->count() == 4 ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input type="radio" name="musician-number" value="4" class="sr-only" aria-labelledby="musician-number-4-label">
+                                            <label class="{{ ($numberOfMusicians == 4) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 4 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input type="radio" @if ($numberOfMusicians <= 4) name="musician-number" @endif value="4" class="sr-only" aria-labelledby="musician-number-4-label">
                                                 <span id="musician-number-4-label">4</span>
                                             </label>
-                                            <label class="{{ $gig->jobs->count() == 5 ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
-                                                <input type="radio" name="musician-number" value="5" class="sr-only" aria-labelledby="musician-number-5-label">
+                                            <label class="{{ ($numberOfMusicians == 5) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 5 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                                <input type="radio" @if ($numberOfMusicians <= 5) name="musician-number" @endif value="5" class="sr-only" aria-labelledby="musician-number-5-label">
                                                 <span id="musician-number-5-label">5</span>
                                             </label>
-                                            <label class="{{ $gig->jobs->count() == 6 ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ ($numberOfMusicians == 6) ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
                                                 <span id="musician-number-6-label">6</span>
                                             </label>
@@ -144,7 +150,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea id="description" name="description"class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]" ></textarea>
+                                    <textarea id="description" name="description"class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ old('description') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -154,7 +160,7 @@
                             {{ __('Musicians Needed') }}
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
-                            @each('components.finder-components.edit-job', $gig->jobs, 'job')
+                            @each('components.finder-components.edit-job', $jobsArray, 'job')
                         </div>
                     </div>
                     <div class="flex justify-between">

@@ -91,9 +91,9 @@ class GigController extends Controller
             'city' => 'required|string|max:30',
             'musician-number' => 'numeric',
             'state' => ['required', Rule::in(config('gigs.states'))],
-            'postal_code' => 'required|digits:5|integer',
+            'zip_code' => 'required|digits:5|integer',
             'description' => 'string|min:3|max:255|nullable',
-            'musicians' => 'required|array|max:5',
+            'musicians' => 'required|array|max:6',
             'musicians.*.fill_status' => 'required|string',
             'musicians.*.instruments' => 'required|array|min:1|max:10',
             'musicians.*.payment' => 'required|numeric|min:0',
@@ -106,7 +106,7 @@ class GigController extends Controller
             'street_address' => $validated['street_address'],
             'city' => $validated['city'],
             'state' => $validated['state'],
-            'zip_code' => $validated['postal_code'],
+            'zip_code' => $validated['zip_code'],
             'description' => $validated['description'] ?? '',
             'user_id' => Auth::id(),
         ]);
@@ -152,7 +152,23 @@ class GigController extends Controller
     {
         $this->authorize('update', $gig);
 
-        return view('musician-finder.edit', ['gig' => $gig]);
+        $jobsArray = $gig->jobs->toArray();
+
+        foreach ($gig->jobs as $key => $job) {
+            $isJobBooked = $job->jobHasBeenBooked($job);
+            $userBooked = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->name ?? '';
+            $numberOfJobApplicants = $job->users()->count();
+            $job->users->toArray();
+
+            $jobsArray[$key] = array_replace($job->toArray(), [
+                'instruments' => json_decode($job->instruments),
+                'isJobBooked' => $isJobBooked,
+                'userBooked' => $userBooked,
+                'numberOfJobApplicants' => $numberOfJobApplicants,
+            ]);
+        }
+
+        return view('musician-finder.edit', ['gig' => $gig, 'jobsArray' => $jobsArray]);
     }
 
     /**
@@ -174,15 +190,9 @@ class GigController extends Controller
             'city' => 'required|string|max:30',
             'musician-number' => 'numeric',
             'state' => ['required', Rule::in(config('gigs.states'))],
-            'postal_code' => 'required|digits:5|integer',
+            'zip_code' => 'required|digits:5|integer',
             'description' => 'string|min:3|max:255|nullable',
-            'musicians' => 'required|array|min:1|max:5',
-            'musicians.*.id' => 'numeric|nullable',
-            'musicians.*.fill_status' => 'string|nullable',
-            'musicians.*.musician_picked' => 'max:15|nullable',
-            'musicians.*.instruments' => 'required|array|min:1|max:10',
-            'musicians.*.payment' => 'required|numeric|min:0',
-            'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
+            'musicians' => 'required|array|min:1|max:6',
         ]);
 
         $gig->fill([
@@ -192,13 +202,38 @@ class GigController extends Controller
             'street_address' => $validated['street_address'],
             'city' => $validated['city'],
             'state' => $validated['state'],
-            'zip_code' => $validated['postal_code'],
+            'zip_code' => $validated['zip_code'],
             'description' => $validated['description'] ?? '',
         ]);
 
         $gig->save();
 
-        foreach ($validated['musicians'] as $job) {
+        foreach ($validated['musicians'] as $key => $job) {
+            // Delete Before Validation
+            $status = $job['fill_status'] ?? $job['musician_picked'];
+            if ($status == 'delete') {
+                if (! isset($job['id'])) {
+                    continue;
+                }
+
+                $jobToDelete = Job::find($job['id']);
+                $jobToDelete->users()->detach();
+                Job::destroy($jobToDelete->id);
+
+                continue;
+            }
+
+            // Validate Current Musician
+            $request->validate([
+                'musicians.'.$key.'.id' => 'numeric|nullable',
+                'musicians.'.$key.'.fill_status' => 'string|nullable',
+                'musicians.'.$key.'.musician_picked' => 'max:15|nullable',
+                'musicians.'.$key.'.instruments' => 'required|array|min:1|max:10',
+                'musicians.'.$key.'.payment' => 'required|numeric|min:0',
+                'musicians.'.$key.'.extra_info' => 'string|min:3|max:255|nullable',
+            ]);
+
+            // Create for update Jobs
             $newJob = Job::updateOrCreate([
                 'id' => $job['id'] ?? Job::next(),
             ], [
@@ -210,27 +245,13 @@ class GigController extends Controller
 
             $newJob->save();
 
-            if (isset($job['fill_status'])) {
-                if ($job['fill_status'] == 'filled') {
-                    $newJob->users()->attach(1, ['status' => 'Booked']);
-                }
-                if ($job['fill_status'] == 'delete') {
-                    $newJob->users()->detach();
-                    Job::destroy($newJob->id);
-                }
+            // Fill in pivot Table
+            if ($status == 'filled') {
+                $newJob->users()->attach(1, ['status' => 'Booked']);
             }
-            if (isset($job['musician_picked'])) {
-                if ($job['musician_picked'] == 'filled') {
-                    $newJob->users()->attach(1, ['status' => 'Booked']);
-                }
-                if ($job['musician_picked'] == 'delete') {
-                    $newJob->users()->detach();
-                    Job::destroy($newJob->id);
-                }
-                if (is_numeric($job['musician_picked'])) {
-                    $newJob->users()->updateExistingPivot($job['musician_picked'], ['status' => 'Booked']);
-                    ChosenForJobJob::dispatch($job['musician_picked'], $newJob);
-                }
+            if (is_numeric($status)) {
+                $newJob->users()->updateExistingPivot($job['musician_picked'], ['status' => 'Booked']);
+                ChosenForJobJob::dispatch($job['musician_picked'], $newJob);
             }
         }
 
