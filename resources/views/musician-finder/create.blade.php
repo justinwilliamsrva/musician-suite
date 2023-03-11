@@ -1,5 +1,7 @@
+@php
+    $oldMusicians = old('musicians', []);
+@endphp
 <x-app-layout>
-
     <x-slot name="header">
         <div class="flex flex-col justify-center">
             <h2 class="font-semibold text-center text-3xl text-gray-800 leading-tight">
@@ -71,10 +73,7 @@
                                     <label for="region" class="block text-sm font-medium text-gray-700">State</label>
                                     <select name="state" id="state" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         @foreach(config('gigs.states') as $state)
-                                            @if($state == 'Virginia')
-                                                <option value="{{ $state }}" selected>{{ $state }}</option>
-                                            @endif
-                                            <option value="{{ $state }}">{{ $state }}</option>
+                                            <option value="{{ $state }}" @if($state == old('state', 'Virginia')) selected @endif>{{ $state }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -92,16 +91,16 @@
                                         <legend class="sr-only">Payment Question</legend>
                                         <div class="flex items-center space-y-0 space-x-10">
                                             <div class="flex items-center">
-                                                <input id="payment-method-yes" value="same" name="payment-method" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input id="payment-method-yes" @if(old('payment-method') == 'same') checked @endif value="same" name="payment-method" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-yes" class="ml-3 block text-sm font-medium text-gray-700">Yes</label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input id="payment-method-no" value="mixed" name="payment-method" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input id="payment-method-no" @if(old('payment-method') == 'mixed') checked @endif value="mixed" name="payment-method" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-no" class="ml-3 block text-sm font-medium text-gray-700">No</label>
                                             </div>
                                             <div class="flex items-center">
                                                 <label for="payment-all" class="mr-1 block text-sm font-medium text-gray-700">Payment</label>
-                                                <input id="payment-all" name="payment-all" type="number" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input id="payment-all" value="{{ old('payment-all') }}" name="payment-all" type="number" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                     </fieldset>
@@ -112,27 +111,27 @@
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Musicians</legend>
                                         <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-indigo-700 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ count($oldMusicians) == 1 || empty($oldMusicians) ? 'border-indigo-700' : '' }} musician-number-button hover:border-indigo-700 border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="1" class="sr-only" aria-labelledby="musician-number-1-label">
                                                 <span id="musician-number-1-label">1</span>
                                             </label>
-                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ count($oldMusicians) == 2 ? 'border-indigo-700' : '' }} musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="2" class="sr-only" aria-labelledby="musician-number-2-label">
                                                 <span id="musician-number-2-label">2</span>
                                             </label>
-                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ count($oldMusicians) == 3 ? 'border-indigo-700' : '' }} musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="3" class="sr-only" aria-labelledby="musician-number-3-label">
                                                 <span id="musician-number-3-label">3</span>
                                             </label>
-                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ count($oldMusicians) == 4 ? 'border-indigo-700' : '' }} musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="4" class="sr-only" aria-labelledby="musician-number-4-label">
                                                 <span id="musician-number-4-label">4</span>
                                             </label>
-                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ count($oldMusicians) == 5 ? 'border-indigo-700' : '' }} musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="5" class="sr-only" aria-labelledby="musician-number-5-label">
                                                 <span id="musician-number-5-label">5</span>
                                             </label>
-                                            <label class="musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ count($oldMusicians) == 6 ? 'border-indigo-700' : '' }} musician-number-button hover:border-indigo-700 border-2 border-gray-300 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
                                                 <span id="musician-number-6-label">6</span>
                                             </label>
@@ -141,7 +140,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea id="description" value="{{ old('description') }}" name="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]" ></textarea>
+                                    <textarea id="description" name="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ old('description') }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +150,11 @@
                             {{ __('Musicians Needed') }}
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
-                            @include('components.finder-components.new-job', ['musicianNumber' => 1, 'payment' => ''])
+                            @forelse ($oldMusicians as $musician)
+                                @include('components.finder-components.new-job', ['musician' => $musician, 'musicianNumber' => $loop->iteration])
+                            @empty
+                                @include('components.finder-components.new-job', ['musicianNumber' => 1, 'payment' => ''])
+                            @endforelse
                         </div>
                     </div>
                     <div class="flex justify-between">
