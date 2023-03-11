@@ -86,7 +86,7 @@ class GigController extends Controller
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
             'start_date_time' => 'required|date',
-            'end_date_time' => 'required|date',
+            'end_date_time' => 'required|date|after_or_equal:start_date_time',
             'street_address' => 'required|string|min:3|max:255',
             'city' => 'required|string|max:30',
             'musician-number' => 'numeric',
@@ -95,7 +95,7 @@ class GigController extends Controller
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|max:6',
             'musicians.*.fill_status' => 'required|string',
-            'musicians.*.instruments' => 'required|array|min:1|max:10',
+            'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ]);
@@ -184,7 +184,7 @@ class GigController extends Controller
 
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
-            'start_date_time' => 'required|date',
+            'start_date_time' => 'required|date|after_or_equal:start_date_time',
             'end_date_time' => 'required|date',
             'street_address' => 'required|string|min:3|max:255',
             'city' => 'required|string|max:30',
@@ -228,7 +228,7 @@ class GigController extends Controller
                 'musicians.'.$key.'.id' => 'numeric|nullable',
                 'musicians.'.$key.'.fill_status' => 'string|nullable',
                 'musicians.'.$key.'.musician_picked' => 'max:15|nullable',
-                'musicians.'.$key.'.instruments' => 'required|array|min:1|max:10',
+                'musicians.'.$key.'.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
                 'musicians.'.$key.'.payment' => 'required|numeric|min:0',
                 'musicians.'.$key.'.extra_info' => 'string|min:3|max:255|nullable',
             ]);
