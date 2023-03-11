@@ -251,7 +251,9 @@ class GigController extends Controller
             }
             if (is_numeric($status)) {
                 $newJob->users()->updateExistingPivot($job['musician_picked'], ['status' => 'Booked']);
-                ChosenForJobJob::dispatch($job['musician_picked'], $newJob);
+                if ($job['musician_picked'] != Auth::id()) {
+                    ChosenForJobJob::dispatch($job['musician_picked'], $newJob);
+                }
             }
         }
 
