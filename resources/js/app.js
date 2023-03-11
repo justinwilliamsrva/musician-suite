@@ -25,21 +25,30 @@ $(document).ready(function() {
             removeNewJobs(numberOfChildrenToRemove);
         } else if (numberOfRequestedJobs > numberOfCurrentJobs) {
             var payment = '';
+            var url = '';
+
             if ($('input[name = "payment-method"]:checked').val() == 'same') {
                 payment = $("#payment-all").val();
             }
-            addNewJobs(numberOfCurrentJobs, numberOfRequestedJobs, payment);
+
+            if (window.location.pathname.includes('edit')) {
+                url = `${window.location.origin}/edit-job-component?number=`;
+            } else {
+                url = `${window.location.origin}/new-job-component?number=`;
+            }
+
+            addNewJobs(numberOfCurrentJobs, numberOfRequestedJobs, payment, url);
         }
 
     });
-    function addNewJobs(index, numberOfRequestedJobs, payment) {
+    function addNewJobs(index, numberOfRequestedJobs, payment, url) {
         $.ajax({
-            url: `${window.location.origin}/new-job-component?number=${index + 1}&payment=${payment}`,
+            url: `${url}${index + 1}&payment=${payment}`,
             type: 'GET',
             complete: function() {
                 index++;
                 if (index < numberOfRequestedJobs) {
-                    addNewJobs(index, numberOfRequestedJobs, payment);
+                    addNewJobs(index, numberOfRequestedJobs, payment, url);
                 }
             },
             success: function(result) {

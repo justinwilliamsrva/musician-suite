@@ -46,6 +46,18 @@ Route::get('/new-job-component', function () {
     return view('components.finder-components.new-job', $data)->render();
 });
 
+Route::get('/edit-job-component', function () {
+    $number = request()->query('number', 1);
+    $payment = request()->query('payment', '');
+
+    $data = array_filter([
+        'musicianNumber' => $number - 1,
+        'payment' => $payment,
+    ]);
+
+    return view('components.finder-components.edit-job', $data)->render();
+});
+
 Route::fallback(function () {
     return redirect('/dashboard');
 });
