@@ -23,7 +23,7 @@
             <div id="openJobs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1 ">
                 <div class="sm:flex sm:items-center min-h-[80px]">
                     <div class="sm:flex-auto">
-                        <h1 class="text-xl font-semibold text-gray-900">Open Gigs</h1>
+                        <h1 class="text-xl font-semibold text-gray-900">Available Gigs</h1>
                         <p class="mt-2 text-sm text-gray-700">List of all open and pending jobs for every instrument.</p>
                     </div>
                     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
@@ -35,17 +35,19 @@
                         <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
                             <table class="min-w-full divide-y divide-gray-300">
                                 <thead>
-                                    <tr>
-                                        <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
-                                        <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
-                                        <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                                    </tr>
+                                    @if($openJobs->count() > 0)
+                                        <tr>
+                                            <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
+                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                        </tr>
+                                    @endif
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-                                    @foreach($openJobs as $job)
+                                    @forelse($openJobs as $job)
                                         <tr>
                                             <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
                                                 @can('update', $job->gig)
@@ -72,7 +74,9 @@
                                                 {{ (count($job->users) > 0) ? 'Pending' : 'Open' }}
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <p class="text-center">There are currently no Available Gigs</p>
+                                    @endforelse
                                 </tbody>
                             </table>
                             {{ $openJobs->appends(['userGigs' => $userGigs->currentPage(), 'userJobs' => $userJobs->currentPage()])->links() }}
@@ -97,17 +101,19 @@
                             <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
                                 <table class="min-w-full divide-y divide-gray-300">
                                     <thead>
-                                        <tr>
-                                            <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
-                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
-                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                                        </tr>
+                                        @if($userJobs->count() > 0)
+                                            <tr>
+                                                <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
+                                                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
+                                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                            </tr>
+                                        @endif
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
-                                        @foreach($userJobs as $job)
+                                        @forelse($userJobs as $job)
                                             <tr>
                                                 <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
                                                     @can('update', $job->gig)
@@ -134,7 +140,9 @@
                                                     {{ ($job->users->first()->pivot->status == 'Applied') ? 'Pending' : 'Booked' }}
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <p class="text-center">You have no upcoming performances</p>
+                                        @endforelse
                                     </tbody>
                                 </table>
                                 {{ $userJobs->appends(['userGigs' => $userGigs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
@@ -158,17 +166,19 @@
                             <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
                                 <table class="min-w-full divide-y divide-gray-300">
                                     <thead>
-                                        <tr>
-                                            <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
-                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
-                                            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                                        </tr>
+                                        @if($userGigs->count() > 0)
+                                            <tr>
+                                                <th scope="col" class="min-w-[7rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
+                                                <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
+                                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                            </tr>
+                                        @endif
                                     </thead>
                                     <tbody class="divide-y divide-gray-200 bg-white">
-                                        @foreach($userGigs as $gig)
+                                        @forelse($userGigs as $gig)
                                             <tr>
                                                 <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
                                                     <a href="{{ route('gigs.edit', $gig->id) }}" class="underline text-blue-500">{{ $gig->event_type }}</a>
@@ -191,7 +201,9 @@
                                                     {{ $gig->numberOfFilledJobs().' Jobs Filled' }}
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <p class="text-center">You are not hosting any upcoming gigs</p>
+                                        @endforelse
                                     </tbody>
                                 </table>
                                 {{ $userGigs->appends(['userJobs' => $userJobs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
