@@ -43,7 +43,7 @@
                 <table width="100%" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td align="center">
-                            <a href="{{ route('gigs.show', $gig->id) }}" style="background-color:#4CAF50;border:none;color:white;padding:15px 32px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;margin:4px 2px;cursor:pointer;">View Job</a>
+                            <a href="{{ route('applyToJobGet', ['job' => $job->id, 'user' => $user->id]) }}" style="background-color:#4CAF50;border:none;color:white;padding:15px 32px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;margin:4px 2px;cursor:pointer;">Apply Now</a>
                         </td>
                     </tr>
                 </table>

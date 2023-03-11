@@ -9,6 +9,7 @@ use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class GigController extends Controller
@@ -261,6 +262,23 @@ class GigController extends Controller
     {
         $this->authorize('apply-to-job', $job);
         $job->users()->attach(Auth::id(), ['status' => 'Applied']);
+
+        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the Job Successfully');
+    }
+
+    public function applyToJobGet()
+    {
+        $job_id = request()->query('job');
+        $job = Job::find($job_id);
+
+        $user_id = request()->query('user');
+        $user = User::find($user_id);
+
+        if (! Gate::forUser($user)->allows('apply-to-job', $job)) {
+            abort(403);
+        }
+
+        $job->users()->attach($user->id, ['status' => 'Applied']);
 
         return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the Job Successfully');
     }
