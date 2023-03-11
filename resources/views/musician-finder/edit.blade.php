@@ -121,27 +121,27 @@
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Musicians</legend>
                                         <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                            <label class="{{ ($numberOfMusicians == 1) ? 'border-indigo-700 musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ ($numberOfMusicians == 1) ? 'border-indigo-700 musician-number-button cursor-pointer hover:border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input type="radio" @if ($numberOfMusicians == 1) name="musician-number" @endif value="1" class="sr-only" aria-labelledby="musician-number-1-label">
                                                 <span id="musician-number-1-label">1</span>
                                             </label>
-                                            <label class="{{ ($numberOfMusicians == 2) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 2 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ ($numberOfMusicians == 2) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 2 ? 'musician-number-button cursor-pointer hover:border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input type="radio" @if ($numberOfMusicians <= 2) name="musician-number" @endif value="2" class="sr-only" aria-labelledby="musician-number-2-label">
                                                 <span id="musician-number-2-label">2</span>
                                             </label>
-                                            <label class="{{ ($numberOfMusicians == 3) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 3 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ ($numberOfMusicians == 3) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 3 ? 'musician-number-button cursor-pointer hover:border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input type="radio" @if ($numberOfMusicians <= 3) name="musician-number" @endif value="3" class="sr-only" aria-labelledby="musician-number-3-label">
                                                 <span id="musician-number-3-label">3</span>
                                             </label>
-                                            <label class="{{ ($numberOfMusicians == 4) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 4 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ ($numberOfMusicians == 4) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 4 ? 'musician-number-button cursor-pointer hover:border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input type="radio" @if ($numberOfMusicians <= 4) name="musician-number" @endif value="4" class="sr-only" aria-labelledby="musician-number-4-label">
                                                 <span id="musician-number-4-label">4</span>
                                             </label>
-                                            <label class="{{ ($numberOfMusicians == 5) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 5 ? 'musician-number-button cursor-pointer' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ ($numberOfMusicians == 5) ? 'border-indigo-700' : '' }} {{ $numberOfMusicians <= 5 ? 'musician-number-button cursor-pointer hover:border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input type="radio" @if ($numberOfMusicians <= 5) name="musician-number" @endif value="5" class="sr-only" aria-labelledby="musician-number-5-label">
                                                 <span id="musician-number-5-label">5</span>
                                             </label>
-                                            <label class="{{ ($numberOfMusicians == 6) ? 'border-indigo-700' : '' }} musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
+                                            <label class="{{ ($numberOfMusicians == 6) ? 'border-indigo-700' : '' }} hover:border-indigo-700 musician-number-button border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none">
                                                 <input type="radio" name="musician-number" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
                                                 <span id="musician-number-6-label">6</span>
                                             </label>
