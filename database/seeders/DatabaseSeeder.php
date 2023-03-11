@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create(['name' => 'Filled Outside CRRVA', 'email' => 'filledoutsideCRRVA@gmail.com', 'admin' => true]);
+        User::factory()->create(['name' => 'Filled Outside CRRVA', 'email' => 'filledoutsideCRRVA@gmail.com', 'admin' => true, 'instruments' => json_encode([])]);
         User::factory()->create(['name' => 'TestingAdmin', 'email' => 'testingadmin@testing.com', 'admin' => true]);
         User::factory()->create(['name' => 'Testing', 'email' => 'testing@testing.com', 'admin' => false]);
         User::factory()->create(['name' => 'Justin Williams', 'email' => 'justinwdev@gmail.com', 'admin' => true]);
@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             if ($randomNumber == 1) {
                 $gigId = $job->gig_id;
                 $restrictedUserId[] = Gig::find($gigId)->user_id;
+                $restrictedUserId[] = 1;
                 for ($i = 0; $i < 2; $i++) {
                     $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
                     $job->users()->attach($userId, ['status' => 'Applied']);
