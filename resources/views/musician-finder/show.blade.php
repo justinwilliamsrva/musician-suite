@@ -70,27 +70,27 @@
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Musicians</legend>
                                         <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                            <label class="{{ count($gig->jobs) == 1 ? 'border-indigo-700' : '' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ count($gig->jobs) == 1 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input disabled type="radio" value="1" class="sr-only" aria-labelledby="musician-number-1-label">
                                                 <span id="musician-number-1-label">1</span>
                                             </label>
-                                            <label class="{{ count($gig->jobs) == 2 ? 'border-indigo-700' : '' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ count($gig->jobs) == 2 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input disabled type="radio" value="2" class="sr-only" aria-labelledby="musician-number-2-label">
                                                 <span id="musician-number-2-label">2</span>
                                             </label>
-                                            <label class="{{ count($gig->jobs) == 3 ? 'border-indigo-700' : '' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ count($gig->jobs) == 3 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input disabled type="radio" value="3" class="sr-only" aria-labelledby="musician-number-3-label">
                                                 <span id="musician-number-3-label">3</span>
                                             </label>
-                                            <label class="{{ count($gig->jobs) == 4 ? 'border-indigo-700' : '' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ count($gig->jobs) == 4 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input disabled type="radio" value="4" class="sr-only" aria-labelledby="musician-number-4-label">
                                                 <span id="musician-number-4-label">4</span>
                                             </label>
-                                            <label class="{{ count($gig->jobs) == 5 ? 'border-indigo-700' : '' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ count($gig->jobs) == 5 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input disabled type="radio" value="5" class="sr-only" aria-labelledby="musician-number-5-label">
                                                 <span id="musician-number-5-label">5</span>
                                             </label>
-                                            <label class="{{ count($gig->jobs) == 6 ? 'border-indigo-700' : '' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
+                                            <label class="{{ count($gig->jobs) == 6 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input disabled type="radio" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
                                                 <span id="musician-number-6-label">6</span>
                                             </label>
