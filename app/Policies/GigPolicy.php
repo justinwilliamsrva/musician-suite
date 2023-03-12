@@ -53,7 +53,7 @@ class GigPolicy
      */
     public function update(User $user, Gig $gig)
     {
-        return $user->id == $gig->user_id || $user->admin == 1;
+        return $user->id == $gig->user_id;
     }
 
     /**

@@ -150,7 +150,9 @@ class GigController extends Controller
      */
     public function edit(Gig $gig)
     {
-        $this->authorize('update', $gig);
+        if (Auth::user()->admin != 1) {
+            $this->authorize('update', $gig);
+        }
 
         $jobsArray = $gig->jobs->toArray();
 
@@ -180,7 +182,9 @@ class GigController extends Controller
      */
     public function update(Request $request, Gig $gig)
     {
-        $this->authorize('update', $gig);
+        if (Auth::user()->admin != 1) {
+            $this->authorize('update', $gig);
+        }
 
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
