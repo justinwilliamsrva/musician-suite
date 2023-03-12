@@ -5,7 +5,7 @@
         'isJobBooked' => false,
         'userBooked' => '',
         'numberOfJobApplicants' => 0,
-        'users' => [],
+        'users' => json_encode([]),
         'instruments' => [],
         'extra_info' => '',
         'fill_status' => 'unfilled',
@@ -20,8 +20,7 @@
 <input type="hidden" name="musicians[{{ $musicianNumber }}][isJobBooked]" value="{{ $job['isJobBooked'] }}" />
 <input type="hidden" name="musicians[{{ $musicianNumber }}][userBooked]" value="{{ $job['userBooked'] }}" />
 <input type="hidden" name="musicians[{{ $musicianNumber }}][numberOfJobApplicants]" value="{{ $job['numberOfJobApplicants'] }}" />
-
-
+<input type="hidden" name="musicians[{{ $musicianNumber }}][users]" value="{{ $job['users'] }}" />
 
 <div class="overflow-hidden shadow sm:rounded-md more-job-template">
     <div class="bg-white px-4 py-5 sm:p-6">
@@ -37,7 +36,7 @@
                     <select name="musicians[{{ $musicianNumber }}][musician_picked]" id="musician_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option @if($musicianPicked == '') selected @endif value="">Select a Applicant</option>
                         <optgroup label="Applicants">
-                            @foreach($job['users'] as $user)
+                            @foreach(json_decode($job['users'], true) as $user)
                                 <option @if($musicianPicked == $user['id']) selected @endif value="{{ $user['id'] }}">{{ $user['name'] }}</option>
                             @endforeach
                         </optgroup>

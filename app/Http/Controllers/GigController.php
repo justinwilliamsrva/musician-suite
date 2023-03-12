@@ -160,14 +160,18 @@ class GigController extends Controller
             $isJobBooked = $job->jobHasBeenBooked($job);
             $userBooked = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->name ?? '';
             $numberOfJobApplicants = $job->users()->count();
-            $job->users->toArray();
+            $jobUsers = json_encode($job->users);
 
-            $jobsArray[$key] = array_replace($job->toArray(), [
+            $jobsArray[$key] = [
+                'id' => $job->id,
+                'payment' => $job->payment,
+                'users' => $jobUsers,
+                'extra_info' => $job->extra_info,
                 'instruments' => json_decode($job->instruments),
                 'isJobBooked' => $isJobBooked,
                 'userBooked' => $userBooked,
                 'numberOfJobApplicants' => $numberOfJobApplicants,
-            ]);
+            ];
         }
 
         return view('musician-finder.edit', ['gig' => $gig, 'jobsArray' => $jobsArray]);

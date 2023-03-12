@@ -18,6 +18,7 @@ class NewJobAvailableJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public Gig $gig;
+
     public Job|null $newJob;
 
     /**
