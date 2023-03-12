@@ -184,8 +184,8 @@ class GigController extends Controller
 
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
-            'start_date_time' => 'required|date|after_or_equal:start_date_time',
-            'end_date_time' => 'required|date',
+            'start_date_time' => 'required|date',
+            'end_date_time' => 'required|date|after_or_equal:start_date_time',
             'street_address' => 'required|string|min:3|max:255',
             'city' => 'required|string|max:30',
             'musician-number' => 'numeric',
