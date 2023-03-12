@@ -245,6 +245,10 @@ class GigController extends Controller
 
             $newJob->save();
 
+            if ($newJob->wasRecentlyCreated) {
+                NewJobAvailableJob::dispatch($gig, $newJob);
+            }
+
             // Fill in pivot Table
             if ($status == 'filled') {
                 $newJob->users()->attach(1, ['status' => 'Booked']);

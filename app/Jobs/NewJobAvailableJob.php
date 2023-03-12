@@ -19,14 +19,17 @@ class NewJobAvailableJob implements ShouldQueue
 
     public Gig $gig;
 
+    public Job|null $newJob;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($gig)
+    public function __construct($gig, $newJob = null)
     {
         $this->gig = $gig;
+        $this->newJob = $newJob;
     }
 
     /**
@@ -36,19 +39,27 @@ class NewJobAvailableJob implements ShouldQueue
      */
     public function handle()
     {
-        $jobs = $this->gig->jobs;
-        foreach ($jobs as $job) {
-            $jobInstruments = json_decode($job->instruments);
-            $userWithSameInstrument = User::where(function ($query) use ($jobInstruments) {
-                foreach ($jobInstruments as $instrument) {
-                    $query->orWhere('instruments', 'like', '%"'.$instrument.'"%');
-                }
-            })
-            ->whereNotIn('id', [1, $this->gig->user_id])
-            ->get();
-            foreach ($userWithSameInstrument as $user) {
-                Mail::to($user->email)->send(new NewJobAvailable($this->gig, $job, $user));
+        if (is_null($this->newJob)) {
+            foreach ($this->gig->jobs as $job) {
+                $this->sendEmailsToNewJobs($job);
             }
+        } else {
+            $this->sendEmailsToNewJobs($this->newJob);
+        }
+    }
+
+    public function sendEmailsToNewJobs($job)
+    {
+        $jobInstruments = json_decode($job->instruments);
+        $userWithSameInstrument = User::where(function ($query) use ($jobInstruments) {
+            foreach ($jobInstruments as $instrument) {
+                $query->orWhere('instruments', 'like', '%"'.$instrument.'"%');
+            }
+        })
+        ->whereNotIn('id', [1, $this->gig->user_id])
+        ->get();
+        foreach ($userWithSameInstrument as $user) {
+            Mail::to($user->email)->send(new NewJobAvailable($this->gig, $job, $user));
         }
     }
 }
