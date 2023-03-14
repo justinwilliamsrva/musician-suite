@@ -84,12 +84,16 @@ $(document).ready(function() {
 
     // Delete Gig
     $('#delete-gig-button').on('click', function() {
-        // show a confirmation dialog using jQuery UI
         if (confirm('Are you sure you want to delete this gig?')) {
-            // if the user confirms, submit the delete form
             $('#delete-gig-form').submit();
         }
     });
+
+    // Update Gig
+    $('#update-gig-button').on('click', function() {
+        $('#update-gig-form').submit();
+    });
+
 
     //Payment Dom Events
     //1.Toggle visibility payment

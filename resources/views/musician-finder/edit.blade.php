@@ -38,7 +38,7 @@
             </div>
         @endif
         <div class="mt-5 md:col-span-2 md:mt-0">
-            <form action="{{ route('gigs.update', ['gig' => $gig->id]) }}" method="POST" id="create-gig-form">
+            <form action="{{ route('gigs.update', ['gig' => $gig->id]) }}" method="POST" id="update-gig-form">
                 @csrf
                 @method('PUT')
                 <div class="flex flex-col space-y-4">
