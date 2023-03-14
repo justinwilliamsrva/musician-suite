@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Jobs\ChosenForJobJob;
+use App\Jobs\NewJobAvailableJob;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Jobs\ChosenForJobJob;
-use Illuminate\Validation\Rule;
-use App\Jobs\NewJobAvailableJob;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class GigController extends Controller
 {
@@ -34,8 +33,8 @@ class GigController extends Controller
         })
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
         ->where('gigs.start_time', '>', now())
-        ->where(function($query) use ($userInstruments) {
-            foreach($userInstruments as $instrument) {
+        ->where(function ($query) use ($userInstruments) {
+            foreach ($userInstruments as $instrument) {
                 $query->orWhere('instruments', 'like', '%"'.$instrument.'"%');
             }
         })
