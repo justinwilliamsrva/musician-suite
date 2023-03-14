@@ -36,7 +36,7 @@ class GigController extends Controller
                 });
         })
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
-        ->where('gigs.start_time', '>', now())
+        ->where('gigs.end_time', '>', now())
         ->where(function ($query) use ($userInstruments) {
             foreach ($userInstruments as $instrument) {
                 $query->orWhere('instruments', 'like', '%"'.$instrument.'"%');
