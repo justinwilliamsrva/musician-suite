@@ -28,8 +28,12 @@ class GigController extends Controller
         // Get openJobs
         $userInstruments = ($filteredData['instrument_match']) ? json_decode($user->instruments) : config('gigs.instruments');
         $openJobs = Job::select('jobs.id as job_id', 'jobs.*', 'gigs.*')
-        ->whereDoesntHave('users', function ($query) {
-            $query->where('status', 'Booked');
+        ->whereDoesntHave('users', function ($query) use ($user) {
+            $query->where('status', 'Booked')
+                ->orWhere(function ($query) use ($user) {
+                    $query->where('user_id', '=', $user->id)
+                        ->where('status', 'Applied');
+                });
         })
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
         ->where('gigs.start_time', '>', now())
