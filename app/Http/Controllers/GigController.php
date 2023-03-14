@@ -198,7 +198,8 @@ class GigController extends Controller
 
         foreach ($gig->jobs as $key => $job) {
             $isJobBooked = $job->jobHasBeenBooked($job);
-            $userBooked = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->name ?? '';
+            $userBookedID = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->id ?? '';
+            $userBookedName = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->name ?? '';
             $numberOfJobApplicants = $job->users()->count();
             $jobUsers = json_encode($job->users);
 
@@ -209,7 +210,8 @@ class GigController extends Controller
                 'extra_info' => $job->extra_info,
                 'instruments' => json_decode($job->instruments),
                 'isJobBooked' => $isJobBooked,
-                'userBooked' => $userBooked,
+                'userBookedID' => $userBookedID,
+                'userBookedName' => $userBookedName,
                 'numberOfJobApplicants' => $numberOfJobApplicants,
             ];
         }
@@ -274,8 +276,8 @@ class GigController extends Controller
             // Validate Current Musician
             $request->validate([
                 'musicians.'.$key.'.id' => 'numeric|nullable',
-                'musicians.'.$key.'.fill_status' => 'string|nullable',
-                'musicians.'.$key.'.musician_picked' => 'max:15|nullable',
+                'musicians.'.$key.'.fill_status' => 'string|nullable|max:15',
+                'musicians.'.$key.'.musician_picked' => 'string|nullable|max:15',
                 'musicians.'.$key.'.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
                 'musicians.'.$key.'.payment' => 'required|numeric|min:0',
                 'musicians.'.$key.'.extra_info' => 'string|min:3|max:255|nullable',
@@ -300,7 +302,28 @@ class GigController extends Controller
             // Fill in pivot Table
             if ($status == 'filled') {
                 $newJob->users()->attach(1, ['status' => 'Booked']);
+                if (! empty($job['userBookedID'])) {
+                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                }
             }
+
+            if ($status == 'myself') {
+                $newJob->users()->attach(Auth::id(), ['status' => 'Booked']);
+                if (! empty($job['userBookedID'])) {
+                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                }
+            }
+
+            if ($status == 'unfilled' && ! empty($job['userBookedID'])) {
+                if ($job['userBookedID'] == 1) {
+                    $filledOutsideCRRVA = User::find(1);
+                    $filledOutsideCRRVA->jobs()->detach($newJob->id);
+                } else {
+                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                }
+                //Send email that job is back open
+            }
+
             if (is_numeric($status)) {
                 $newJob->users()->updateExistingPivot($job['musician_picked'], ['status' => 'Booked']);
                 if ($job['musician_picked'] != Auth::id()) {
