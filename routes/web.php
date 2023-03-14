@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/finder', [GigController::class, 'index'])->name('musician-finder.dashboard');
     Route::resource('/gigs', GigController::class)->except('index');
     Route::post('/job/{job}', [GigController::class, 'applyToJob'])->name('applyToJob');
+    Route::post('/removeApp/{job}', [GigController::class, 'removeApp'])->name('removeApp');
     Route::get('/applyToJob', [GigController::class, 'applyToJobGet'])->name('applyToJobGet');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

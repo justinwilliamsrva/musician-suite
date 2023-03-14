@@ -94,6 +94,12 @@ $(document).ready(function() {
         $('#update-gig-form').submit();
     });
 
+    //Remove Application
+    $('#remove-application-button').on('click', function() {
+        if (confirm('Are you sure you want to remove your application for this gig?')) {
+            $('#remove-application-form').submit();
+        }
+    });
 
     //Payment Dom Events
     //1.Toggle visibility payment

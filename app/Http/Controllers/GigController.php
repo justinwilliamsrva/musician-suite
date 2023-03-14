@@ -166,7 +166,7 @@ class GigController extends Controller
             }
         }
 
-        return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully');
+        return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully.');
     }
 
     /**
@@ -332,7 +332,7 @@ class GigController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', $gig->event_type.' Updated Successfully');
+        return redirect()->back()->with('success', $gig->event_type.' Updated Successfully.');
     }
 
     /**
@@ -353,7 +353,7 @@ class GigController extends Controller
         $event_type = $gig->event_type;
         $gig->delete();
 
-        return redirect()->route('musician-finder.dashboard')->with('success', $event_type.' Deleted Successfully');
+        return redirect()->route('musician-finder.dashboard')->with('success', $event_type.' Deleted Successfully.');
     }
 
     public function applyToJob(Job $job)
@@ -361,7 +361,7 @@ class GigController extends Controller
         $this->authorize('apply-to-job', $job);
         $job->users()->attach(Auth::id(), ['status' => 'Applied']);
 
-        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the Job Successfully');
+        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the gig successfully');
     }
 
     public function applyToJobGet()
@@ -378,6 +378,13 @@ class GigController extends Controller
 
         $job->users()->attach($user->id, ['status' => 'Applied']);
 
-        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the Job Successfully');
+        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the gig successfully.');
+    }
+
+    public function removeApp(Job $job)
+    {
+        $job->users()->detach(Auth::id());
+
+        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve successfully removed your application.');
     }
 }
