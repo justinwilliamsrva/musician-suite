@@ -10,3 +10,18 @@
 .select2-selection {
     min-height: 38px !important;
 }
+
+.vis-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+input:checked + .bg-indigo-600 {
+    box-shadow: inset 1px 2px 5px #777;
+    transform: translateY(1px);
+    background-color: #e5e5e5;
+    color: black;
+}

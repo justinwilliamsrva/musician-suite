@@ -26,9 +26,19 @@
                         <h1 class="text-xl font-semibold text-gray-900">Available Gigs</h1>
                         <p class="mt-2 text-sm text-gray-700">List of all open and pending jobs for every instrument.</p>
                     </div>
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View Your Instrument(s)</button>
-                    </div>
+                    <form id="openGigsFilter" action="{{ route('musician-finder.dashboard') }}#openJobs" method="GET">
+                        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                            <label for="instrument_match" class="cursor-pointer">
+                                <input type="hidden" name="user_jobs_show_all" value="{{ $filteredData['user_jobs_show_all'] }}">
+                                <input type="hidden" name="user_gigs_show_all" value="{{ $filteredData['user_gigs_show_all'] }}">
+                                @if($filteredData['instrument_match'] == 0)
+                                    <input type="hidden" name="instrument_match" value="1"/>
+                                @endif
+                                <input id="instrument_match" type="checkbox" name="instrument_match" value="0" @if($filteredData['instrument_match'] == 1) checked @endif class="vis-hidden" />
+                                <span id="instrument_match_span" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View Your Instrument(s)</span>
+                            </label>
+                        </div>
+                    </form>
                 </div>
                 <div class="mt-8 flow-root @container">
                     <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
@@ -79,22 +89,32 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            {{ $openJobs->appends(['userGigs' => $userGigs->currentPage(), 'userJobs' => $userJobs->currentPage()])->links() }}
+                            {{ $openJobs->appends(['instrument_match' => $filteredData['instrument_match'], 'user_jobs_show_all' => $filteredData['user_jobs_show_all'], 'user_gigs_show_all' => $filteredData['user_gigs_show_all'], 'userGigs' => $userGigs->currentPage(), 'userJobs' => $userJobs->currentPage()])->links() }}
                         </div>
                     </div>
                 </div>
             </div>
             <div class="order-1 lg:order-2 col-span-1">
                  <!-- All Jobs You Are Performing In -->
-                 <div id="userJob" class="px-6 lg:px-8 col-span-1 pb-6">
+                 <div id="userJobs" class="px-6 lg:px-8 col-span-1 pb-6">
                     <div class="sm:flex sm:items-center min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
                             <p class="mt-2 text-sm text-gray-700">List of your upcoming performances whether booked or pending.</p>
                         </div>
-                        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                            <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
-                        </div>
+                        <form id="userJobsFilter" action="{{ route('musician-finder.dashboard') }}#userJobs" method="GET">
+                            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                                <label for="user_jobs_show_all" class="cursor-pointer">
+                                    <input type="hidden" name="instrument_match" value="{{ $filteredData['instrument_match'] }}">
+                                    <input type="hidden" name="user_gigs_show_all" value="{{ $filteredData['user_gigs_show_all'] }}">
+                                    @if($filteredData['user_jobs_show_all'] == 0)
+                                        <input type="hidden" name="user_jobs_show_all" value="1"/>
+                                    @endif
+                                    <input id="user_jobs_show_all" type="checkbox" name="user_jobs_show_all" value="0" @if($filteredData['user_jobs_show_all'] == 1) checked @endif class="vis-hidden" />
+                                    <span id="user_jobs_show_all_span" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</span>
+                                </label>
+                            </div>
+                        </form>
                     </div>
                     <div class="mt-8 flow-root @container">
                         <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
@@ -145,7 +165,7 @@
                                         @endforelse
                                     </tbody>
                                 </table>
-                                {{ $userJobs->appends(['userGigs' => $userGigs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
+                                {{ $userJobs->appends(['instrument_match' => $filteredData['instrument_match'], 'user_jobs_show_all' => $filteredData['user_jobs_show_all'], 'user_gigs_show_all' => $filteredData['user_gigs_show_all'], 'userGigs' => $userGigs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
                             </div>
                         </div>
                     </div>
@@ -157,9 +177,19 @@
                             <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
                             <p class="mt-2 text-sm text-gray-700">List of upcoming gigs you have created and how many jobs have been filled.</p>
                         </div>
-                        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                            <button type="button" class="block rounded-md bg-indigo-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
-                        </div>
+                        <form id="userGigsFilter" action="{{ route('musician-finder.dashboard') }}#userGigs" method="GET">
+                            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                                <label for="user_gigs_show_all" class="cursor-pointer">
+                                    <input type="hidden" name="instrument_match" value="{{ $filteredData['instrument_match'] }}">
+                                    <input type="hidden" name="user_jobs_show_all" value="{{ $filteredData['user_jobs_show_all'] }}">
+                                    @if($filteredData['user_gigs_show_all'] == 0)
+                                        <input type="hidden" name="user_gigs_show_all" value="1"/>
+                                    @endif
+                                    <input id="user_gigs_show_all" type="checkbox" name="user_gigs_show_all" value="0" @if($filteredData['user_gigs_show_all'] == 1) checked @endif class="vis-hidden" />
+                                    <span id="user_gigs_show_all_span" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</span>
+                                </label>
+                            </div>
+                        </form>
                     </div>
                     <div class="mt-8 flow-root @container">
                         <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
@@ -206,7 +236,7 @@
                                         @endforelse
                                     </tbody>
                                 </table>
-                                {{ $userGigs->appends(['userJobs' => $userJobs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
+                                {{ $userGigs->appends(['instrument_match' => $filteredData['instrument_match'], 'user_jobs_show_all' => $filteredData['user_jobs_show_all'], 'user_gigs_show_all' => $filteredData['user_gigs_show_all'], 'userJobs' => $userJobs->currentPage(), 'openJobs' => $openJobs->currentPage()])->links() }}
                             </div>
                         </div>
                     </div>

@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ChosenForJobJob;
-use App\Jobs\NewJobAvailableJob;
+use Carbon\Carbon;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Jobs\ChosenForJobJob;
+use Illuminate\Validation\Rule;
+use App\Jobs\NewJobAvailableJob;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
 
 class GigController extends Controller
 {
@@ -19,16 +21,24 @@ class GigController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexFilter($filteredData = ['instrument_match' => 0, 'user_jobs_show_all' => 0, 'user_jobs_show_all' => 0])
     {
+        // Get Auth User
         $user = User::find(Auth::id());
 
+        // Get openJobs
+        $userInstruments = ($filteredData['instrument_match']) ? json_decode($user->instruments) : config('gigs.instruments');
         $openJobs = Job::select('jobs.id as job_id', 'jobs.*', 'gigs.*')
         ->whereDoesntHave('users', function ($query) {
             $query->where('status', 'Booked');
         })
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
         ->where('gigs.start_time', '>', now())
+        ->where(function($query) use ($userInstruments) {
+            foreach($userInstruments as $instrument) {
+                $query->orWhere('instruments', 'like', '%"'.$instrument.'"%');
+            }
+        })
         ->orderBy('gigs.start_time')
         ->paginate(10, ['*'], 'openJobs')
         ->fragment('openJobs');
@@ -37,6 +47,8 @@ class GigController extends Controller
             $job->id = $job->job_id;
         });
 
+        // Get User's performances
+        $userJobsShowAll = ($filteredData['user_jobs_show_all']) ? Carbon::create('1970', '1', '1') : now();
         $userJobs = Job::whereHas('users', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })
@@ -49,20 +61,40 @@ class GigController extends Controller
                 ->select('users.id', 'name', 'email', 'phone_number', 'instruments', 'admin', 'email_verified_at', 'status');
         }])
         ->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
-        ->select('jobs.*', 'gigs.start_time')
-        ->where('gigs.start_time', '>', now())
+        ->select('jobs.*', 'gigs.start_time', 'gigs.end_time')
+        ->where('gigs.end_time', '>', $userJobsShowAll)
         ->orderBy('gigs.start_time')
         ->paginate(4, ['*'], 'userJobs')
         ->fragment('userJobs');
 
+        // Get Gigs created by User
+        $userGigsShowAll = ($filteredData['user_gigs_show_all']) ? Carbon::create('1970', '1', '1') : now();
         $userGigs = $user->gigs()
         ->with('jobs')
-        ->where('start_time', '>', now())
+        ->where('end_time', '>', $userGigsShowAll)
         ->orderBy('start_time')
         ->paginate(4, ['*'], 'userGigs')
         ->fragment('userGigs');
 
-        return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs]);
+        return view('musician-finder.dashboard', ['openJobs' => $openJobs, 'userJobs' => $userJobs, 'userGigs' => $userGigs, 'filteredData' => $filteredData]);
+    }
+
+    public function index(Request $request)
+    {
+        info($request->all());
+        if ($request->all()) {
+            $filteredData = $request->validate([
+                'instrument_match' => 'sometimes|boolean',
+                'user_jobs_show_all' => 'sometimes|boolean',
+                'user_gigs_show_all' => 'sometimes|boolean',
+            ]);
+        }
+
+        $filteredData['instrument_match'] = $filteredData['instrument_match'] ?? false;
+        $filteredData['user_jobs_show_all'] = $filteredData['user_jobs_show_all'] ?? false;
+        $filteredData['user_gigs_show_all'] = $filteredData['user_gigs_show_all'] ?? false;
+
+        return $this->indexFilter($filteredData);
     }
 
     /**

@@ -10,7 +10,6 @@ Alpine.start();
 
 $(document).ready(function() {
     // Add new Job, add highlighting to musician-number inputs and pass in payment information
-
     $("input[name = 'musician-number']").on('click', function(e) {
         let numberOfRequestedJobs = e.currentTarget.value;
         let numberOfCurrentJobs = ($('#jobs-list .more-job-template').length);
@@ -127,4 +126,17 @@ $(document).ready(function() {
     if ($('input[name = "payment-method"]:checked').val() == 'mixed') {
         $('#payment-all').parent().css('visibility', 'hidden');
     }
+
+    // Music Finder Filter Submissions
+    $('#instrument_match_span').on('click', function(){
+        $("#openGigsFilter").submit();
+    });
+
+    $('#user_jobs_show_all_span').on('click', function(){
+        $("#userJobsFilter").submit();
+    });
+
+    $('#user_gigs_show_all_span').on('click', function(){
+        $("#userGigsFilter").submit();
+    });
 });
