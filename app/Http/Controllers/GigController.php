@@ -81,12 +81,11 @@ class GigController extends Controller
 
     public function index(Request $request)
     {
-        info($request->all());
         if ($request->all()) {
             $filteredData = $request->validate([
-                'instrument_match' => 'sometimes|boolean',
-                'user_jobs_show_all' => 'sometimes|boolean',
-                'user_gigs_show_all' => 'sometimes|boolean',
+                'instrument_match' => 'sometimes|boolean|nullable',
+                'user_jobs_show_all' => 'sometimes|boolean|nullable',
+                'user_gigs_show_all' => 'sometimes|boolean|nullable',
             ]);
         }
 
