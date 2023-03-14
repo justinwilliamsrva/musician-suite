@@ -26,7 +26,7 @@ class NewJobAvailableJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($gig, $newJob = null)
+    public function __construct($gig, $newJob)
     {
         $this->gig = $gig;
         $this->newJob = $newJob;
@@ -39,13 +39,7 @@ class NewJobAvailableJob implements ShouldQueue
      */
     public function handle()
     {
-        if (is_null($this->newJob)) {
-            foreach ($this->gig->jobs as $job) {
-                $this->sendEmailsToNewJobs($job);
-            }
-        } else {
-            $this->sendEmailsToNewJobs($this->newJob);
-        }
+        $this->sendEmailsToNewJobs($this->newJob);
     }
 
     public function sendEmailsToNewJobs($job)

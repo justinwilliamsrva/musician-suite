@@ -8,7 +8,8 @@
                 </label>
                 <select name="musicians[{{ $musicianNumber }}][fill_status]" id="musician_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     <option @if(old("musicians.$musicianNumber.fill_status") == 'unfilled') selected @endif value="unfilled">Need To Book</option>
-                    <option @if(old("musicians.$musicianNumber.fill_status") == 'filled') selected @endif value="filled">Already Booked</option>
+                    <option @if(old("musicians.$musicianNumber.fill_status") == 'filled') selected @endif value="filled">Filled Outside CRRVA</option>
+                    <option @if(old("musicians.$musicianNumber.fill_status") == 'myself') selected @endif value="myself">Myself</option>
                 </select>
             </div>
             <div class="col-span-3 sm:col-span-2 lg:col-span-1">

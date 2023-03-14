@@ -156,9 +156,15 @@ class GigController extends Controller
             if ($job['fill_status'] == 'filled') {
                 $newJob->users()->attach(1, ['status' => 'Booked']);
             }
-        }
 
-        NewJobAvailableJob::dispatch($gig);
+            if ($job['fill_status'] == 'myself') {
+                $newJob->users()->attach(Auth::id(), ['status' => 'Booked']);
+            }
+
+            if ($job['fill_status'] == 'unfilled') {
+                NewJobAvailableJob::dispatch($gig, $newJob);
+            }
+        }
 
         return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully');
     }
