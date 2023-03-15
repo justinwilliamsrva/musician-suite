@@ -18,7 +18,7 @@
 
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-white flex flex-col overflow-y-auto">
+        <div class="min-h-screen bg-gray-100 flex flex-col overflow-y-auto">
             <div class="flex-1 pb-4">
                 <!-- Navigation -->
                 @include('layouts.navigation')

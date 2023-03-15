@@ -56,7 +56,7 @@
                                         </tr>
                                     @endif
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 bg-white">
+                                <tbody class="divide-y divide-gray-200 bg-gray-100">
                                     @forelse($openJobs as $job)
                                         <tr>
                                             <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
@@ -132,7 +132,7 @@
                                             </tr>
                                         @endif
                                     </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
+                                    <tbody class="divide-y divide-gray-200 bg-gray-100">
                                         @forelse($userJobs as $job)
                                             <tr>
                                                 <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
@@ -207,7 +207,7 @@
                                             </tr>
                                         @endif
                                     </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
+                                    <tbody class="divide-y divide-gray-200 bg-gray-100">
                                         @forelse($userGigs as $gig)
                                             <tr>
                                                 <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
