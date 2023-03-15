@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center text-2xl lg:text-3xl text-[#7B7C7C]">
-                    <a href="route('dashboard') "><h1>MUSICIAN<span class="text-[#F26D5C]">SUITE</span>RVA</h1></a>
+                    <a href="route('dashboard') "><h1 class="font-oswald font-extralight">CLASSICAL<span class="text-[#F26D5C] font-normal">CONNECTION</span>RVA</h1></a>
                 </div>
             </div>
             <!-- Navigation Links -->
