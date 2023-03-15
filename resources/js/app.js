@@ -4,6 +4,8 @@ import Alpine from 'alpinejs';
 
 import $ from 'jquery';
 
+import.meta.glob([ '../assets/**', ]);
+
 window.Alpine = Alpine;
 
 Alpine.start();
