@@ -35,7 +35,7 @@
                     <p>{{ $job['userBookedName'] }}</p>
                     <select name="musicians[{{ $musicianNumber }}][fill_status]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option @if($fillStatus == 'booked') selected @endif value="booked">No Changes Needed</option>
-                        <option @if($fillStatus == 'unfilled') selected @endif value="unfilled">Remove {{ $job['userBookedName'] }}</option>
+                        <option @if($fillStatus == 'unfilled') selected @endif value="unfilled">Open Job Back up</option>
                         @if ($job['userBookedName'] != 'Filled Outside CRRVA')
                             <option @if($fillStatus == 'filled') selected @endif value="filled">Filled Outside CRRVA</option>
                         @endif
