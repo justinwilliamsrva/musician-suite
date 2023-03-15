@@ -318,6 +318,9 @@ class GigController extends Controller
                 if ($job['userBookedID'] == 1) {
                     $filledOutsideCRRVA = User::find(1);
                     $filledOutsideCRRVA->jobs()->detach($newJob->id);
+                } elseif($job['userBookedID'] = Auth::id()) {
+                    $authUser = User::find(Auth::id());
+                    $authUser->jobs()->detach($newJob->id);
                 } else {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
