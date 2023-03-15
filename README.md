@@ -33,22 +33,22 @@
 
 <h3>Client</h3>
 
-```
+<P>
 Classical Revolution RVA's General Director and CRRVA's musician community.
-```
+</p>
 
 <h3>About</h3>
 
-```
+<P>
 The Musician Suite is a collection of web services built to benefit CRRVA's community of musicians. Any features or services not approved by the CRRVA will be used in other projects.
-```
+</p>
 
 <h3>List of Services</h3>
 
-```
+<p>
 - Musician Finder: An app that allows CRRVA musicians to find new gigs and hire musicians.
 - MORE TO COME!
-```
+</p>
 
 ---
 
@@ -112,4 +112,12 @@ DASHBOARD
 JOBS
 - If a job has not been filled 2 days before a gig, an email will be sent out to the gig maker to see if it was filled
 - If you have accepted a gig, an email will be sent to the day before the gig at 9am EST as a reminder
+
+TECH STACK 
+- PHP
+- JQuery
+- AlpineJS
+- Tailwind CSS
+- Laravel
+
 ```
