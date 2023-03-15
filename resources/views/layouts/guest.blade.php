@@ -18,7 +18,7 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div class="text-3xl">
+            <div class="text-3xl text-[#7B7C7C]">
                 <h1>MUSICIAN<span class="text-[#F26D5C]">SUITE</span>RVA</h1>
             </div>
 
