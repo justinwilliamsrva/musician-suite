@@ -35,7 +35,7 @@
                                     <input type="hidden" name="instrument_match" value="1"/>
                                 @endif
                                 <input id="instrument_match" type="checkbox" name="instrument_match" value="0" @if($filteredData['instrument_match'] == 1) checked @endif class="vis-hidden" />
-                                <span id="instrument_match_span" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View Your Instrument(s)</span>
+                                <button id="instrument_match_span" class="btn rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View Your Instrument(s)</button>
                             </label>
                         </div>
                     </form>
@@ -111,7 +111,7 @@
                                         <input type="hidden" name="user_jobs_show_all" value="1"/>
                                     @endif
                                     <input id="user_jobs_show_all" type="checkbox" name="user_jobs_show_all" value="0" @if($filteredData['user_jobs_show_all'] == 1) checked @endif class="vis-hidden" />
-                                    <span id="user_jobs_show_all_span" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</span>
+                                    <button id="user_jobs_show_all_span" class="btn rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
                                 </label>
                             </div>
                         </form>
@@ -186,7 +186,7 @@
                                         <input type="hidden" name="user_gigs_show_all" value="1"/>
                                     @endif
                                     <input id="user_gigs_show_all" type="checkbox" name="user_gigs_show_all" value="0" @if($filteredData['user_gigs_show_all'] == 1) checked @endif class="vis-hidden" />
-                                    <span id="user_gigs_show_all_span" class="rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</span>
+                                    <button id="user_gigs_show_all_span" class="btn rounded-md bg-indigo-600 py-2 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">View All</button>
                                 </label>
                             </div>
                         </form>
