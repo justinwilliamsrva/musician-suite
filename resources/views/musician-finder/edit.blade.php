@@ -159,6 +159,18 @@
                         <h3 class="font-semibold text-center text-2xl text-gray-800 leading-tight">
                             {{ __('Musicians Needed') }}
                         </h3>
+                        @if(count($gig->bookedMusicians()) > 0)
+                            <div class="mx-auto">
+                                <a href="mailto:{{ implode(', ', $gig->bookedMusicians()) }}">
+                                    <button type="button" class="max-w-fit rounded-md bg-indigo-600 py-1.5 pl-3 pr-4 text-center items-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline w-4 h-4 mb-[2px]">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                            </svg>
+                                        Email Booked Musicians
+                                    </button>
+                                </a>
+                            </div>
+                        @endif
                         <div id="jobs-list" class="flex flex-col space-y-4">
                             @each('components.finder-components.edit-job', $jobsArray, 'job')
                         </div>

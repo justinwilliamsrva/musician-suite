@@ -109,4 +109,16 @@ class Gig extends Model
     {
         return 'http://maps.google.com/?q='.$gig->street_address.', '.$gig->city.', '.$gig->state.' '.$gig->zip_code;
     }
+
+    public function bookedMusicians()
+    {
+        $bookedEmails = [];
+        foreach ($this->jobs as $job) {
+            if ($job->users()->select(['users.*'])->wherePivot('status', 'Booked')->count() > 0) {
+                $bookedEmails[] = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->email;
+            }
+        }
+
+        return $bookedEmails;
+    }
 }
