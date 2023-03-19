@@ -57,6 +57,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'phone_number' => $request->phone_number,
             'instruments' => json_encode($request->instruments),
+            'admin' => 0,
         ]);
 
         event(new Registered($user));
