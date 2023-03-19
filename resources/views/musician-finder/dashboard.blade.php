@@ -21,7 +21,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 lg:divide-[#212121]">
             <!-- All Open Gigs -->
             <div id="openJobs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1 ">
-                <div class="sm:flex sm:items-center min-h-[80px]">
+                <div class="sm:flex sm:justify-between min-h-[80px]">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">Available Gigs</h1>
                         <p class="mt-2 text-sm text-gray-700">List of all open and pending jobs for every instrument.</p>
@@ -42,17 +42,17 @@
                 </div>
                 <div class="mt-8 flow-root @container">
                     <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
+                        <div class="inline-block min-w-full py-2 align-middle @2xl:px-8">
                             <table class="min-w-full divide-y divide-gray-300">
                                 <thead>
                                     @if($openJobs->count() > 0)
                                         <tr>
                                             <th scope="col" class="min-w-[6rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                            <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                            <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                            <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                            <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                             <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
                                             <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                            <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                            <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Status</th>
                                         </tr>
                                     @endif
                                 </thead>
@@ -72,15 +72,15 @@
                                                     <dd class="mt-1 text-gray-500">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</dd>
                                                 </dl>
                                             </td>
-                                            <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                            <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
                                                 {!! date_format($job->gig->start_time, 'D, m/d/y g:i a').$job->gig->getEndTime($job->gig) !!}
                                             </td>
-                                            <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                            <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
                                                 {{ $job->gig->street_address }} <br/> {{ $job->gig->city }}, {{ $job->gig->state }} {{ $job->gig->zip_code }}
                                             </td>
                                             <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ implode(', ', json_decode($job->instruments)) }}</td>
                                             <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</td>
-                                            <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                            <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">
                                                 {{ (count($job->users) > 0) ? 'Pending' : 'Open' }}
                                             </td>
                                         </tr>
@@ -97,7 +97,7 @@
             <div class="order-1 lg:order-2 col-span-1">
                  <!-- All Jobs You Are Performing In -->
                  <div id="userJobs" class="px-6 lg:px-8 col-span-1 pb-6">
-                    <div class="sm:flex sm:items-center min-h-[80px]">
+                    <div class="sm:flex sm:justify-between min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
                             <p class="mt-2 text-sm text-gray-700">List of your upcoming performances whether booked or pending.</p>
@@ -124,11 +124,11 @@
                                         @if($userJobs->count() > 0)
                                             <tr>
                                                 <th scope="col" class="min-w-[6rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                                <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                                <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                                <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                                <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                                 <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
                                                 <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                                <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                                <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Status</th>
                                             </tr>
                                         @endif
                                     </thead>
@@ -142,21 +142,23 @@
                                                         <a href="{{ route('gigs.show', $job->gig->id) }}" class="underline text-blue-500">{{ $job->gig->event_type }}</a>
                                                     @endcan
                                                     <dl class="font-normal @2xl:hidden">
+                                                        <dt class="sr-only">Status</dt>
+                                                        <dd class="mt-1 text-gray-700">{{ ($job->users->first()->pivot->status == 'Applied') ? 'Pending' : 'Booked' }}</dd>
                                                         <dt class="sr-only">Instrument(s)</dt>
-                                                        <dd class="mt-1 text-gray-700">{{ implode(', ', json_decode($job->instruments)) }}</dd>
+                                                        <dd class="mt-1 text-gray-500">{{ implode(', ', json_decode($job->instruments)) }}</dd>
                                                         <dt class="sr-only @lg:hidden">Payment</dt>
                                                         <dd class="mt-1 text-gray-500">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</dd>
                                                     </dl>
                                                 </td>
-                                                <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                                <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
                                                     {!! date_format($job->gig->start_time, 'D, m/d/y g:i a').$job->gig->getEndTime($job->gig) !!}
                                                 </td>
-                                                <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                                <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
                                                     {{ $job->gig->street_address }} <br/> {{ $job->gig->city }}, {{ $job->gig->state }} {{ $job->gig->zip_code }}
                                                 </td>
                                                 <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ implode(', ', json_decode($job->instruments)) }}</td>
                                                 <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</td>
-                                                <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                                <td class="hidden px-1 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">
                                                     {{ ($job->users->first()->pivot->status == 'Applied') ? 'Pending' : 'Booked' }}
                                                 </td>
                                             </tr>
@@ -172,7 +174,7 @@
                 </div>
                  <!-- All Gigs You Are Hosting -->
                  <div id="userGigs" class="px-6 lg:px-8 col-span-1 border-y-2 lg:border-b-0 pb-6 lg:pb-0 border-[#212121] pt-8">
-                    <div class="sm:flex sm:items-center min-h-[80px]">
+                    <div class="sm:flex sm:justify-between min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
                             <p class="mt-2 text-sm text-gray-700">List of upcoming gigs you have created and how many jobs have been filled.</p>
@@ -199,11 +201,11 @@
                                         @if($userGigs->count() > 0)
                                             <tr>
                                                 <th scope="col" class="min-w-[6rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
-                                                <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
-                                                <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                                                <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
+                                                <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                                 <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
                                                 <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                                <th scope="col" class="px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                                                <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Status</th>
                                             </tr>
                                         @endif
                                     </thead>
@@ -214,20 +216,22 @@
                                                     <a href="{{ route('gigs.edit', $gig->id) }}" class="underline text-blue-500">{{ $gig->event_type }}</a>
                                                     <dl class="font-normal @2xl:hidden">
                                                         <dt class="sr-only">Status</dt>
-                                                        <dd class="mt-1 text-gray-700">{{ $gig->getAllInstruments($gig) }}</dd>
+                                                        <dd class="mt-1 text-gray-700"> {{ $gig->numberOfFilledJobs().' Jobs Filled' }}</dd>
+                                                        <dt class="sr-only">Instrument(s)</dt>
+                                                        <dd class="mt-1 text-gray-500">{{ $gig->getAllInstruments($gig) }}</dd>
                                                         <dt class="sr-only @lg:hidden">Payment</dt>
                                                         <dd class="mt-1 text-gray-500">{{ $gig->getPaymentRange($gig) }}</dd>
                                                     </dl>
                                                 </td>
-                                                <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                                <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
                                                 {!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime($gig) !!}
                                                 </td>
-                                                <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                                <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
                                                     {{ $gig->street_address }} <br/> {{ $gig->city }}, {{ $gig->state }} {{ $gig->zip_code }}
                                                 </td>
                                                 <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getAllInstruments($gig) }}</td>
                                                 <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getPaymentRange($gig) }}</td>
-                                                <td class="px-0 sm:px-3 py-4 text-sm text-gray-500 align-top">
+                                                <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">
                                                     {{ $gig->numberOfFilledJobs().' Jobs Filled' }}
                                                 </td>
                                             </tr>
