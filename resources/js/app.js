@@ -110,7 +110,7 @@ $(document).ready(function() {
             return $('#payment-all').parent().css('visibility', 'hidden');
         }
 
-        if ($('payment-all').val() != '') {
+        if ($('payment-all').val()) {
             fillPayoutInfo();
         }
 
