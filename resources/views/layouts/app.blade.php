@@ -33,7 +33,7 @@
                     @endif
                 <!-- Header -->
                 @if (isset($header))
-                    <div class="py-6">
+                    <div class="pt-12 pb-6">
                         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div class="overflow-hidden">
                                 <div class="p-6 text-gray-900">
