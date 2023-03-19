@@ -22,7 +22,7 @@
                         <form action="{{ route('applyToJob', ['job' => $job->id]) }}" method="POST">
                             @csrf
                             <button type="submit" class="max-w-fit rounded-md bg-green-500 py-1.5 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                Apply
+                                Apply to Job
                             </button>
                         </form>
                     @else
