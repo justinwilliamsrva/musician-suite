@@ -34,13 +34,13 @@
                 @if($job['isJobBooked'])
                     <p>{{ $job['userBookedName'] }}</p>
                     <select name="musicians[{{ $musicianNumber }}][fill_status]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <option @if($fillStatus == 'booked') selected @endif value="booked">No Changes Needed</option>
-                        <option @if($fillStatus == 'unfilled') selected @endif value="unfilled">Open Job Back up</option>
+                        <option @if($fillStatus == 'booked') selected @endif value="booked">Keep Booked Musician</option>
+                        <option @if($fillStatus == 'unfilled') selected @endif value="unfilled">Open Job Back Up</option>
                         @if ($job['userBookedName'] != 'Filled Outside CRRVA')
                             <option @if($fillStatus == 'filled') selected @endif value="filled">Filled Outside CRRVA</option>
                         @endif
                         @if ($job['userBookedName'] != Auth::id())
-                            <option @if($fillStatus == 'myself') selected @endif value="myself">Myself</option>
+                            <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
                         <option @if($fillStatus == 'delete') selected @endif value="delete">Delete Job</option>
                     </select>
@@ -54,7 +54,7 @@
                         </optgroup>
                         <optgroup label="Other Options">
                             <option @if($musicianPicked == 'filled') selected @endif value="filled">Filled Outside CRRVA</option>
-                            <option @if($musicianPicked == 'myself') selected @endif value="myself">Myself</option>
+                            <option @if($musicianPicked == 'myself') selected @endif value="myself">Book Myself</option>
                             <option @if($musicianPicked == 'delete') selected @endif value="delete">Delete Job</option>
                         </optgroup>
                     </select>
@@ -62,7 +62,7 @@
                 <select name="musicians[{{ $musicianNumber }}][fill_status]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     <option @if($fillStatus == 'unfilled' || $fillStatus == 'booked' ) selected @endif value="unfilled">Need To Book</option>
                     <option @if($fillStatus == 'filled') selected @endif value="filled">Filled Outside CRRVA</option>
-                    <option @if($fillStatus == 'myself') selected @endif value="myself">Myself</option>
+                    <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                     <option @if($fillStatus == 'delete') selected @endif value="delete">Delete Job</option>
                 </select>
                 @endif
