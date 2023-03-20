@@ -26,8 +26,8 @@
                         <h1 class="text-xl font-semibold text-gray-900">Available Gigs</h1>
                         <p class="mt-2 text-sm text-gray-700">List of all open and pending jobs for every instrument.</p>
                     </div>
-                    <form id="openGigsFilter" action="{{ route('musician-finder.dashboard') }}#openJobs" method="GET">
-                        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                    <form class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none" id="openGigsFilter" action="{{ route('musician-finder.dashboard') }}#openJobs" method="GET">
+                        <div>
                             <label for="instrument_match" class="cursor-pointer">
                                 <input type="hidden" name="user_jobs_show_all" value="{{ $filteredData['user_jobs_show_all'] }}">
                                 <input type="hidden" name="user_gigs_show_all" value="{{ $filteredData['user_gigs_show_all'] }}">
@@ -42,7 +42,7 @@
                 </div>
                 <div class="mt-8 flow-root @container">
                     <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle @2xl:px-8">
+                        <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
                             <table class="min-w-full divide-y divide-gray-300">
                                 <thead>
                                     @if($openJobs->count() > 0)
@@ -102,8 +102,8 @@
                             <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
                             <p class="mt-2 text-sm text-gray-700">List of your upcoming performances whether booked or pending.</p>
                         </div>
-                        <form id="userJobsFilter" action="{{ route('musician-finder.dashboard') }}#userJobs" method="GET">
-                            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                        <form class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none" id="userJobsFilter" action="{{ route('musician-finder.dashboard') }}#userJobs" method="GET">
+                            <div>
                                 <label for="user_jobs_show_all" class="cursor-pointer">
                                     <input type="hidden" name="instrument_match" value="{{ $filteredData['instrument_match'] }}">
                                     <input type="hidden" name="user_gigs_show_all" value="{{ $filteredData['user_gigs_show_all'] }}">
@@ -179,8 +179,8 @@
                             <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
                             <p class="mt-2 text-sm text-gray-700">List of upcoming gigs you have created and how many jobs have been filled.</p>
                         </div>
-                        <form id="userGigsFilter" action="{{ route('musician-finder.dashboard') }}#userGigs" method="GET">
-                            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                        <form class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none" id="userGigsFilter" action="{{ route('musician-finder.dashboard') }}#userGigs" method="GET">
+                            <div>
                                 <label for="user_gigs_show_all" class="cursor-pointer">
                                     <input type="hidden" name="instrument_match" value="{{ $filteredData['instrument_match'] }}">
                                     <input type="hidden" name="user_jobs_show_all" value="{{ $filteredData['user_jobs_show_all'] }}">
