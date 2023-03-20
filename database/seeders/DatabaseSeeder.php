@@ -19,41 +19,44 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory()->create(['name' => 'Filled Outside CRRVA', 'email' => 'filledoutsideCRRVA@gmail.com', 'admin' => true, 'instruments' => json_encode([])]);
-        User::factory()->create(['name' => 'TestingAdmin', 'email' => 'testingadmin@testing.com', 'admin' => true]);
-        User::factory()->create(['name' => 'Testing', 'email' => 'testing@testing.com', 'admin' => false]);
         User::factory()->create(['name' => 'Justin Williams', 'email' => 'justinwdev@gmail.com', 'admin' => true]);
-        User::factory()->create(['name' => 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com']);
-        User::factory(7)->create();
+        User::factory()->create(['name' => 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true]);
 
-        $allUsersMinusOne = User::offset(1)->limit(11)->get();
+        if (config('app.env') != 'production') {
+            User::factory()->create(['name' => 'TestingAdmin', 'email' => 'testingadmin@testing.com', 'admin' => true]);
+            User::factory()->create(['name' => 'Testing', 'email' => 'testing@testing.com', 'admin' => false]);
+            User::factory(7)->create();
 
-        $allUsersMinusOne->each(function ($user) {
-            Gig::factory(2)->create([
-                'user_id' => $user->id,
-            ]);
-        });
+            $allUsersMinusOne = User::offset(1)->limit(11)->get();
 
-        Gig::all()->each(function ($gig) {
-            $randomNumber = rand(1, 4);
-            Job::factory($randomNumber)->create([
-                'gig_id' => $gig->id,
-            ]);
-        });
+            $allUsersMinusOne->each(function ($user) {
+                Gig::factory(2)->create([
+                    'user_id' => $user->id,
+                ]);
+            });
 
-        Job::all()->each(function ($job) {
-            $randomNumber = rand(1, 2);
-            if ($randomNumber == 1) {
-                $gigId = $job->gig_id;
-                $restrictedUserId[] = Gig::find($gigId)->user_id;
-                $restrictedUserId[] = 1;
-                for ($i = 0; $i < 2; $i++) {
+            Gig::all()->each(function ($gig) {
+                $randomNumber = rand(1, 4);
+                Job::factory($randomNumber)->create([
+                    'gig_id' => $gig->id,
+                ]);
+            });
+
+            Job::all()->each(function ($job) {
+                $randomNumber = rand(1, 2);
+                if ($randomNumber == 1) {
+                    $gigId = $job->gig_id;
+                    $restrictedUserId[] = Gig::find($gigId)->user_id;
+                    $restrictedUserId[] = 1;
+                    for ($i = 0; $i < 2; $i++) {
+                        $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
+                        $job->users()->attach($userId, ['status' => 'Applied']);
+                        $restrictedUserId[] = $userId;
+                    }
                     $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
-                    $job->users()->attach($userId, ['status' => 'Applied']);
-                    $restrictedUserId[] = $userId;
+                    $job->users()->attach($userId, ['status' => Arr::Random(['Applied', 'Booked'])]);
                 }
-                $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
-                $job->users()->attach($userId, ['status' => Arr::Random(['Applied', 'Booked'])]);
-            }
-        });
+            });
+        }
     }
 }
