@@ -126,13 +126,34 @@ class GigController extends Controller
             'musician-number' => 'numeric',
             'state' => ['required', Rule::in(config('gigs.states'))],
             'zip_code' => 'required|digits:5|integer',
+            'payment-all' => 'required_if:payment-method,same',
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|max:6',
             'musicians.*.fill_status' => 'required|string',
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
+        ], [
+            'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
+
+            'musicians.*.instruments.required' => 'The instruments field is required.',
+            'musicians.*.instruments.array' => 'The instruments field must be an array.',
+            'musicians.*.instruments.min' => 'The instruments field must have at least :min items.',
+            'musicians.*.instruments.max' => 'The instruments field may not have more than :max items.',
+            'musicians.*.instruments.in' => 'The instruments field contains an invalid value.',
+
+            'musicians.*.fill_status.required' => 'The fill status field is required.',
+            'musicians.*.fill_status.string' => 'The fill status field must be a string.',
+
+            'musicians.*.payment.required' => 'The payment field is required.',
+            'musicians.*.payment.numeric' => 'The payment field must be a number.',
+            'musicians.*.payment.min' => 'The payment field must be at least :min.',
+
+            'musicians.*.extra_info.string' => 'The extra info field must be a string.',
+            'musicians.*.extra_info.min' => 'The extra info field must be at least :min characters.',
+            'musicians.*.extra_info.max' => 'The extra info field may not be greater than :max characters.',
         ]);
+
         $gig = Gig::create([
             'event_type' => $validated['event_type'],
             'start_time' => $validated['start_date_time'],
