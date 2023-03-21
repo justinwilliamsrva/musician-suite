@@ -385,7 +385,7 @@ class GigController extends Controller
         $this->authorize('apply-to-job', $job);
         $job->users()->attach(Auth::id(), ['status' => 'Applied']);
 
-        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the gig successfully');
+        return redirect()->back()->with('success', 'You\'ve applied to the gig successfully');
     }
 
     public function applyToJobGet()
@@ -402,13 +402,13 @@ class GigController extends Controller
 
         $job->users()->attach($user->id, ['status' => 'Applied']);
 
-        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve applied to the gig successfully.');
+        return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', 'You\'ve applied to the gig successfully.');
     }
 
     public function removeApp(Job $job)
     {
         $job->users()->detach(Auth::id());
 
-        return redirect()->route('musician-finder.dashboard')->with('success', 'You\'ve successfully removed your application.');
+        return redirect()->back()->with('success', 'You\'ve successfully removed your application.');
     }
 }
