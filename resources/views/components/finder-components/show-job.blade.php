@@ -10,7 +10,7 @@
                 @if($job->jobHasBeenBooked($job))
                     <p>{{ $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->name }}</p>
                 @elseif($job->users->contains(Auth::user()))
-                    <p>Already Applied</p>
+                    <p>Applied</p>
                     <form id="remove-application-form" action="{{ route('removeApp', ['job' => $job->id]) }}" method="POST">
                         @csrf
                         <button type="button" id="remove-application-button" class="max-w-fit rounded-md bg-red-500 py-1.5 px-4 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
