@@ -62,6 +62,7 @@
                 @else
                     <select name="musicians[{{ $musicianNumber }}][fill_status]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option @if($fillStatus == 'unfilled' || $fillStatus == 'booked' ) selected @endif value="unfilled">Need To Book</option>
+                        <option disabled>----------------</option>
                         <option @if($fillStatus == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                         <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         <option @if($fillStatus == 'delete') selected @endif value="delete">Delete Job</option>
