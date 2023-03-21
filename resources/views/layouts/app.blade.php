@@ -31,6 +31,13 @@
                             </div>
                         </div>
                     @endif
+                    @if($errors->any())
+                        <div class="absolute top-20 left-0 right-0 flex justify-center mt-4">
+                            <div class="min-w-[250px] bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center" role="alert">
+                                <strong class="font-bold">Invalid Information Entered</strong>
+                            </div>
+                        </div>
+                    @endif
                 <!-- Header -->
                 @if (isset($header))
                     <div class="pt-12 pb-6">
