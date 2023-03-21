@@ -367,7 +367,9 @@ class GigController extends Controller
      */
     public function destroy(Gig $gig)
     {
-        $this->authorize('update', $gig);
+        if (Auth::user()->admin != 1) {
+            $this->authorize('update', $gig);
+        }
 
         Job::where('gig_id', $gig->id)->each(function ($job) {
             $job->users()->detach();
