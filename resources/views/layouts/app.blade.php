@@ -18,7 +18,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased bg-[#212121]">
         <div class="min-h-screen bg-gray-100 flex flex-col overflow-y-auto">
             <div class="flex-1 pb-4">
                 <!-- Navigation -->
