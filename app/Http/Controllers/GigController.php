@@ -136,11 +136,11 @@ class GigController extends Controller
         ], [
             'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
 
-            'musicians.*.instruments.required' => 'The instruments field is required.',
-            'musicians.*.instruments.array' => 'The instruments field must be an array.',
-            'musicians.*.instruments.min' => 'The instruments field must have at least :min items.',
-            'musicians.*.instruments.max' => 'The instruments field may not have more than :max items.',
-            'musicians.*.instruments.in' => 'The instruments field contains an invalid value.',
+            'musicians.*.instruments.required' => 'The instrument field is required.',
+            'musicians.*.instruments.array' => 'The instrument field must be an array.',
+            'musicians.*.instruments.min' => 'The instrument field must have at least :min items.',
+            'musicians.*.instruments.max' => 'The instrument field may not have more than :max items.',
+            'musicians.*.instruments.in' => 'The instrument field contains an invalid value.',
 
             'musicians.*.fill_status.required' => 'The fill status field is required.',
             'musicians.*.fill_status.string' => 'The fill status field must be a string.',
@@ -259,11 +259,38 @@ class GigController extends Controller
             'end_date_time' => 'required|date|after_or_equal:start_date_time',
             'street_address' => 'required|string|min:3|max:255',
             'city' => 'required|string|max:30',
+            'payment-all' => 'required_if:payment-method,same',
             'musician-number' => 'numeric',
             'state' => ['required', Rule::in(config('gigs.states'))],
             'zip_code' => 'required|digits:5|integer',
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|min:1|max:6',
+            'musicians.*.fill_status' => 'sometimes|string|max:15',
+            'musicians.*.musician_picked' => 'sometimes|string|max:15',
+            'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
+            'musicians.*.payment' => 'required|numeric|min:0',
+            'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
+        ], [
+            'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
+
+            'musicians.*.instruments.required' => 'The instrument field is required.',
+            'musicians.*.instruments.array' => 'The instrument field must be an array.',
+            'musicians.*.instruments.min' => 'The instrument field must have at least :min items.',
+            'musicians.*.instruments.max' => 'The instrument field may not have more than :max items.',
+            'musicians.*.instruments.in' => 'The instrument field contains an invalid value.',
+
+            'musicians.*.fill_status.string' => 'This field must be a string.',
+            'musicians.*.fill_status.max' => 'This field may not have more than :max items',
+            'musicians.*.musician_picked.string' => 'This field must be a string.',
+            'musicians.*.musician_picked.max' => 'This field may not have more than :max items',
+
+            'musicians.*.payment.required' => 'The payment field is required.',
+            'musicians.*.payment.numeric' => 'The payment field must be a number.',
+            'musicians.*.payment.min' => 'The payment field must be at least :min.',
+
+            'musicians.*.extra_info.string' => 'The extra info field must be a string.',
+            'musicians.*.extra_info.min' => 'The extra info field must be at least :min characters.',
+            'musicians.*.extra_info.max' => 'The extra info field may not be greater than :max characters.',
         ]);
 
         $gig->fill([
@@ -293,16 +320,6 @@ class GigController extends Controller
 
                 continue;
             }
-
-            // Validate Current Musician
-            $request->validate([
-                'musicians.'.$key.'.id' => 'numeric|nullable',
-                'musicians.'.$key.'.fill_status' => 'string|nullable|max:15',
-                'musicians.'.$key.'.musician_picked' => 'string|nullable|max:15',
-                'musicians.'.$key.'.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
-                'musicians.'.$key.'.payment' => 'required|numeric|min:0',
-                'musicians.'.$key.'.extra_info' => 'string|min:3|max:255|nullable',
-            ]);
 
             // Create for update Jobs
             $newJob = Job::updateOrCreate([

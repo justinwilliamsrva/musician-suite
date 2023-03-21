@@ -2,6 +2,21 @@
     $oldMusicians = old('musicians', []);
     $numberOfMusicians = (count($oldMusicians) > 0) ? count($oldMusicians) : $gig->jobs->count();
     $jobsArray = (count($oldMusicians) > 0) ? $oldMusicians : $jobsArray;
+    $isPaymentSameTrue = old('payment-method') == 'same' || !str_contains($gig->getPaymentRange($gig), '-');
+
+    if ($errors->any()) {
+        $errorBag = session()->get('errors')->getBag('default')->toArray();
+        $musiciansErrors = [];
+        foreach ($errorBag as $key => $messages) {
+            if (preg_match('/^musicians\.\d+/', $key)) {
+                $parts = explode('.', $key);
+                $index = $parts[1];
+                $field = $parts[2];
+                $jobsArray[$index]['errors'][$field] = $messages[0];
+            }
+        }
+    };
+
 @endphp
 
 <x-app-layout>
@@ -28,15 +43,6 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         <div class="mt-5 md:col-span-2 md:mt-0">
             <form action="{{ route('gigs.update', ['gig' => $gig->id]) }}" method="POST" id="update-gig-form">
                 @csrf
@@ -53,45 +59,66 @@
                                     <label for="event_type" class="block text-sm font-medium text-gray-700">
                                         Event Type
                                     </label>
-                                    <input type="text" name="event_type" id="event_type" value="{{ old('event_type', $gig->event_type) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <input type="text" name="event_type" id="event_type" value="{{ old('event_type', $gig->event_type) }}" class="@error('event_type') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    @error('event_type')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
                                         Start Date/Time
                                     </label>
                                     <input type="datetime-local" name="start_date_time" id="start_date_time" autocomplete="given-name"
-                                        value="{{ old('start_date_time', $gig->start_time) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('start_date_time', $gig->start_time) }}" class="@error('start_date_time') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    @error('start_date_time')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="end_date_time" class="block text-sm font-medium text-gray-700">
                                         End Date/Time
                                     </label>
                                     <input type="datetime-local" name="end_date_time" id="end_date_time" autocomplete="given-name"
-                                     value="{{ old('end_date_time', $gig->end_time) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('end_date_time', $gig->end_time) }}" class="@error('end_date_time') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    @error('end_date_time')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!-- ROW 2 -->
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="street_address" class="block text-sm font-medium text-gray-700">Street address</label>
-                                    <input type="text" value="{{ old('street_address', $gig->street_address) }}" name="street_address" id="street-address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <input type="text" value="{{ old('street_address', $gig->street_address) }}" name="street_address" id="street-address" class="@error('street_address') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    @error('street_address')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="city" class="block text-sm font-medium text-gray-700">City</label>
                                     <input type="text" name="city" id="city"
-                                      value="{{ old('city', $gig->city) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                          value="{{ old('city', $gig->city) }}" class="@error('city') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    @error('city')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="state" class="block text-sm font-medium text-gray-700">State</label>
-                                    <select name="state" id="state" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    <select name="state" id="state" class="@error('state') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         @foreach(config('gigs.states') as $state)
                                                 <option value="{{ $state }}" @if($state == old('state', $gig->state)) selected @endif>{{ $state }}</option>
                                         @endforeach
                                     </select>
+                                    @error('state')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="zip_code" class="block text-sm font-medium text-gray-700">ZIP /
                                         Postal code</label>
                                     <input type="text" name="zip_code" id="zip-code"
-                                        value="{{ old('zip_code', $gig->zip_code) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('zip_code', $gig->zip_code) }}" class="@error('zip_code') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                    @error('zip_code')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <!-- ROW 3 -->
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -99,20 +126,23 @@
                                     <label class="block text-sm font-medium text-gray-700">Will all musicians receive the same payment?</label>
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Payment Question</legend>
-                                        <div class="flex items-center space-y-0 space-x-10">
+                                        <div class="flex items-center space-y-0 space-x-5 sm:space-x-3 md:space-x-10">
                                             <div class="flex items-center">
-                                                <input {{ (old('payment-method') == 'same' || !str_contains($gig->getPaymentRange($gig), '-')) ? 'checked' : '' }} id="payment-method-yes" name="payment-method" value="same" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input {{ ($isPaymentSameTrue)  ? 'checked' : '' }} id="payment-method-yes" name="payment-method" value="same" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-yes" class="ml-3 block text-sm font-medium text-gray-700">Yes</label>
                                             </div>
                                             <div class="flex items-center">
-                                                <input {{ old('payment-method') == 'mixed' || str_contains($gig->getPaymentRange($gig), '-') ? 'checked' : '' }} id="payment-method-no" name="payment-method" value="mixed" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                                <input {{ (!$isPaymentSameTrue) ? 'checked' : '' }} id="payment-method-no" name="payment-method" value="mixed" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                                 <label for="payment-method-no" class="ml-3 block text-sm font-medium text-gray-700">No</label>
                                             </div>
                                             <div class="flex items-center">
                                                 <label for="payment-all" class="mr-1 block text-sm font-medium text-gray-700">Payment</label>
-                                                <input id="payment-all" name="payment-all" value="{{ old('payment-all', (!str_contains($gig->getPaymentRange($gig), '-')) ? ltrim($gig->getPaymentRange($gig), '$') : '' )}}" type="number" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input id="payment-all" name="payment-all" value="{{ old('payment-all', (!str_contains($gig->getPaymentRange($gig), '-')) ? ltrim($gig->getPaymentRange($gig), '$') : '' )}}" type="number" min="0" class="@error('payment') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
+                                        @error('payment-all')
+                                            <div class="alert text-red-500">{{ $message }}</div>
+                                         @enderror
                                     </fieldset>
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -120,7 +150,7 @@
                                     <label for="city" class="block text-sm font-medium text-gray-700">How many musicians do you need to book?</label>
                                     <fieldset class="mt-2">
                                         <legend class="sr-only">Musicians</legend>
-                                        <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
+                                        <div class="grid grid-cols-3 gap-3 sm:gap-1 md:gap-3 sm:grid-cols-6">
                                             <label class="{{ ($numberOfMusicians == 1) ? 'border-indigo-700 musician-number-button cursor-pointer hover:border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
                                                 <input type="radio" @if ($numberOfMusicians == 1) name="musician-number" @endif value="1" class="sr-only" aria-labelledby="musician-number-1-label">
                                                 <span id="musician-number-1-label">1</span>
@@ -150,7 +180,10 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea id="description" name="description"class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ old('description') }}</textarea>
+                                    <textarea id="description" name="description"class="@error('description') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ old('description') }}</textarea>
+                                    @error('description')
+                                        <div class="alert text-red-500">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

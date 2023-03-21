@@ -1,55 +1,52 @@
-@props(['$job', 'musicianNumber', '$payment'])
+@props(['$job', '$musicianNumber', '$payment'])
 
 @php
-    $job = $job ?? [
-        'isJobBooked' => false,
-        'userBookedName' => '',
-        'userBookedID' => '',
-        'numberOfJobApplicants' => 0,
-        'users' => json_encode([]),
-        'instruments' => [],
-        'extra_info' => '',
-        'fill_status' => '',
-    ];
     $musicianNumber = $musicianNumber ?? $key;
     $jobId = $job['id'] ?? null;
+    $isJobBooked = $job['isJobBooked'] ?? false;
+    $userBookedName = $job['userBookedName'] ?? '';
+    $userBookedID = $job['userBookedID'] ?? '';
+    $numberOfJobApplicants = $job['numberOfJobApplicants'] ?? 0;
     $musicianPicked = $job['musician_picked'] ?? '';
     $fillStatus = $job['fill_status'] ?? 'booked';
+    $jobInstruments = $job['instruments'] ?? [];
+    $jobUsers = $job['users'] ?? json_encode([]);
+    $extra_info = $job['extra_info'] ?? '';
+    $errors = $job['errors'] ?? [];
 @endphp
 
 <input type="hidden" name="musicians[{{ $musicianNumber }}][id]" value="{{ $jobId }}" />
-<input type="hidden" name="musicians[{{ $musicianNumber }}][isJobBooked]" value="{{ $job['isJobBooked'] }}" />
-<input type="hidden" name="musicians[{{ $musicianNumber }}][userBookedName]" value="{{ $job['userBookedName'] }}" />
-<input type="hidden" name="musicians[{{ $musicianNumber }}][userBookedID]" value="{{ $job['userBookedID'] }}" />
-<input type="hidden" name="musicians[{{ $musicianNumber }}][numberOfJobApplicants]" value="{{ $job['numberOfJobApplicants'] }}" />
-<input type="hidden" name="musicians[{{ $musicianNumber }}][users]" value="{{ $job['users'] }}" />
+<input type="hidden" name="musicians[{{ $musicianNumber }}][isJobBooked]" value="{{ $isJobBooked }}" />
+<input type="hidden" name="musicians[{{ $musicianNumber }}][userBookedName]" value="{{ $userBookedName }}" />
+<input type="hidden" name="musicians[{{ $musicianNumber }}][userBookedID]" value="{{ $userBookedID }}" />
+<input type="hidden" name="musicians[{{ $musicianNumber }}][numberOfJobApplicants]" value="{{ $numberOfJobApplicants }}" />
+<input type="hidden" name="musicians[{{ $musicianNumber }}][users]" value="{{ $jobUsers }}" />
 
 <div class="overflow-hidden shadow sm:rounded-md more-job-template">
     <div class="bg-white px-4 py-5 sm:p-6">
         <div class="grid grid-cols-6 gap-6">
             <div class="col-span-6 sm:col-span-2 lg:col-span-1">
                 <label for="musician_name" class="block text-sm font-medium text-gray-700">
-                    Musician #{{ isset($key) ? $key + 1: $musicianNumber + 1 }}
+                    Musician #{{ isset($key) ? (int) $key + 1: (int) $musicianNumber + 1 }}
                 </label>
-                @if($job['isJobBooked'])
-                    <p>{{ $job['userBookedName'] }}</p>
-                    <select name="musicians[{{ $musicianNumber }}][fill_status]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <option @if($fillStatus == 'booked') selected @endif value="booked">Keep Booked Musician</option>
+                @if($isJobBooked)
+                    <select name="musicians[{{ $musicianNumber }}][fill_status]" class="@if(isset($errors['fill_status'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <option @if($fillStatus == 'booked') selected @endif value="booked">{{ $userBookedName }}</option>
                         <option disabled>----------------</option>
                         <option @if($fillStatus == 'unfilled') selected @endif value="unfilled">Open Job Back Up</option>
-                        @if ($job['userBookedName'] != 'Filled Outside CRRVA')
+                        @if ($userBookedName != 'Filled Outside CRRVA')
                             <option @if($fillStatus == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                         @endif
-                        @if ($job['userBookedName'] != Auth::id())
+                        @if ($userBookedName != Auth::id())
                             <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
                         <option @if($fillStatus == 'delete') selected @endif value="delete">Delete Job</option>
                     </select>
-                @elseif($job['numberOfJobApplicants'] > 0)
-                    <select name="musicians[{{ $musicianNumber }}][musician_picked]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @elseif($numberOfJobApplicants > 0)
+                    <select name="musicians[{{ $musicianNumber }}][musician_picked]" class="@if(isset($errors['musician_picked'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option @if($musicianPicked == 'booked') selected @endif value="booked">Select a Applicant</option>
                         <optgroup label="Applicants">
-                            @foreach(json_decode($job['users'], true) as $user)
+                            @foreach(json_decode($jobUsers, true) as $user)
                                 <option @if($musicianPicked == $user['id']) selected @endif value="{{ $user['id'] }}">{{ $user['name'] }}</option>
                             @endforeach
                         </optgroup>
@@ -60,7 +57,7 @@
                         </optgroup>
                     </select>
                 @else
-                    <select name="musicians[{{ $musicianNumber }}][fill_status]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    <select name="musicians[{{ $musicianNumber }}][fill_status]" class="@if(isset($errors['fill_status'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                         <option @if($fillStatus == 'unfilled' || $fillStatus == 'booked' ) selected @endif value="unfilled">Need To Book</option>
                         <option disabled>----------------</option>
                         <option @if($fillStatus == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
@@ -68,26 +65,40 @@
                         <option @if($fillStatus == 'delete') selected @endif value="delete">Delete Job</option>
                     </select>
                 @endif
+                @if(isset($errors['fill_status']))
+                    <div class="alert text-red-500">{{ $errors['fill_status'] }}</div>
+                @elseif(isset($errors['musician_picked']))
+                    <div class="alert text-red-500">{{ $errors['musician_picked'] }}</div>
+                @endif
             </div>
             <div class="col-span-3 sm:col-span-2 lg:col-span-1">
                 <label for="instrument" class="block text-sm font-medium text-gray-700">
                     Instrument(s)
                 </label>
-                <select id="{{ 'select'.$musicianNumber }}" name="musicians[{{ $musicianNumber }}][instruments][]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <select id="{{ 'select'.$musicianNumber }}" name="musicians[{{ $musicianNumber }}][instruments][]" multiple="multiple" id="instrument" class="@if(isset($errors['instruments'])) input-validation-error @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     @foreach(config('gigs.instruments') as $instrument)
-                        <option value="{{ $instrument }}" @if(in_array($instrument, ($job['instruments'] ?? []))) selected @endif>{{ $instrument }}</option>
+                        <option value="{{ $instrument }}" @if(in_array($instrument, ($jobInstruments ?? []))) selected @endif>{{ $instrument }}</option>
                     @endforeach
                 </select>
+                @if(isset($errors['instruments']))
+                    <div class="alert text-red-500">{{ $errors['instruments'] }}</div>
+                @endif
             </div>
             <div class="col-span-3 sm:col-span-2 lg:col-span-1">
                 <label for="payment-for-job" class="block text-sm font-medium text-gray-700">
                     Payment
                 </label>
-                <input id="payment-for-job" name="musicians[{{ $musicianNumber }}][payment]" value="{{ $job['payment'] ?? ($payment ?? '') }}" type="number" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <input id="payment-for-job" name="musicians[{{ $musicianNumber }}][payment]" value="{{ $job['payment'] ?? ($payment ?? '') }}" type="number" min="0" class="@if(isset($errors['payment'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @if(isset($errors['payment']))
+                    <div class="alert text-red-500">{{ $errors['payment'] }}</div>
+                @endif
             </div>
             <div class="col-span-6 lg:col-span-3">
                 <label for="extra_info" class="block text-sm font-medium text-gray-700">Extra Details</label>
-                <input type="text" value="{{ $job['extra_info'] }}" name="musicians[{{ $musicianNumber }}][extra_info]" id="extra_info" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <input type="text" value="{{ $extra_info }}" name="musicians[{{ $musicianNumber }}][extra_info]" id="extra_info" class="@if(isset($errors['extra_info'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                @if(isset($errors['extra_info']))
+                    <div class="alert text-red-500">{{ $errors['extra_info'] }}</div>
+                @endif
             </div>
         </div>
     </div>
