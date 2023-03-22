@@ -1,8 +1,12 @@
 <x-app-layout>
-<x-slot name="header">
+    <x-slot name="title">
+            {{ 'Update Profile' }}
+    </x-slot>
+
+    <x-slot name="header">
         <div class="flex flex-col justify-center">
             <h2 class="font-semibold text-center text-3xl text-gray-800 leading-tight">
-                {{ __('Profile') }}
+                {{ __('Update Profile') }}
             </h2>
         </div>
     </x-slot>

@@ -20,6 +20,10 @@
 @endphp
 
 <x-app-layout>
+    <x-slot name="title">
+            {{ 'Update Your '.$gig->event_type }}
+    </x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col justify-center">
             <h2 class="font-semibold text-center text-3xl text-gray-800 leading-tight">
