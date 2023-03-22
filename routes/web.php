@@ -34,7 +34,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
     Route::get('/new-job-component', function () {
         $number = request()->query('number', 1);
         $payment = request()->query('payment', '');
@@ -62,7 +61,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::fallback(function () {
         return redirect('/dashboard');
     });
-
 });
 
 require __DIR__.'/auth.php';
