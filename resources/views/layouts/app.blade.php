@@ -7,6 +7,8 @@
 
         <title>{{ isset($title) ? $title.' - Classical Connection RVA' : 'Classical Connection RVA' }}</title>
 
+        <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;400&display=swap" />
