@@ -19,7 +19,7 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -33,34 +33,36 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-Route::get('/new-job-component', function () {
-    $number = request()->query('number', 1);
-    $payment = request()->query('payment', '');
 
-    $data = array_filter([
-        'musicianNumber' => $number,
-        'payment' => $payment,
-    ]);
+    Route::get('/new-job-component', function () {
+        $number = request()->query('number', 1);
+        $payment = request()->query('payment', '');
 
-    return view('components.finder-components.new-job', $data)->render();
-});
+        $data = array_filter([
+            'musicianNumber' => $number,
+            'payment' => $payment,
+        ]);
 
-Route::get('/edit-job-component', function () {
-    $number = request()->query('number', 1);
-    $payment = request()->query('payment', '');
+        return view('components.finder-components.new-job', $data)->render();
+    });
 
-    $data = array_filter([
-        'musicianNumber' => $number - 1,
-        'payment' => $payment,
-    ]);
+    Route::get('/edit-job-component', function () {
+        $number = request()->query('number', 1);
+        $payment = request()->query('payment', '');
 
-    return view('components.finder-components.edit-job', $data)->render();
-});
+        $data = array_filter([
+            'musicianNumber' => $number - 1,
+            'payment' => $payment,
+        ]);
 
-Route::fallback(function () {
-    return redirect('/dashboard');
+        return view('components.finder-components.edit-job', $data)->render();
+    });
+
+    Route::fallback(function () {
+        return redirect('/dashboard');
+    });
+
 });
 
 require __DIR__.'/auth.php';

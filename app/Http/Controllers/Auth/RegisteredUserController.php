@@ -40,15 +40,23 @@ class RegisteredUserController extends Controller
                 'string',
                 'email',
                 'max:255',
-                'unique:'.User::class,
+                Rule::unique('users')->where(function ($query) {
+                    $query->whereNotNull('email_verified_at');
+                }),
                 Rule::exists('emails')->where(function ($query) use ($email) {
                     $query->where('email', $email);
                 })],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'phone_number' => ['required', 'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/', 'unique:'.User::class],
+            'phone_number' => [
+                'required',
+                'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/',
+                Rule::unique('users')->where(function ($query) {
+                    $query->whereNotNull('email_verified_at');
+                }),
+            ],
             'instruments' => ['required', 'array', 'min:1', 'max:10'],
         ], [
-            'email.exists' => 'This email is not in CRRVA\'s database. Please contact info@classicalrevolutionrva.com to add this email address or register under a different email address.',
+            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact justinwdev@gmail.com to add this email address to the database.',
         ]);
 
         $user = User::create([
@@ -59,6 +67,8 @@ class RegisteredUserController extends Controller
             'instruments' => json_encode($request->instruments),
             'admin' => 0,
         ]);
+
+        $user->sendEmailVerificationNotification();
 
         event(new Registered($user));
 

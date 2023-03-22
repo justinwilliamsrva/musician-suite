@@ -54,9 +54,9 @@
             <x-input-label for="password_confirmation" :value="__('What Instruments Do You Play?')" />
 
             <select id="select2" name="instruments[]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    @foreach(config('gigs.instruments') as $instrument)
-                        <option value="{{ $instrument }}">{{ $instrument }}</option>
-                    @endforeach
+                @foreach(config('gigs.instruments') as $instrument)
+                    <option @if(in_array($instrument, (old('instruments') ?? []))) selected @endif value="{{ $instrument }}">{{ $instrument }}</option>
+                @endforeach
             </select>
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
