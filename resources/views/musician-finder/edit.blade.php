@@ -212,13 +212,13 @@
                             @each('components.finder-components.edit-job', $jobsArray, 'job')
                         </div>
                     </div>
-                    <div class="flex justify-between">
-                    <button type="button" id="delete-gig-button" class="inline-flex items-center rounded-md border border-gray-300 bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Delete Gig
-                    </button>
-                    <button type="submit" id="update-gig-button" class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Save
-                    </button>
+                    <div class="flex justify-between mx-4 sm:mx-0">
+                        <button type="button" id="delete-gig-button" class="inline-flex items-center rounded-md border border-gray-300 bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            Delete Gig
+                        </button>
+                        <button type="submit" id="update-gig-button" class="min-w-[110px] items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            Save
+                        </button>
                     </div>
                 </div>
             </form>
