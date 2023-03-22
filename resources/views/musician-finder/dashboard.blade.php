@@ -221,8 +221,6 @@
                                                     <dl class="font-normal @2xl:hidden">
                                                         <dt class="sr-only">Status</dt>
                                                         <dd class="mt-1 text-gray-700"> {{ $gig->numberOfFilledJobs().' Jobs Filled' }}</dd>
-                                                        <dt class="sr-only">Instrument(s)</dt>
-                                                        <dd class="mt-1 text-gray-500">{{ $gig->getAllInstruments($gig) }}</dd>
                                                         <dt class="sr-only @lg:hidden">Payment</dt>
                                                         <dd class="mt-1 text-gray-500">{{ $gig->getPaymentRange($gig) }}</dd>
                                                     </dl>
