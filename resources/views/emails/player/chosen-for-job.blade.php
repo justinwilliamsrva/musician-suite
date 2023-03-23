@@ -23,8 +23,8 @@
     @if($job->gig->description)
         <p><strong>Description:</strong> {{ $job->gig->description }}</p>
     @endif
-    @if($job->gig->extra_details)
-        <p><strong>extra_details:</strong> {{ $job->gig->extra_details }}</p>
+    @if($job->extra_info)
+        <p><strong>extra_info:</strong> {{ $job->extra_info }}</p>
     @endif
 
     <h3>Host</h3>
