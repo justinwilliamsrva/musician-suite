@@ -40,7 +40,7 @@
                         @if ($userBookedName != Auth::id())
                             <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
-                        <option @if($fillStatus == 'delete') selected @endif value="delete">Delete Job</option>
+                        <option @if($fillStatus == 'delete') selected @endif value="delete">Remove Musician</option>
                     </select>
                 @elseif($numberOfJobApplicants > 0)
                     <select name="musicians[{{ $musicianNumber }}][musician_picked]" class="@if(isset($errors['musician_picked'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
@@ -52,7 +52,7 @@
                         <option disabled>---Other Options---</option>
                         <option @if($musicianPicked == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                         <option @if($musicianPicked == 'myself') selected @endif value="myself">Book Myself</option>
-                        <option @if($musicianPicked == 'delete') selected @endif value="delete">Delete Job</option>
+                        <option @if($musicianPicked == 'delete') selected @endif value="delete">Remove Musician</option>
                     </select>
                 @else
                     <select name="musicians[{{ $musicianNumber }}][fill_status]" class="@if(isset($errors['fill_status'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
@@ -60,7 +60,7 @@
                         <option disabled>---Other Options---</option>
                         <option @if($fillStatus == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                         <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
-                        <option @if($fillStatus == 'delete') selected @endif value="delete">Delete Job</option>
+                        <option @if($fillStatus == 'delete') selected @endif value="delete">Remove Musician</option>
                     </select>
                 @endif
                 @if(isset($errors['fill_status']))
