@@ -290,6 +290,10 @@ class GigController extends Controller
                     continue;
                 }
 
+                if (count($request->input('musicians')) <= 1) {
+                    continue;
+                }
+
                 $jobToDelete = Job::find($job['id']);
                 $jobToDelete->users()->detach();
                 Job::destroy($jobToDelete->id);
