@@ -265,7 +265,7 @@ class GigController extends Controller
             'zip_code' => 'required|digits:5|integer',
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|min:1|max:6',
-            'musicians.*.id' => 'sometimes|numeric',
+            'musicians.*.id' => 'sometimes',
             'musicians.*.isJobBooked' => 'sometimes',
             'musicians.*.userBookedName' => 'sometimes',
             'musicians.*.userBookedID' => 'sometimes',
