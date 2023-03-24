@@ -65,7 +65,7 @@ The Musician Suite is a collection of web services built to benefit CRRVA's comm
 4. Once you are finished with the feature, create a Pull Request. Here some PR basics
     a. The base branch should be development and the compare branch should your new feature branch
     b. Review your changes for correct formatting, indentation and spacing.
-    c. Review your changes to be sure all your new code is present and no accidental changes were made. 
+    c. Review your changes to be sure all your new code is present and no accidental changes were made.
 5. From there either the owner will add comments to the pull request or it will be approved and merged into development for testing.
 
 <br>
@@ -84,23 +84,21 @@ SO THAT I can quickly find quality musicians for an event and see new gigs avail
 
 
 DESIGN
-- Dashboard and Booking page should look similar to Classical RVA Website
-- App will use a subdomain of www.classicalrevolutionrva.com
+- Fonts and Nav should look similar to Classical RVA Website
 
 BOOKING
 - Users can create a gig with basic information(Location, Date, Music etc.)
 - Users can enter in instruments needed for the gigs and amount to be payed
-- Once submitted, the gig is sent to users who play the instruments needed and will also be added to the Dashboard
+- Once submitted, the gig is emailed to users who play the instruments needed and will also be added to the Dashboard
 
 EMAILS
-- Users will be able to click a button in the email to accept a gig. 
-- Users who created the gig will receive updates if anyone has agreed to their gig
-- All users involved will be notified if a musician has been selected
+- Users will be able to click a button in the email to accept a gig.
+- Users who created the gig will receive updates if anyone has applied to their gig.
+- All users involved will be notified if a musician has been selected.
 
 USER SETTINGS
-- Users can create their account, delete their account, and change their password
-- Users can add what instruments they play
-- Users can set payment limits(optional)
+- Users can create their account, delete their account, and change their password.
+- Users can add/update what instruments they play
 
 DASHBOARD
  - Users can see all available gigs, current gigs they have been approved for and gigs where they have hired someone else
@@ -110,10 +108,9 @@ JOBS
 - If a job has not been filled 2 days before a gig, an email will be sent out to the gig maker to see if it was filled
 - If you have accepted a gig, an email will be sent to the day before the gig at 9am EST as a reminder
 
-TECH STACK 
+TECH STACK
 - PHP
 - JQuery
 - AlpineJS
 - Tailwind CSS
 - Laravel
-
