@@ -38,17 +38,17 @@
                 <label for="instrument" class="block text-sm font-medium text-gray-700">
                     Instrument(s)
                 </label>
-                <input readonly value="{{ implode(', ', json_decode($job->instruments)) }}" id="payment-all" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <p>{{ implode(', ', json_decode($job->instruments)) }}</p>
             </div>
             <div class="col-span-6 sm:col-span-2 lg:col-span-1">
                 <label for="payment" class="block text-sm font-medium text-gray-700">
                     Payment
                 </label>
-                <input readonly value="{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}" id="payment-all" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <p>{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</p>
             </div>
             <div class="col-span-6 lg:col-span-3">
                 <label for="extra_info" class="block text-sm font-medium text-gray-700">Extra Details</label>
-                <input type="text" readonly value="{{ $job->extra_info }}" name="extra_info" id="extra_info" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <p>{{ $job->extra_info }}</p>
             </div>
         </div>
     </div>

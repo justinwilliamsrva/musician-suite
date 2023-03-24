@@ -66,68 +66,30 @@
                                     </a>
                                 </div>
                                 <!-- ROW 2 -->
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                    <label class="block text-sm font-medium text-gray-700">Payment</label>
-                                    <p>{{ $gig->getPaymentRange($gig) }}</p>
-
+                                <div class="col-span-6 sm:col-span-6 lg:col-span-1">
+                                    <label for="name" class="block text-sm font-medium text-gray-700">
+                                        Host's Name
+                                    </label>
+                                    <p>{{ $gig->user->name }}</p>
                                 </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700">Musicians</label>
-                                    <fieldset class="mt-2">
-                                        <legend class="sr-only">Musicians</legend>
-                                        <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                            <label class="{{ count($gig->jobs) == 1 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
-                                                <input disabled type="radio" value="1" class="sr-only" aria-labelledby="musician-number-1-label">
-                                                <span id="musician-number-1-label">1</span>
-                                            </label>
-                                            <label class="{{ count($gig->jobs) == 2 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
-                                                <input disabled type="radio" value="2" class="sr-only" aria-labelledby="musician-number-2-label">
-                                                <span id="musician-number-2-label">2</span>
-                                            </label>
-                                            <label class="{{ count($gig->jobs) == 3 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
-                                                <input disabled type="radio" value="3" class="sr-only" aria-labelledby="musician-number-3-label">
-                                                <span id="musician-number-3-label">3</span>
-                                            </label>
-                                            <label class="{{ count($gig->jobs) == 4 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
-                                                <input disabled type="radio" value="4" class="sr-only" aria-labelledby="musician-number-4-label">
-                                                <span id="musician-number-4-label">4</span>
-                                            </label>
-                                            <label class="{{ count($gig->jobs) == 5 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
-                                                <input disabled type="radio" value="5" class="sr-only" aria-labelledby="musician-number-5-label">
-                                                <span id="musician-number-5-label">5</span>
-                                            </label>
-                                            <label class="{{ count($gig->jobs) == 6 ? 'border-indigo-700' : 'opacity-50' }} border-2 rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 focus:outline-none">
-                                                <input disabled type="radio" value="6" class="sr-only" aria-labelledby="musician-number-6-label">
-                                                <span id="musician-number-6-label">6</span>
-                                            </label>
-                                        </div>
-                                    </fieldset>
+                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
+                                    <label for="email" class="block text-sm font-medium text-gray-700">
+                                        Host's Email
+                                    </label>
+                                    <a href="mailto:{{ $gig->user->email }}" class="underline text-blue-500">{{ $gig->user->email }}</a>
+                                </div>
+                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
+                                    <label for="phone" class="block text-sm font-medium text-gray-700">
+                                        Host's Phone
+                                    </label>
+                                    <a href="tel:{{ $gig->user->phone_number }}" class="underline text-blue-500">{{ is_null($gig->user->phone_number) ? 'N' : $gig->user->phone_number  }}</a>
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-3">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <textarea readonly id="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ is_null($gig->description) ? 'No Description' : $gig->description }}</textarea>
+                                    <p>{{ is_null($gig->description) ? 'No Description' : $gig->description }}</p>
                                 </div>
                                 <!-- ROW 4 -->
-                                <div class="col-span-6 sm:col-span-6 lg:col-span-2">
-                                    <label for="event_type" class="block text-sm font-medium text-gray-700">
-                                        Host's Name
-                                    </label>
-                                    <input readonly type="text" value="{{ $gig->user->name }}" id="event_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                    <label for="start_date_time" class="block text-sm font-medium text-gray-700">
-                                        Host's Email
-                                    </label>
-                                    <input readonly type="text" value="{{ $gig->user->email }}" id="start_date_time" autocomplete="given-name"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
-                                    <label for="end_date_time" class="block text-sm font-medium text-gray-700">
-                                        Host's Phone
-                                    </label>
-                                    <input readonly type="text" value="{{ $gig->user->phone_number }}"id="end_date_time" autocomplete="given-name"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                </div>
+
                             </div>
                         </div>
                     </div>
