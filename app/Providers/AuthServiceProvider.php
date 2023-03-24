@@ -6,6 +6,7 @@ namespace App\Providers;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -29,7 +30,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('apply-to-job', function (User $user, Job $job) {
-            return count(array_intersect(json_decode($user->instruments), json_decode($job->instruments))) > 0;
+            $userHasSameInstrumentAsJob = count(array_intersect(json_decode($user->instruments), json_decode($job->instruments))) > 0;
+            $userIsAdminOrAuth = ($user->id == Auth::id() || Auth::user()->isAdmin());
+            if ($userHasSameInstrumentAsJob && $userIsAdminOrAuth) {
+                return true;
+            }
+
+            return false;
         });
     }
 }
