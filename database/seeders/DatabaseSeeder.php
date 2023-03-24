@@ -18,16 +18,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create(['name' => 'Filled Outside CRRVA', 'email' => 'filledoutsideCRRVA@gmail.com', 'admin' => true, 'instruments' => json_encode([])]);
-        User::factory()->create(['name' => 'Justin Williams', 'email' => 'justinwdev@gmail.com', 'admin' => true]);
-        User::factory()->create(['name' => 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true]);
+        User::factory()->create(['name' => 'Filled Outside CRRVA', 'email' => null, 'admin' => true, 'instruments' => json_encode([])]);
+        User::factory()->create(['name' => 'Classical Connection', 'email' => 'info@classicalconnectionrva.com', 'admin' => true, 'instruments' => json_encode([])]);
+        User::factory()->create(['name' => 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true, 'instruments' => json_encode([])]);
 
         // if (config('app.env') != 'production') {
             User::factory()->create(['name' => 'TestingAdmin', 'email' => 'testingadmin@testing.com', 'admin' => true]);
             User::factory()->create(['name' => 'Testing', 'email' => 'testing@testing.com', 'admin' => false]);
             User::factory(7)->create();
 
-            $allUsersMinusOne = User::offset(1)->limit(11)->get();
+            $allUsersMinusOne = User::offset(3)->limit(11)->get();
 
             $allUsersMinusOne->each(function ($user) {
                 Gig::factory(2)->create([
@@ -46,8 +46,7 @@ class DatabaseSeeder extends Seeder
                 $randomNumber = rand(1, 2);
                 if ($randomNumber == 1) {
                     $gigId = $job->gig_id;
-                    $restrictedUserId[] = Gig::find($gigId)->user_id;
-                    $restrictedUserId[] = 1;
+                    $restrictedUserId = [Gig::find($gigId)->user_id, 1, 2, 3];
                     for ($i = 0; $i < 2; $i++) {
                         $userId = User::whereNotIn('id', $restrictedUserId)->inRandomOrder()->value('id');
                         $job->users()->attach($userId, ['status' => 'Applied']);
