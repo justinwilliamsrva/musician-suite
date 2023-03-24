@@ -287,6 +287,9 @@ class GigController extends Controller
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ], [
             'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
+
+            'musicians' => 'The number of musicians must be between 1 and 6',
+
             'musicians.*.instruments.required' => 'The instrument field is required.',
             'musicians.*.instruments.array' => 'The instrument field must be an array.',
             'musicians.*.instruments.min' => 'The instrument field must have at least :min items.',
