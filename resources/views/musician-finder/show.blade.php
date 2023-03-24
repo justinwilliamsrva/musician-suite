@@ -82,11 +82,11 @@
                                     <label for="phone" class="block text-sm font-medium text-gray-700">
                                         Host's Phone
                                     </label>
-                                    <a href="tel:{{ $gig->user->phone_number }}" class="underline text-blue-500">{{ is_null($gig->user->phone_number) ? 'N' : $gig->user->phone_number  }}</a>
+                                    <a href="tel:{{ $gig->user->phone_number }}" class="underline text-blue-500">{{ empty($gig->user->phone_number) ? 'N/A' : $gig->user->phone_number }}</a>
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-3">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                                    <p>{{ is_null($gig->description) ? 'No Description' : $gig->description }}</p>
+                                    <p>{{ empty($gig->description) ? 'No Description' : $gig->description }}</p>
                                 </div>
                                 <!-- ROW 4 -->
 

@@ -48,7 +48,8 @@
             </div>
             <div class="col-span-6 lg:col-span-3">
                 <label for="extra_info" class="block text-sm font-medium text-gray-700">Extra Details</label>
-                <p>{{ $job->extra_info }}</p>
+                <p>{{ empty($gig->extra_info) ? 'No Instrument Specific Details' : $gig->extra_info }}</p>
+
             </div>
         </div>
     </div>
