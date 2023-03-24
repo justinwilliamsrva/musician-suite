@@ -17,7 +17,11 @@
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            @if($errors->has('email'))
+                <div class="alert mt-2 text-sm text-red-600 space-y-1">
+                    {!! html_entity_decode($errors->first('email')) !!}
+                </div>
+            @endif
         </div>
 
         <!-- Password -->

@@ -56,7 +56,7 @@ class RegisteredUserController extends Controller
             ],
             'instruments' => ['required', 'array', 'min:1', 'max:10'],
         ], [
-            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact justinwdev@gmail.com to add this email address to the database.',
+            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="mailto:info@classicalconnectionrva.com">info@classicalconnectionrva.com</a> to add this email address to the database.',
         ]);
 
         $user = User::create([
