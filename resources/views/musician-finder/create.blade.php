@@ -155,6 +155,9 @@
                                                 <span id="musician-number-6-label">6</span>
                                             </label>
                                         </div>
+                                        @error('musicians')
+                                            <div class="alert text-red-500">{{ $message }}</div>
+                                        @enderror
                                     </fieldset>
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-2">
