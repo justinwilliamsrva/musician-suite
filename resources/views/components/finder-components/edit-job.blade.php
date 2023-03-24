@@ -12,6 +12,7 @@
     $jobInstruments = $job['instruments'] ?? [];
     $jobUsers = $job['users'] ?? json_encode([]);
     $extra_info = $job['extra_info'] ?? '';
+    $payment = $job['payment'] ?? ($payment ?? '');
     $errors = $job['errors'] ?? [];
 @endphp
 
@@ -90,14 +91,14 @@
                 <label for="payment-for-job" class="block text-sm font-medium text-gray-700">
                     Payment
                 </label>
-                <input id="payment-for-job" name="musicians[{{ $musicianNumber }}][payment]" value="{{ $job['payment'] ?? ($payment ?? '') }}" type="number" min="0" class="@if(isset($errors['payment'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <input id="payment-for-job" name="musicians[{{ $musicianNumber }}][payment]" value="{{ $payment }}" type="number" min="0" class="@if(isset($errors['payment'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 @if(isset($errors['payment']))
                     <div class="alert text-red-500">{{ $errors['payment'] }}</div>
                 @endif
             </div>
             <div class="col-span-6 lg:col-span-3">
                 <label for="extra_info" class="block text-sm font-medium text-gray-700">Extra Details</label>
-                <input type="text" value="{{ $extra_info }}" name="musicians[{{ $musicianNumber }}][extra_info]" id="extra_info" class="@if(isset($errors['extra_info'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <textarea id="extra_info" name="musicians[{{ $musicianNumber }}][extra_info]" class="@if(isset($errors['extra_info'])) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ $extra_info }}</textarea>
                 @if(isset($errors['extra_info']))
                     <div class="alert text-red-500">{{ $errors['extra_info'] }}</div>
                 @endif
