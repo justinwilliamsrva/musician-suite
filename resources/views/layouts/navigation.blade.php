@@ -16,9 +16,6 @@
                 <x-nav-link :href="route('musician-finder.dashboard')" :active="request()->routeIs('musician-finder.dashboard')">
                     {{ __('MUSICIAN FINDER') }}
                 </x-nav-link>
-                <x-nav-link href="https://www.classicalrevolutionrva.com">
-                    {{ __('BACK TO CRRVA') }}
-                </x-nav-link>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="{{ request()->routeIs('profile.edit') ? 'text-[#212121] bg-white' : 'text-white bg-transparent' }} inline-flex items-center px-3 py-3 border-2 border-white text-sm leading-4 font-medium rounded-full hover:text-[#212121] hover:bg-white focus:text-[#212121] focus:bg-white transition ease-in-out duration-150">
@@ -69,9 +66,6 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('musician-finder.dashboard')" :active="request()->routeIs('musician-finder.dashboard')">
                 {{ __('MUSICIAN FINDER') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="https://www.classicalrevolutionrva.com">
-                {{ __('BACK TO CRRVA') }}
             </x-responsive-nav-link>
             <div x-data="{settings: false}" class="block w-full pl-[0.6rem] pr-4 py-1 text-left">
                 <div @click="settings=!settings" class="flex items-center justify-start text-left font-medium text-sm text-white {{ request()->routeIs('profile.edit') ? 'opacity-100' : 'opacity-80' }}">
