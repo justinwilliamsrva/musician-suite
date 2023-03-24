@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class GigController extends Controller
@@ -253,7 +254,15 @@ class GigController extends Controller
             $this->authorize('update', $gig);
         }
 
-        $request->validate([
+        $data = $request->all();
+        $data['musicians'] = array_filter($data['musicians'], function ($musician) {
+            $status = $musician['fill_status'] ?? $musician['musician_picked'];
+
+            return $status !== 'delete';
+        });
+
+        $requestDataWithoutDeletedJobs = $data;
+        $validator = Validator::make($requestDataWithoutDeletedJobs, [
             'event_type' => 'required|string|min:3|max:50',
             'start_date_time' => 'required|date',
             'end_date_time' => 'required|date|after_or_equal:start_date_time',
@@ -265,9 +274,42 @@ class GigController extends Controller
             'zip_code' => 'required|digits:5|integer',
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|min:1|max:6',
+            'musicians.*.id' => 'sometimes',
+            'musicians.*.isJobBooked' => 'sometimes',
+            'musicians.*.userBookedName' => 'sometimes',
+            'musicians.*.userBookedID' => 'sometimes',
+            'musicians.*.numberOfJobApplicants' => 'sometimes',
+            'musicians.*.users' => 'sometimes',
+            'musicians.*.fill_status' => 'sometimes|string|max:15',
+            'musicians.*.musician_picked' => 'sometimes|string|max:15',
+            'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
+            'musicians.*.payment' => 'required|numeric|min:0',
+            'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ], [
             'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
+            'musicians.*.instruments.required' => 'The instrument field is required.',
+            'musicians.*.instruments.array' => 'The instrument field must be an array.',
+            'musicians.*.instruments.min' => 'The instrument field must have at least :min items.',
+            'musicians.*.instruments.max' => 'The instrument field may not have more than :max items.',
+            'musicians.*.instruments.in' => 'The instrument field contains an invalid value.',
+
+            'musicians.*.fill_status.string' => 'This field must be a string.',
+            'musicians.*.fill_status.max' => 'This field may not have more than :max items',
+            'musicians.*.musician_picked.string' => 'This field must be a string.',
+            'musicians.*.musician_picked.max' => 'This field may not have more than :max items',
+
+            'musicians.*.payment.required' => 'The payment field is required.',
+            'musicians.*.payment.numeric' => 'The payment field must be a number.',
+            'musicians.*.payment.min' => 'The payment field must be at least :min.',
+
+            'musicians.*.extra_info.string' => 'The extra info field must be a string.',
+            'musicians.*.extra_info.min' => 'The extra info field must be at least :min characters.',
+            'musicians.*.extra_info.max' => 'The extra info field may not be greater than :max characters.',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $gig->fill([
             'event_type' => $request->input('event_type'),
@@ -300,39 +342,6 @@ class GigController extends Controller
 
                 continue;
             }
-
-            $request->validate([
-                'musicians.'.$key.'.id' => 'sometimes',
-                'musicians.'.$key.'.isJobBooked' => 'sometimes',
-                'musicians.'.$key.'.userBookedName' => 'sometimes',
-                'musicians.'.$key.'.userBookedID' => 'sometimes',
-                'musicians.'.$key.'.numberOfJobApplicants' => 'sometimes',
-                'musicians.'.$key.'.users' => 'sometimes',
-                'musicians.'.$key.'.fill_status' => 'sometimes|string|max:15',
-                'musicians.'.$key.'.musician_picked' => 'sometimes|string|max:15',
-                'musicians.'.$key.'.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
-                'musicians.'.$key.'.payment' => 'required|numeric|min:0',
-                'musicians.'.$key.'.extra_info' => 'string|min:3|max:255|nullable',
-            ], [
-                'musicians.'.$key.'.instruments.required' => 'The instrument field is required.',
-                'musicians.'.$key.'.instruments.array' => 'The instrument field must be an array.',
-                'musicians.'.$key.'.instruments.min' => 'The instrument field must have at least :min items.',
-                'musicians.'.$key.'.instruments.max' => 'The instrument field may not have more than :max items.',
-                'musicians.'.$key.'.instruments.in' => 'The instrument field contains an invalid value.',
-
-                'musicians.'.$key.'.fill_status.string' => 'This field must be a string.',
-                'musicians.'.$key.'.fill_status.max' => 'This field may not have more than :max items',
-                'musicians.'.$key.'.musician_picked.string' => 'This field must be a string.',
-                'musicians.'.$key.'.musician_picked.max' => 'This field may not have more than :max items',
-
-                'musicians.'.$key.'.payment.required' => 'The payment field is required.',
-                'musicians.'.$key.'.payment.numeric' => 'The payment field must be a number.',
-                'musicians.'.$key.'.payment.min' => 'The payment field must be at least :min.',
-
-                'musicians.'.$key.'.extra_info.string' => 'The extra info field must be a string.',
-                'musicians.'.$key.'.extra_info.min' => 'The extra info field must be at least :min characters.',
-                'musicians.'.$key.'.extra_info.max' => 'The extra info field may not be greater than :max characters.',
-            ]);
 
             // Create for update Jobs
             $newJob = Job::updateOrCreate([
