@@ -66,8 +66,7 @@
                     <option @if(in_array($instrument, (old('instruments') ?? []))) selected @endif value="{{ $instrument }}">{{ $instrument }}</option>
                 @endforeach
             </select>
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            <x-input-error :messages="$errors->get('instruments')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
