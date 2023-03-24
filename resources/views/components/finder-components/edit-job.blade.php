@@ -37,7 +37,7 @@
                         @if ($userBookedName != 'Filled Outside CRRVA')
                             <option @if($fillStatus == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                         @endif
-                        @if ($userBookedName != Auth::id())
+                        @if ($userBookedName != Auth::id() && !Auth::user()->isAdmin())
                             <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
                         <option @if($fillStatus == 'delete') selected @endif value="delete">Remove Musician</option>
@@ -51,7 +51,9 @@
                             @endforeach
                         <option disabled>---Other Options---</option>
                         <option @if($musicianPicked == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
-                        <option @if($musicianPicked == 'myself') selected @endif value="myself">Book Myself</option>
+                        @if(!Auth::user()->isAdmin())
+                            <option @if($musicianPicked == 'myself') selected @endif value="myself">Book Myself</option>
+                        @endif
                         <option @if($musicianPicked == 'delete') selected @endif value="delete">Remove Musician</option>
                     </select>
                 @else
@@ -59,7 +61,9 @@
                         <option @if($fillStatus == 'unfilled' || $fillStatus == 'booked' ) selected @endif value="unfilled">Need To Book</option>
                         <option disabled>---Other Options---</option>
                         <option @if($fillStatus == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
-                        <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
+                        @if(!Auth::user()->isAdmin())
+                            <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
+                        @endif
                         <option @if($fillStatus == 'delete') selected @endif value="delete">Remove Musician</option>
                     </select>
                 @endif
