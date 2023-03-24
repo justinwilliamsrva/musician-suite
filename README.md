@@ -101,7 +101,7 @@ USER SETTINGS
 - Users can add/update what instruments they play
 
 DASHBOARD
- - Users can see all available gigs, current gigs they have been approved for and gigs where they have hired someone else
+ - Users can see all available gigs, upcoming gigs they may be playing in and gigs they have created.
  - Users can select a musician for their gigs
 
 JOBS
