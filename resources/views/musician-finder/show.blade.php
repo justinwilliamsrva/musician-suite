@@ -72,17 +72,11 @@
                                     </label>
                                     <p>{{ $gig->user->name }}</p>
                                 </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
+                                <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="email" class="block text-sm font-medium text-gray-700">
                                         Host's Email
                                     </label>
                                     <a href="mailto:{{ $gig->user->email }}" class="underline text-blue-500">{{ $gig->user->email }}</a>
-                                </div>
-                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
-                                    <label for="phone" class="block text-sm font-medium text-gray-700">
-                                        Host's Phone
-                                    </label>
-                                    <a href="tel:{{ $gig->user->phone_number }}" class="underline text-blue-500">{{ empty($gig->user->phone_number) ? 'N/A' : $gig->user->phone_number }}</a>
                                 </div>
                                 <div class="col-span-6 sm:col-span-6 lg:col-span-3">
                                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
