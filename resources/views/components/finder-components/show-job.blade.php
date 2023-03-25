@@ -3,7 +3,7 @@
 <div class="overflow-hidden border-t-2 shadow sm:rounded-md more-job-template">
     <div class="bg-white px-4 py-5 sm:p-6">
         <div class="grid grid-cols-6 gap-6">
-            <div class="col-span-6 sm:col-span-2 lg:col-span-1">
+            <div class="col-span-6 sm:col-span-2 lg:col-span-1 sm:text-center lg:text-left">
                 <label for="musician_name" class="block text-sm font-medium text-gray-700">
                     Musician #{{ $musicianNumber }}
                 </label>
@@ -33,19 +33,19 @@
                     @endcan
                 @endif
             </div>
-            <div class="col-span-6 sm:col-span-2 lg:col-span-1">
+            <div class="col-span-3 sm:col-span-2 lg:col-span-1 sm:text-center lg:text-left">
                 <label for="instrument" class="block text-sm font-medium text-gray-700">
                     Instrument(s)
                 </label>
                 <p>{{ implode(', ', json_decode($job->instruments)) }}</p>
             </div>
-            <div class="col-span-6 sm:col-span-2 lg:col-span-1">
+            <div class="col-span-3 sm:col-span-2 lg:col-span-1 sm:text-center lg:text-left">
                 <label for="payment" class="block text-sm font-medium text-gray-700">
                     Payment
                 </label>
                 <p>{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</p>
             </div>
-            <div class="col-span-6 lg:col-span-3">
+            <div class="col-span-6 lg:col-span-3 sm:text-center lg:text-left">
                 <label for="extra_info" class="block text-sm font-medium text-gray-700">Extra Details</label>
                 <p>{{ empty($gig->extra_info) ? 'None' : $gig->extra_info }}</p>
 

@@ -66,7 +66,7 @@
                                     </a>
                                 </div>
                                 <!-- ROW 2 -->
-                                <div class="col-span-6 sm:col-span-6 lg:col-span-1">
+                                <div class="col-span-6 sm:col-span-3 lg:col-span-1">
                                     <label for="name" class="block text-sm font-medium text-gray-700">
                                         Host's Name
                                     </label>
@@ -89,7 +89,7 @@
                     </div>
                     <div id="jobs-list" class="flex flex-col space-y-4">
                         <h3 class="font-semibold text-center text-2xl text-gray-800 leading-tight">
-                            {{ __('Musicians') }}
+                            {{ 'Musicians('.$gig->jobs->count().')' }}
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
                             @foreach($gig->jobs as $job)
