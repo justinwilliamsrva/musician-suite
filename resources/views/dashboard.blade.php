@@ -10,7 +10,7 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 items-start gap-y-16 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+        <div class="grid grid-cols-1 items-start gap-y-16 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 mx-1">
             <a href="{{ route('musician-finder.dashboard') }}" class="flex flex-col-reverse sm:hover:scale-105 transition-all duration-300 cursor-pointer">
                 <div class="mt-6 px-2 sm:px-0">
                     <h3 class="text-sm font-medium text-gray-900">Musician Finder</h3>
