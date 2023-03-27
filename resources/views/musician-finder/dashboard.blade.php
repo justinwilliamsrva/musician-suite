@@ -56,7 +56,6 @@
                                             <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                             <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
                                             <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Payment</th>
-                                            <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Status</th>
                                         </tr>
                                     @endif
                                 </thead>
@@ -84,9 +83,6 @@
                                             </td>
                                             <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ implode(', ', json_decode($job->instruments)) }}</td>
                                             <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ ($job->payment > 0) ? '$'.$job->payment : 'Volunteer' }}</td>
-                                            <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">
-                                                {{ (count($job->users) > 0) ? 'Pending' : 'Open' }}
-                                            </td>
                                         </tr>
                                     @empty
                                         <p class="text-center">There are currently no Available Gigs</p>
