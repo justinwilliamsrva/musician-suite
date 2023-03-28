@@ -466,7 +466,7 @@ class GigController extends Controller
         $user_id = request()->query('user');
         $user = User::find($user_id);
 
-        if ($job->gig->user->id != Auth::id() || Auth::user()->isAdmin()) {
+        if ($job->gig->user->id != Auth::id() || !Auth::user()->isAdmin()) {
             abort(403);
         }
 
