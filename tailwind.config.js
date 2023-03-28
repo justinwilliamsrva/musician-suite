@@ -14,6 +14,9 @@ module.exports = {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
                 oswald: ['Oswald'],
             },
+            maxWidth: {
+                '8xl': '170rem',
+              }
         },
     },
 
