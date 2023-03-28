@@ -37,7 +37,7 @@ class ChosenForJob extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Congratulations! You have booked a gig.',
+            subject: 'Congratulations! You have been booked for a gig.',
         );
     }
 

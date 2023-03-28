@@ -8,9 +8,11 @@
 
     <p>We wanted to let you know that {{ $job->gig->user->name }} has booked you for the following gig.</p>
 
-    <h2>{{ $job->gig->event_type }}</h2>
+    <br/>
 
-    <h3>Details</h3>
+    <h3><u>Details</u></h3>
+
+    <p><strong>Event:</strong> {{ $job->gig->event_type }}</p>
 
     <p><strong>Instrument(s):</strong> {{ implode(', ', json_decode($job->instruments)) }}</p>
 
@@ -24,10 +26,12 @@
         <p><strong>Description:</strong> {{ $job->gig->description }}</p>
     @endif
     @if($job->extra_info)
-        <p><strong>extra_info:</strong> {{ $job->extra_info }}</p>
+        <p><strong>Extra Details:</strong> {{ $job->extra_info }}</p>
     @endif
 
-    <h3>Host</h3>
+    <br/>
+
+    <h3><u>Host</u></h3>
 
     <p><strong>Name:</strong> {{ $job->gig->user->name }}</p>
 
@@ -35,8 +39,10 @@
 
     <p><strong>Phone Number: </strong>{{ $job->gig->user->phone_number }}</p>
 
-    <p>Please add this gig to your calendar and you will receive a reminder email two days before the event</p>
+    <br/>
 
-    <p>Thank you for using our platform!</p>
+    <p>Please add this gig to your calendar. You will also receive a reminder email two days before the event.</p>
+
+    <p>Thank you for using Classical Connection RVA!</p>
 </body>
 </html>

@@ -31,8 +31,8 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('apply-to-job', function (User $user, Job $job) {
             $userHasSameInstrumentAsJob = count(array_intersect(json_decode($user->instruments), json_decode($job->instruments))) > 0;
-            $userIsAdminOrAuth = ($user->id == Auth::id() || Auth::user()->isAdmin());
-            if ($userHasSameInstrumentAsJob && $userIsAdminOrAuth) {
+            $userIsAdminOrAuthOrOwnerOfJob = ($user->id == Auth::id() || Auth::user()->isAdmin() || $job->gig->user->id == Auth::id());
+            if ($userHasSameInstrumentAsJob && $userIsAdminOrAuthOrOwnerOfJob) {
                 return true;
             }
 
