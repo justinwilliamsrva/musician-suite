@@ -24,7 +24,7 @@
     <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:divide-x-2 lg:divide-[#212121]">
             <!-- All Open Gigs -->
-            <div id="openJobs" class="order-2 lg:order-1 px-6 lg:px-8 pt-8 lg:pt-0 col-span-1 ">
+            <div id="openJobs" class="order-2 lg:order-1 px-6 lg:pl-0 lg:pr-8 pt-8 lg:pt-0 col-span-1">
                 <div class="sm:flex sm:justify-between min-h-[80px]">
                     <div class="sm:flex-auto">
                         <h1 class="text-xl font-semibold text-gray-900">Available Gigs</h1>
@@ -45,13 +45,13 @@
                     </form>
                 </div>
                 <div class="mt-8 flow-root @container">
-                    <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
+                    <div class="-my-2 overflow-x-auto">
+                        <div class="inline-block min-w-full py-2 align-middle">
                             <table class="min-w-full divide-y divide-gray-300">
                                 <thead>
                                     @if($openJobs->count() > 0)
                                         <tr>
-                                            <th scope="col" class="min-w-[6rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                            <th scope="col" class="min-w-[6rem] py-3.5 pl-0 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
                                             <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
                                             <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                             <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
@@ -62,7 +62,7 @@
                                 <tbody class="divide-y divide-gray-200 bg-gray-100">
                                     @forelse($openJobs as $job)
                                         <tr>
-                                            <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
+                                            <td class="max-w-0 py-4 pl-0 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
                                                 @can('update', $job->gig)
                                                     <a href="{{ route('gigs.edit', $job->gig->id) }}" class="underline text-blue-500">{{ $job->gig->event_type }}</a>
                                                 @else
@@ -96,7 +96,7 @@
             </div>
             <div class="order-1 lg:order-2 col-span-1">
                  <!-- All Jobs You Are Performing In -->
-                 <div id="userJobs" class="px-6 lg:px-8 col-span-1 pb-6">
+                 <div id="userJobs" class="px-6 lg:pr-0 lg:px-8 col-span-1 pb-6">
                     <div class="sm:flex sm:justify-between min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Performances</h1>
@@ -117,13 +117,13 @@
                         </form>
                     </div>
                     <div class="mt-8 flow-root @container">
-                        <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
-                            <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
+                        <div class="-my-2 overflow-x-auto ">
+                            <div class="inline-block min-w-full py-2 align-middle">
                                 <table class="min-w-full divide-y divide-gray-300">
                                     <thead>
                                         @if($userJobs->count() > 0)
                                             <tr>
-                                                <th scope="col" class="min-w-[6rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                                <th scope="col" class="min-w-[6rem] py-3.5 pl-0 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
                                                 <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
                                                 <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                                 <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
@@ -135,7 +135,7 @@
                                     <tbody class="divide-y divide-gray-200 bg-gray-100">
                                         @forelse($userJobs as $job)
                                             <tr>
-                                                <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
+                                                <td class="max-w-0 py-4 pl-0 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
                                                     @can('update', $job->gig)
                                                         <a href="{{ route('gigs.edit', $job->gig->id) }}" class="underline text-blue-500">{{ $job->gig->event_type }}</a>
                                                     @else
@@ -173,7 +173,7 @@
                     </div>
                 </div>
                  <!-- All Gigs You Are Hosting -->
-                 <div id="userGigs" class="px-6 lg:px-8 col-span-1 border-y-2 lg:border-b-0 pb-6 lg:pb-0 border-[#212121] pt-8">
+                 <div id="userGigs" class="px-6 lg:pr-0 lg:px-8 col-span-1 border-y-2 lg:border-b-0 pb-6 lg:pb-0 border-[#212121] pt-8">
                     <div class="sm:flex sm:justify-between min-h-[80px]">
                         <div class="sm:flex-auto">
                             <h1 class="text-xl font-semibold text-gray-900">Your Gigs</h1>
@@ -194,13 +194,13 @@
                         </form>
                     </div>
                     <div class="mt-8 flow-root @container">
-                        <div class="-my-2 -mx-6 overflow-x-auto @2xl:-mx-8">
-                            <div class="inline-block min-w-full py-2 align-middle @lg:px-6 @2xl:px-8">
+                        <div class="-my-2 overflow-x-auto">
+                            <div class="inline-block min-w-full py-2 align-middle">
                                 <table class="min-w-full divide-y divide-gray-300">
                                     <thead>
                                         @if($userGigs->count() > 0)
                                             <tr>
-                                                <th scope="col" class="min-w-[6rem] py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
+                                                <th scope="col" class="min-w-[6rem] py-3.5 pl-0 pr-3 text-left text-sm font-semibold text-gray-900 @lg:pl-0 ">Event</th>
                                                 <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Date/Time</th>
                                                 <th scope="col" class="px-1 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
                                                 <th scope="col" class="hidden px-0 sm:px-3 py-3.5 text-left text-sm font-semibold text-gray-900 @2xl:table-cell">Instrument(s)</th>
@@ -212,7 +212,7 @@
                                     <tbody class="divide-y divide-gray-200 bg-gray-100">
                                         @forelse($userGigs as $gig)
                                             <tr>
-                                                <td class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
+                                                <td class="max-w-0 py-4 pl-0 pr-3 text-sm font-medium text-gray-900 @lg:w-auto @lg:max-w-none @lg:pl-0 align-top">
                                                     <a href="{{ route('gigs.edit', $gig->id) }}" class="underline text-blue-500">{{ $gig->event_type }}</a>
                                                     <dl class="font-normal @2xl:hidden">
                                                         <dt class="sr-only">Status</dt>
