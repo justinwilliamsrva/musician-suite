@@ -96,13 +96,13 @@ class Gig extends Model
         return '$'.$maxPayment;
     }
 
-    public function getEndTime($gig)
+    public function getEndTime()
     {
-        if (strtotime(date_format($gig->start_time, 'm/d/y')) != strtotime(date_format($gig->end_time, 'm/d/y'))) {
-            return ' - '.date_format($gig->end_time, 'D, m/d/y g:i a');
+        if (strtotime(date_format($this->start_time, 'm/d/y')) != strtotime(date_format($this->end_time, 'm/d/y'))) {
+            return ' - '.date_format($this->end_time, 'D, m/d/y g:i a');
         }
 
-        return ' - '.date_format($gig->end_time, 'g:i a');
+        return ' - '.date_format($this->end_time, 'g:i a');
     }
 
     public function getGoogleMapsLink($gig)

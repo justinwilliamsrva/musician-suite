@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ChosenForJobJob;
+use App\Jobs\FillJobRequestJob;
 use App\Jobs\NewJobAvailableJob;
 use App\Models\Gig;
 use App\Models\Job;
@@ -431,6 +432,8 @@ class GigController extends Controller
         $this->authorize('apply-to-job', $job);
         $job->users()->attach(Auth::id(), ['status' => 'Applied']);
 
+        FillJobRequestJob::dispatch(Auth::id(), $job);
+
         return redirect()->back()->with('success', 'You\'ve applied to the gig successfully');
     }
 
@@ -448,7 +451,33 @@ class GigController extends Controller
 
         $job->users()->attach($user->id, ['status' => 'Applied']);
 
-        return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', 'You\'ve applied to the gig successfully.');
+        FillJobRequestJob::dispatch($user_id, $job);
+
+        $message = 'You\'ve applied to the gig successfully.';
+
+        return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', $message);
+    }
+
+    public function bookJobGet()
+    {
+        $job_id = request()->query('job');
+        $job = Job::find($job_id);
+
+        $user_id = request()->query('user');
+        $user = User::find($user_id);
+
+        if ($job->gig->user->id != Auth::id() || Auth::user()->isAdmin()) {
+            abort(403);
+        }
+
+        $job->users()->updateExistingPivot($user->id, ['status' => 'Booked']);
+        if ($user->id != Auth::id()) {
+            ChosenForJobJob::dispatch($user->id, $job);
+        }
+
+        $message = 'You\'ve booked '.$user->name.' for the gig successfully.';
+
+        return redirect()->route('gigs.edit', ['gig' => $job->gig->id])->with('success', $message);
     }
 
     public function removeApp(Job $job)

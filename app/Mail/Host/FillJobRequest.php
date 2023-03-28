@@ -1,25 +1,35 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Host;
 
+use App\Models\Job;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class FillJobRequestNotification extends Mailable
+class FillJobRequest extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public User $applicant;
+
+    public User $user;
+
+    public Job $newJob;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($applicant, $user, $newJob)
     {
-        //
+        $this->applicant = $applicant;
+        $this->user = $user;
+        $this->newJob = $newJob;
     }
 
     /**
@@ -30,7 +40,7 @@ class FillJobRequestNotification extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Fill Job Request Notification',
+            subject: $this->applicant->name.' has applied to your '.$this->newJob->gig->event_type,
         );
     }
 
@@ -42,7 +52,12 @@ class FillJobRequestNotification extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.host.fill-job-request',
+            with: [
+                'applicant' => $this->applicant,
+                'user' => $this->user,
+                'job' => $this->newJob,
+            ],
         );
     }
 
