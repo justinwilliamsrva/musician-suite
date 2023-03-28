@@ -26,33 +26,34 @@
             <div class="flex-1 pb-4">
                 <!-- Navigation -->
                 @include('layouts.navigation')
+
                 <!-- Flash Message -->
-                    @if(session('success'))
-                        <div id="flash-message" class="absolute top-20 left-0 right-0 flex justify-center mt-4">
-                            <div class="min-w-[250px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-center" role="alert">
-                                <strong class="font-bold">{{ session('success') }}</strong>
+                <div class="pt-3 pb-6">
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        @if(session('success'))
+                            <div id="flash-message" class="flex justify-center">
+                                <div class="min-w-[250px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded text-center" role="alert">
+                                    <strong class="font-bold">{{  session('success')  }}</strong>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                    @if($errors->any())
-                        <div class="absolute top-20 left-0 right-0 flex justify-center mt-4">
-                            <div class="min-w-[250px] bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center" role="alert">
-                                <strong class="font-bold">Invalid Information Entered</strong>
+                        @endif
+                        @if($errors->any())
+                            <div id="flash-message" class="flex justify-center">
+                                <div class="min-w-[250px] bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-center" role="alert">
+                                    <strong class="font-bold">Invalid Information Entered</strong>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                <!-- Header -->
-                @if (isset($header))
-                    <div class="pt-12 pb-6">
-                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        @endif
+                        <!-- Header -->
+                        @if (isset($header))
                             <div class="overflow-hidden">
                                 <div class="p-6 text-gray-900">
                                     {{ $header }}
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
-                @endif
+                </div>
 
                 <!-- Page Content -->
                 <main>
@@ -65,9 +66,7 @@
         </div>
     </body>
     <script>
-        setTimeout(function() {
-            $('#flash-message').fadeOut('fast');
-        }, 5000); // 5000 milliseconds = 5 seconds
+        $('#flash-message').delay(5000).slideUp(300);
     </script>
 
 </html>
