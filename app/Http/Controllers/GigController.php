@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ChosenForJobJob;
 use App\Jobs\FillJobRequestJob;
+use App\Jobs\GigRemovedJob;
 use App\Jobs\NewJobAvailableJob;
 use App\Models\Gig;
 use App\Models\Job;
@@ -343,6 +344,7 @@ class GigController extends Controller
                 }
 
                 $jobToDelete = Job::find($job['id']);
+                GigRemovedJob::dispatch($jobToDelete, 'all');
                 $jobToDelete->users()->detach();
                 Job::destroy($jobToDelete->id);
 
@@ -390,7 +392,6 @@ class GigController extends Controller
                 } else {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
-                //Send email that job is back open
             }
 
             if (is_numeric($status)) {
@@ -398,6 +399,7 @@ class GigController extends Controller
                 if ($job['musician_picked'] != Auth::id()) {
                     ChosenForJobJob::dispatch($job['musician_picked'], $newJob);
                 }
+                GigRemovedJob::dispatch($newJob, 'booked');
             }
         }
 
@@ -417,6 +419,7 @@ class GigController extends Controller
         }
 
         Job::where('gig_id', $gig->id)->each(function ($job) {
+            GigRemovedJob::dispatch($job, 'all');
             $job->users()->detach();
             $job->delete();
         });
@@ -466,7 +469,7 @@ class GigController extends Controller
         $user_id = request()->query('user');
         $user = User::find($user_id);
 
-        if ($job->gig->user->id != Auth::id() || !Auth::user()->isAdmin()) {
+        if ($job->gig->user->id != Auth::id() || ! Auth::user()->isAdmin()) {
             abort(403);
         }
 
@@ -474,6 +477,8 @@ class GigController extends Controller
         if ($user->id != Auth::id()) {
             ChosenForJobJob::dispatch($user->id, $job);
         }
+
+        GigRemovedJob::dispatch($job, 'booked');
 
         $message = 'You\'ve booked '.$user->name.' for the gig successfully.';
 
