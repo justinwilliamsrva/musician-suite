@@ -6,13 +6,13 @@
 <body>
     <p>Hi {{ $user->name }},</p>
 
-    <p>We wanted to let you know that {{ $job->gig->user->name }} has booked you for the following gig.</p>
+    <p>{{ $job->gig->user->name }} has booked you for the following gig.</p>
 
     <br/>
 
-    <h3><u>Details</u></h3>
+    <h3><u>Gig Details</u></h3>
 
-    <p><strong>Event:</strong> {{ $job->gig->event_type }}</p>
+    <p><strong>Event:</strong> <a href="{{ route('gigs.show', $job->gig->id) }}"> {{ $job->gig->event_type }}</a></p>
 
     <p><strong>Instrument(s):</strong> {{ implode(', ', json_decode($job->instruments)) }}</p>
 
@@ -35,9 +35,9 @@
 
     <p><strong>Name:</strong> {{ $job->gig->user->name }}</p>
 
-    <p><strong>Email:</strong> {{ $job->gig->user->email }}</p>
+    <p><strong>Email:</strong> <a href="mailto:{{ $job->gig->user->email }}">{{ $job->gig->user->email }}</a></p>
 
-    <p><strong>Phone Number: </strong>{{ $job->gig->user->phone_number }}</p>
+    <p><strong>Phone Number: </strong><a href="tel:{{ $job->gig->user->phone_number }}">{{ $job->gig->user->phone_number }}</a></p>
 
     <br/>
 

@@ -10,8 +10,8 @@
 
     <br/>
 
-    <h3><u>Job Details</u></h3>
-    <p><strong>Event:</strong> {{ $job->gig->event_type }}</p>
+    <h3><u>Gig Details</u></h3>
+    <p><strong>Event:</strong> <a href="{{ route('gigs.show', $job->gig->id) }}"> {{ $job->gig->event_type }}</a></p>
     <p><strong>Date and Time:</strong> {{ date_format($job->gig->start_time, 'D, m/d/y g:i a').$job->gig->getEndTime() }}</p>
     <p><strong>Location:</strong> {{ $job->gig->street_address.', '. $job->gig->city.', '.$job->gig->state.' '.$job->gig->zip_code }}</p>
     <p><strong>Instrument(s):</strong> {{ implode(', ', json_decode($job->instruments)) }}</p>
@@ -24,7 +24,7 @@
 
     <h3><u>Musician Details</u></h3>
     <p><strong>Name:</strong> {{ $applicant->name }}</p>
-    <p><strong>Email:</strong> {{ $applicant->email }}</p>
+    <p><strong>Email:</strong> <a href="mailto:{{ $applicant->email }}">{{ $applicant->email }}</a></p>
     <p><strong>Instrument(s):</strong> {{ implode(', ', json_decode($applicant->instruments)) }}</p>
 
     <br/>

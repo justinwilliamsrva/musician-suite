@@ -8,9 +8,9 @@
 
     <p>There is a new job available for your instrument!</p>
 
-    <h3><u>Details</u></h3>
+    <h3><u>Gig Details</u></h3>
 
-    <p><strong>Event:</strong> {{ $gig->event_type }}</p>
+    <p><strong>Event:</strong> <a href="{{ route('gigs.show', $gig->id) }}"> {{ $gig->event_type }}</a></p>
 
     <p><strong>Instrument(s):</strong> {{ implode(', ', json_decode($job->instruments)) }}</p>
 
@@ -34,9 +34,9 @@
 
     <p><strong>Name:</strong> {{ $gig->user->name }}</p>
 
-    <p><strong>Email:</strong> {{ $gig->user->email }}</p>
+    <p><strong>Email:</strong> <a href="mailto:{{ $job->gig->user->email }}">{{ $job->gig->user->email }}</a></p>
 
-    <p><strong>Phone Number: </strong>{{ $gig->user->phone_number }}</p>
+    <p><strong>Phone Number: </strong><a href="tel:{{ $job->gig->user->phone_number }}">{{ $job->gig->user->phone_number }}</a></p>
 
     <br/>
 
