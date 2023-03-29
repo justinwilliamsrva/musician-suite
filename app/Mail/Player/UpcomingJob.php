@@ -2,24 +2,31 @@
 
 namespace App\Mail\Player;
 
+use App\Models\Job;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UpcommingJob extends Mailable
+class UpcomingJob extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public User $user;
+
+    public Job $newJob;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user, $newJob)
     {
-        //
+        $this->user = $user;
+        $this->newJob = $newJob;
     }
 
     /**
@@ -30,7 +37,7 @@ class UpcommingJob extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Upcomming Job',
+            subject: 'Performance Reminder: Upcoming '.$this->newJob->gig->event_type.' on '.date_format($this->newJob->gig->start_time, 'l'),
         );
     }
 
@@ -42,7 +49,11 @@ class UpcommingJob extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.player.upcoming-job',
+            with: [
+                'job' => $this->newJob,
+                'user' => $this->user,
+            ],
         );
     }
 
