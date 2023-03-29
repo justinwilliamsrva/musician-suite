@@ -466,6 +466,10 @@ class GigController extends Controller
         $job_id = request()->query('job');
         $job = Job::find($job_id);
 
+        if ($job->jobHasBeenBooked() || is_null($job)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'This job has already been booked or deleted');
+        }
+
         $user_id = request()->query('user');
         $user = User::find($user_id);
 
