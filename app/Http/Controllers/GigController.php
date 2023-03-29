@@ -223,7 +223,7 @@ class GigController extends Controller
         $jobsArray = $gig->jobs->toArray();
 
         foreach ($gig->jobs as $key => $job) {
-            $isJobBooked = $job->jobHasBeenBooked($job);
+            $isJobBooked = $job->jobHasBeenBooked();
             $userBookedID = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->id ?? '';
             $userBookedName = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->name ?? '';
             $numberOfJobApplicants = $job->users()->count();

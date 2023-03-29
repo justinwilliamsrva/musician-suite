@@ -7,7 +7,7 @@
                 <label for="musician_name" class="block text-sm font-medium text-gray-700">
                     Musician #{{ $musicianNumber }}
                 </label>
-                @if($job->jobHasBeenBooked($job))
+                @if($job->jobHasBeenBooked())
                     <p>{{ $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->name }}</p>
                 @elseif($job->users->contains(Auth::user()))
                     <form id="remove-application-form" action="{{ route('removeApp', ['job' => $job->id]) }}" method="POST">
