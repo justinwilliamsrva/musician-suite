@@ -436,7 +436,9 @@ class GigController extends Controller
             return redirect()->route('musician-finder.dashboard')->with('warning', 'This job has been deleted');
         }
 
-        $this->authorize('apply-to-job', $job);
+        if (Gate::denies('apply-to-job', $job)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
+        }
 
         $job->users()->attach(Auth::id(), ['status' => 'Applied']);
 
@@ -460,11 +462,11 @@ class GigController extends Controller
         $user = User::find($user_id);
 
         if (is_null($job)) {
-            return redirect()->route('musician-finder.dashboard')->with('warning', 'This job has been deleted');
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'You can no longer apply to this job since it has been deleted');
         }
 
         if (! Gate::forUser($user)->allows('apply-to-job', $job)) {
-            abort(403);
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
         }
 
         $job->users()->attach($user->id, ['status' => 'Applied']);
@@ -493,7 +495,7 @@ class GigController extends Controller
         $user = User::find($user_id);
 
         if ($job->gig->user->id != Auth::id() || ! Auth::user()->isAdmin()) {
-            abort(403);
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
         }
 
         $job->users()->updateExistingPivot($user->id, ['status' => 'Booked']);
