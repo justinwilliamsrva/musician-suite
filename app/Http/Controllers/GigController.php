@@ -432,12 +432,23 @@ class GigController extends Controller
 
     public function applyToJob(Job $job)
     {
+        if (is_null($job)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'This job has been deleted');
+        }
+
         $this->authorize('apply-to-job', $job);
+
         $job->users()->attach(Auth::id(), ['status' => 'Applied']);
 
+        if ($job->jobHasBeenBooked()) {
+            $message = 'You\'ve applied to a job that has already been booked. Your application has been saved, but this job will not appear on your list of upcoming performances.';
+            return redirect()->back()->with('warning', $message);
+        }
+
+        $message = 'You\'ve applied to the gig successfully.';
         FillJobRequestJob::dispatch(Auth::id(), $job);
 
-        return redirect()->back()->with('success', 'You\'ve applied to the gig successfully');
+        return redirect()->back()->with('success', $message);
     }
 
     public function applyToJobGet()
@@ -448,15 +459,23 @@ class GigController extends Controller
         $user_id = request()->query('user');
         $user = User::find($user_id);
 
+        if (is_null($job)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'This job has been deleted');
+        }
+
         if (! Gate::forUser($user)->allows('apply-to-job', $job)) {
             abort(403);
         }
 
         $job->users()->attach($user->id, ['status' => 'Applied']);
 
-        FillJobRequestJob::dispatch($user_id, $job);
+        if ($job->jobHasBeenBooked()) {
+            $message = 'You\'ve applied to a job that has already been booked. Your application has been saved, but this job will not appear on your list of upcoming performances.';
+            return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('warning', $message);
+        }
 
         $message = 'You\'ve applied to the gig successfully.';
+        FillJobRequestJob::dispatch($user_id, $job);
 
         return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', $message);
     }
