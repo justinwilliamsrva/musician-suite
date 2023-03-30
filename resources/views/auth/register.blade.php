@@ -8,14 +8,14 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Name*')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Email*')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             @if($errors->has('email'))
                 <div class="alert mt-2 text-sm text-red-600 space-y-1">
@@ -26,7 +26,7 @@
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Password*')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
@@ -38,7 +38,7 @@
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="__('Confirm Password*')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"
@@ -59,7 +59,7 @@
 
         <!-- Instruments -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('What Instruments Do You Play?')" />
+            <x-input-label for="password_confirmation" :value="__('Instrument(s) You Play*')" />
 
             <select id="select2" name="instruments[]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 @foreach(config('gigs.instruments') as $instrument)
