@@ -68,8 +68,6 @@ class RegisteredUserController extends Controller
             'admin' => 0,
         ]);
 
-        $user->sendEmailVerificationNotification();
-
         event(new Registered($user));
 
         Auth::login($user);
