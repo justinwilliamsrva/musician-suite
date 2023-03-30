@@ -55,13 +55,13 @@
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
                                         Date/Time
                                     </label>
-                                   <p>{!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime($gig) !!}</p>
+                                   <p>{!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime() !!}</p>
                                 </div>
                                 <div class="col-span-6 lg:col-span-3">
                                     <label for="end_date_time" class="block text-sm font-medium text-gray-700">
                                         Address
                                     </label>
-                                    <a href="{{ $gig->getGoogleMapsLink($gig) }}" target="_blank" class="underline text-blue-500">
+                                    <a href="{{ $gig->getGoogleMapsLink() }}" target="_blank" class="underline text-blue-500">
                                         <p>{{ $gig->street_address.', '. $gig->city.', '.$gig->state.' '.$gig->zip_code }}</p>
                                     </a>
                                 </div>

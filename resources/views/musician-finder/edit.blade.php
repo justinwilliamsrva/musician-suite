@@ -2,7 +2,7 @@
     $oldMusicians = old('musicians', []);
     $numberOfMusicians = (count($oldMusicians) > 0) ? count($oldMusicians) : $gig->jobs->count();
     $jobsArray = (count($oldMusicians) > 0) ? $oldMusicians : $jobsArray;
-    $isPaymentSameTrue = old('payment-method') == 'same' || !str_contains($gig->getPaymentRange($gig), '-');
+    $isPaymentSameTrue = old('payment-method') == 'same' || !str_contains($gig->getPaymentRange(), '-');
 
     if ($errors->any()) {
         $errorBag = session()->get('errors')->getBag('default')->toArray();
@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="flex items-center">
                                                 <label for="payment-all" class="mr-1 block text-sm font-medium text-gray-700">Payment</label>
-                                                <input id="payment-all" name="payment-all" value="{{ old('payment-all', (!str_contains($gig->getPaymentRange($gig), '-')) ? ltrim($gig->getPaymentRange($gig), '$') : '' )}}" type="number" min="0" class="@error('payment') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input id="payment-all" name="payment-all" value="{{ old('payment-all', (!str_contains($gig->getPaymentRange(), '-')) ? ltrim($gig->getPaymentRange(), '$') : '' )}}" type="number" min="0" class="@error('payment') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                         @error('payment-all')

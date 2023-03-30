@@ -83,20 +83,22 @@ class Gig extends Model
 
         return $numberOfUnfilledJobs;
     }
+
+    public function getAllInstruments()
     {
         $instruments = '';
 
-        foreach ($gig->jobs as $job) {
+        foreach ($this->jobs as $job) {
             $instruments .= implode(', ', json_decode($job->instruments)).', ';
         }
 
         return rtrim($instruments, ', ');
     }
 
-    public function getPaymentRange($gig)
+    public function getPaymentRange()
     {
-        $maxPayment = $gig->jobs->max('payment');
-        $minPayment = $gig->jobs->min('payment');
+        $maxPayment = $this->jobs->max('payment');
+        $minPayment = $this->jobs->min('payment');
 
         if ($maxPayment != $minPayment) {
             return '$'.$minPayment.' - $'.$maxPayment;
@@ -114,9 +116,9 @@ class Gig extends Model
         return ' - '.date_format($this->end_time, 'g:i a');
     }
 
-    public function getGoogleMapsLink($gig)
+    public function getGoogleMapsLink()
     {
-        return 'http://maps.google.com/?q='.$gig->street_address.', '.$gig->city.', '.$gig->state.' '.$gig->zip_code;
+        return 'http://maps.google.com/?q='.$this->street_address.', '.$this->city.', '.$this->state.' '.$this->zip_code;
     }
 
     public function bookedMusicians()

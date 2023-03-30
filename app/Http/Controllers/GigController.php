@@ -444,6 +444,7 @@ class GigController extends Controller
 
         if ($job->jobHasBeenBooked()) {
             $message = 'You\'ve applied to a job that has already been booked. Your application has been saved, but this job will not appear on your list of upcoming performances.';
+
             return redirect()->back()->with('warning', $message);
         }
 
@@ -473,6 +474,7 @@ class GigController extends Controller
 
         if ($job->jobHasBeenBooked()) {
             $message = 'You\'ve applied to a job that has already been booked. Your application has been saved, but this job will not appear on your list of upcoming performances.';
+
             return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('warning', $message);
         }
 
