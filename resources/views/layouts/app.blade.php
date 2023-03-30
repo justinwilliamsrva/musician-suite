@@ -73,8 +73,8 @@
         </div>
     </body>
     <script>
-        $('#flash-message').delay(5000).slideUp(300);
-        $('#warning-message').delay(10000).slideUp(300);
+        // $('#flash-message').delay(5000).slideUp(300);
+        // $('#warning-message').delay(10000).slideUp(300);
     </script>
 
 </html>
