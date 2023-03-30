@@ -19,9 +19,6 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new UpcomingJobJob)->daily();
         $schedule->job(new JobHasNotBeenBookedJob)->daily();
-        // $schedule->job(new UpcomingJobJob)->everyFiveMinutes();
-        $schedule->job(new JobHasNotBeenBookedJob)->everyFiveMinutes();
-
     }
 
     /**
