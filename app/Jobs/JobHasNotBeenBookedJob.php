@@ -38,9 +38,9 @@ class JobHasNotBeenBookedJob implements ShouldQueue
             $query->whereDoesntHave('users', function ($query) {
                 $query->where('status', 'Booked');
             });
-        })->join('gigs', 'jobs.gig_id', '=', 'gigs.id')
-        ->where('gigs.start_time', '>', Carbon::now()->addDays(5))
-        ->where('gigs.start_time', '<', Carbon::now()->addDays(6))
+        })
+        ->where('start_time', '>', Carbon::now()->addDays(5))
+        ->where('start_time', '<', Carbon::now()->addDays(6))
         ->get();
 
         foreach ($gigsWithUnfilledJobs as $gig) {
