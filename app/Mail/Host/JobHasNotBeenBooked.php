@@ -36,8 +36,10 @@ class JobHasNotBeenBooked extends Mailable
      */
     public function envelope()
     {
+        $jobOrJobs = ($this->gig->numberOfUnfilledJobs() > 1) ? 'jobs' : 'job';
+
         return new Envelope(
-            subject: 'Your upcoming '.$this->gig->event_type.' has '.$this->gig->numberOfUnfilledJobs().' unfilled jobs',
+            subject: 'Your upcoming '.$this->gig->event_type.' has '.$this->gig->numberOfUnfilledJobs().' unfilled '.$jobOrJobs,
         );
     }
 
