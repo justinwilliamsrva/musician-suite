@@ -496,7 +496,7 @@ class GigController extends Controller
         $user_id = request()->query('user');
         $user = User::find($user_id);
 
-        if ($job->gig->user->id != Auth::id() || ! Auth::user()->isAdmin()) {
+        if ($job->gig->user->id != Auth::id() && !Auth::user()->isAdmin()) {
             return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
         }
 
