@@ -59,7 +59,7 @@
 
         <!-- Instruments -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Instrument(s) You Play*')" />
+            <x-input-label for="password_confirmation" :value="__('Instrument(s) You Play Professionally*')" />
 
             <select id="select2" name="instruments[]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 @foreach(config('gigs.instruments') as $instrument)
