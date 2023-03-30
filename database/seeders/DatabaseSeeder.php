@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create(['name' => 'Classical Connection', 'email' => 'info@classicalconnectionrva.com', 'admin' => true, 'instruments' => json_encode([])]);
         User::factory()->create(['name' => 'Classical Revolution', 'email' => 'info@classicalrevolutionrva.com', 'admin' => true, 'instruments' => json_encode([])]);
 
-        // if (config('app.env') != 'production') {
+        if (config('app.env') != 'production') {
             User::factory()->create(['name' => 'TestingAdmin', 'email' => 'testingadmin@testing.com', 'admin' => true]);
             User::factory()->create(['name' => 'Testing', 'email' => 'testing@testing.com', 'admin' => false]);
             User::factory(7)->create();
@@ -56,6 +56,6 @@ class DatabaseSeeder extends Seeder
                     $job->users()->attach($userId, ['status' => Arr::Random(['Applied', 'Booked'])]);
                 }
             });
-        // }
+        }
     }
 }
