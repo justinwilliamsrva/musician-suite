@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\JobHasNotBeenBookedJob;
 use App\Jobs\UpcomingJobJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new UpcomingJobJob)->dailyAt('6:00');
+        $schedule->job(new UpcomingJobJob)->daily();
+        $schedule->job(new JobHasNotBeenBookedJob)->daily();
     }
 
     /**

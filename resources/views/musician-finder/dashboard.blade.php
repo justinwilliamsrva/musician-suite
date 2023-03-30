@@ -218,17 +218,17 @@
                                                         <dt class="sr-only">Status</dt>
                                                         <dd class="mt-1 text-gray-700"> {{ $gig->numberOfFilledJobs().' Jobs Filled' }}</dd>
                                                         <dt class="sr-only @lg:hidden">Payment</dt>
-                                                        <dd class="mt-1 text-gray-500">{{ $gig->getPaymentRange($gig) }}</dd>
+                                                        <dd class="mt-1 text-gray-500">{{ $gig->getPaymentRange() }}</dd>
                                                     </dl>
                                                 </td>
                                                 <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
-                                                {!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime($gig) !!}
+                                                {!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime() !!}
                                                 </td>
                                                 <td class="px-1 sm:px-3 py-4 text-sm text-gray-500 align-top">
                                                     {{ $gig->street_address }} <br/> {{ $gig->city }}, {{ $gig->state }} {{ $gig->zip_code }}
                                                 </td>
-                                                <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getAllInstruments($gig) }}</td>
-                                                <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getPaymentRange($gig) }}</td>
+                                                <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getAllInstruments() }}</td>
+                                                <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">{{ $gig->getPaymentRange() }}</td>
                                                 <td class="hidden px-0 sm:px-3 py-4 text-sm text-gray-500 @2xl:table-cell align-top">
                                                     {{ $gig->numberOfFilledJobs().' Jobs Filled' }}
                                                 </td>
