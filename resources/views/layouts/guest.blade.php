@@ -21,7 +21,7 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div class="text-3xl text-[#7B7C7C]">
+            <div class="text-3xl text-[#7B7C7C] cursor-default">
                 <h1 class="font-oswald font-extralight">CLASSICAL<span class="text-[#F26D5C] font-normal">CONNECTION</span>RVA</h1>
             </div>
 
