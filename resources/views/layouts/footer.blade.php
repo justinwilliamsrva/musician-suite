@@ -1,11 +1,11 @@
 <div class="sticky bottom-0 h-24 w-full bg-[#212121] p-4 mt-12 space-y-2">
     <div class="flex items-center justify-center space-x-4">
-        <div class="flex justify-end w-32">
+        <div class="flex justify-center">
             <x-nav-link href="mailto:info@classicalconnectionrva.com" class="pt-0">
                 {{ __('EMAIL') }}
             </x-nav-link>
         </div>
-        <div class="flex justify-start w-32">
+        <div class="flex justify-center">
             <x-nav-link href="https://www.facebook.com/profile.php?id=100091524604886" target="_blank" class="pt-0">
                 {{ __('FACEBOOK') }}
             </x-nav-link>
