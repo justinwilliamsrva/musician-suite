@@ -517,7 +517,7 @@ class GigController extends Controller
         $bookedUserID = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->id ?? '';
 
         if ($bookedUserID == Auth::id()) {
-            return redirect()->back()->with('warning', 'You\'ve been booked for this gig and only the host can remove your application');
+            return redirect()->back()->with('warning', 'You\'ve already been booked for this gig. Please contact the host to remove your application.');
         }
 
         $job->users()->detach(Auth::id());

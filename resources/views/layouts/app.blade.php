@@ -38,7 +38,7 @@
                             </div>
                         @endif
                         @if(session('warning'))
-                            <div id="flash-message" class="flex justify-center">
+                            <div id="warning-message" class="flex justify-center">
                                 <div class="min-w-[250px] bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded text-center" role="alert">
                                     <strong class="font-bold">{{  session('warning')  }}</strong>
                                 </div>
@@ -74,6 +74,7 @@
     </body>
     <script>
         $('#flash-message').delay(5000).slideUp(300);
+        $('#warning-message').delay(10000).slideUp(300);
     </script>
 
 </html>
