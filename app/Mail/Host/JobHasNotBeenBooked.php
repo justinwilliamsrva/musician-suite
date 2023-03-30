@@ -2,6 +2,8 @@
 
 namespace App\Mail\Host;
 
+use App\Models\Gig;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -12,14 +14,19 @@ class JobHasNotBeenBooked extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public Gig $gig;
+
+    public User $user;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($gig, $user)
     {
-        //
+        $this->gig = $gig;
+        $this->user = $user;
     }
 
     /**
@@ -30,7 +37,7 @@ class JobHasNotBeenBooked extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Job Has Not Been Booked',
+            subject: 'Your upcoming '.$this->gig->event_type.' has '.$this->gig->numberOfUnfilledJobs().' unfilled jobs',
         );
     }
 
@@ -42,7 +49,11 @@ class JobHasNotBeenBooked extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.host.job-has-not-been-booked',
+            with: [
+                'gig' => $this->gig,
+                'user' => $this->user,
+            ],
         );
     }
 

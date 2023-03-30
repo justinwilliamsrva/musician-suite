@@ -73,7 +73,16 @@ class Gig extends Model
         return $numberOfFilledJobs.'/'.$numberOfJobs;
     }
 
-    public function getAllInstruments($gig)
+    public function numberOfUnfilledJobs()
+    {
+        $numberOfUnfilledJobs = $this->jobs()
+            ->whereDoesntHave('users', function ($query) {
+                $query->where('status', 'Booked');
+            })
+        ->count();
+
+        return $numberOfUnfilledJobs;
+    }
     {
         $instruments = '';
 
