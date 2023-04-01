@@ -11,7 +11,6 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    assetsDir: 'resources/assets',
     optimizeDeps: {
         include: ['jquery'],
       },

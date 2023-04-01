@@ -17,7 +17,7 @@
                     <p class="mt-2 text-sm text-gray-500">Book, Manage, and Accept Gigs for your preferred instrument</p>
                 </div>
                 <div class="relative aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                    <img src="{{ Vite::asset('resources/assets/images/image-1.jpg') }}" alt="Green cardstock box containing white, beige, and brown cards." class="object-cover object-center">
+                    <img src="https://images.pexels.com/photos/7097455/pexels-photo-7097455.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Green cardstock box containing white, beige, and brown cards." class="object-cover object-center">
                 </div>
             </a>
             <a class="flex flex-col-reverse transition-all duration-300">
@@ -26,7 +26,7 @@
                     <p class="mt-2 text-sm text-gray-500">View and search for current private teachers in Central Virginia</p>
                 </div>
                 <div class="relative aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                    <img src="{{ Vite::asset('resources/assets/images/image-2.jpeg') }}" alt="Green cardstock box open with 50 cards inside." class="object-cover object-center">
+                    <img src="https://images.pexels.com/photos/7521177/pexels-photo-7521177.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Green cardstock box open with 50 cards inside." class="object-cover object-center">
                     <div class="absolute inset-0 bg-black opacity-70 transition-opacity"></div>
                     <p class="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4 py-2 rounded-lg shadow-lg text-gray-800 font-bold opacity-100 transition-all duration-300">Coming Soon</p>
                 </div>
@@ -37,7 +37,7 @@
                     <p class="mt-2 text-sm text-gray-500">View performance and teaching job openings for churches, schools, music shops, theatres etc.</p>
                 </div>
                 <div class="relative aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                    <img src="{{ Vite::asset('resources/assets/images/image-3.jpg') }}" alt="Detail of white today card, beige next card, and brown someday card with dot grid." class="object-cover object-center">
+                    <img src="https://images.unsplash.com/photo-1515527658517-0a52764f2fdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Detail of white today card, beige next card, and brown someday card with dot grid." class="object-cover object-center">
                     <div class="absolute inset-0 bg-black opacity-70 transition-opacity"></div>
                     <p class="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4 py-2 rounded-lg shadow-lg text-gray-800 font-bold opacity-100 transition-all duration-300">Coming Soon</p>
                 </div>
@@ -48,7 +48,7 @@
                     <p class="mt-2 text-sm text-gray-500">List and discover local chamber groups and ensembles</p>
                 </div>
                 <div class="relative aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
-                    <img src="{{ Vite::asset('resources/assets/images/image-4.jpg') }}" alt="Stack of three green cardstock boxes with 3 hole cutouts showing cards inside." class="object-cover object-center">
+                    <img src="https://images.unsplash.com/photo-1519412666065-94acb3f8838f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Stack of three green cardstock boxes with 3 hole cutouts showing cards inside." class="object-cover object-center">
                     <div class="absolute inset-0 bg-black opacity-70 transition-opacity"></div>
                     <p class="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4 py-2 rounded-lg shadow-lg text-gray-800 font-bold opacity-100 transition-all duration-300">Coming Soon</p>
                 </div>
