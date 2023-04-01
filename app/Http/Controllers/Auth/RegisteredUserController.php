@@ -32,6 +32,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $email = $request->input('email');
+        $name = $request->input('name');
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -40,23 +41,28 @@ class RegisteredUserController extends Controller
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users')->where(function ($query) {
-                    $query->whereNotNull('email_verified_at');
-                }),
-                Rule::exists('emails')->where(function ($query) use ($email) {
-                    $query->where('email', $email);
-                })],
+                'unique',
+                // Rule::unique('users')->where(function ($query) {
+                //     $query->whereNotNull('email_verified_at');
+                // }),
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone_number' => [
                 'required',
                 'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/',
-                Rule::unique('users')->where(function ($query) {
-                    $query->whereNotNull('email_verified_at');
-                }),
+                'unique',
+                // Rule::unique('users')->where(function ($query) {
+                //     $query->whereNotNull('email_verified_at');
+                // }),
             ],
             'instruments' => ['required', 'array', 'min:1', 'max:10'],
-        ], [
-            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="mailto:info@classicalconnectionrva.com">info@classicalconnectionrva.com</a> to add this email address to the database.',
+        ]);
+
+        $request->validate([
+            'email' => Rule::exists('emails')->where('email', $email),
+        ],
+        [
+            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="'.$this->getEmailString($email, $name).'">info@classicalconnectionrva.com</a> to add this email address to the database.',
         ]);
 
         $user = User::create([
@@ -73,5 +79,22 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function getEmailString($email, $name) {
+
+        $subject = '?subject=Add my email to CRRVA\'s Database';
+
+        $lines[0] = 'Please answer the following three questions to confirm your membership with CRRVA and allow us to add your email to the database.';
+        $lines[1] = '';
+        $lines[2] = '1. Please provide your name: '.$name;
+        $lines[3] = '2. Please provide the email you would like at add: '.$email;
+        $lines[4] = '3. When was the last time you performed for CRRVA? ex: Incarnations in Spring of 2022.';
+        $lines[5] = '';
+        $lines[6] = 'NOTE: It may take 1-2 days to confirm your membership. You will receive an email once your membership has been verified.';
+
+        $body = '&body='.implode('%0D%0A', $lines);
+
+        return 'mailto:'.$email.$subject.$body;
     }
 }
