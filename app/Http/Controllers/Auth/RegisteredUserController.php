@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
                 'string',
                 'email',
                 'max:255',
-                'unique',
+                'unique:users',
                 // Rule::unique('users')->where(function ($query) {
                 //     $query->whereNotNull('email_verified_at');
                 // }),
@@ -50,7 +50,7 @@ class RegisteredUserController extends Controller
             'phone_number' => [
                 'required',
                 'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/',
-                'unique',
+                'unique:users',
                 // Rule::unique('users')->where(function ($query) {
                 //     $query->whereNotNull('email_verified_at');
                 // }),
