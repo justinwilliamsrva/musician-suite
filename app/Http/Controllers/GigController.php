@@ -214,8 +214,13 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Gig $gig)
+    public function edit($gig)
     {
+        $gig = Gig::find($gig);
+        if (is_null($gig)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to access was either deleted or did not exist.');
+        }
+
         if (Auth::user()->admin != 1) {
             $this->authorize('update', $gig);
         }
@@ -252,8 +257,14 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Gig $gig)
+    public function update(Request $request, $gig)
     {
+
+        $gig = Gig::find($gig);
+        if (is_null($gig)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to update was either deleted or did not exist.');
+        }
+
         if (Auth::user()->admin != 1) {
             $this->authorize('update', $gig);
         }
@@ -412,8 +423,13 @@ class GigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Gig $gig)
+    public function destroy($gig)
     {
+        $gig = Gig::find($gig);
+        if (is_null($gig)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to delete has either already been deleted or did not exist.');
+        }
+
         if (Auth::user()->admin != 1) {
             $this->authorize('update', $gig);
         }
@@ -430,8 +446,9 @@ class GigController extends Controller
         return redirect()->route('musician-finder.dashboard')->with('success', $event_type.' Deleted Successfully.');
     }
 
-    public function applyToJob(Job $job)
+    public function applyToJob($job)
     {
+        $job = Job::find($job);
         if (is_null($job)) {
             return redirect()->route('musician-finder.dashboard')->with('warning', 'This job has been deleted');
         }
@@ -512,8 +529,15 @@ class GigController extends Controller
         return redirect()->route('gigs.edit', ['gig' => $job->gig->id])->with('success', $message);
     }
 
-    public function removeApp(Job $job)
+    public function removeApp($job)
     {
+
+        $job = Job::find($job);
+
+        if (is_null($job)) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'The job you tried to remove your application from has been deleted or did not exist');
+        }
+
         $bookedUserID = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->id ?? '';
 
         if ($bookedUserID == Auth::id()) {
