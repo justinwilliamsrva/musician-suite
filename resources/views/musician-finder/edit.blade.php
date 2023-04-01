@@ -73,7 +73,7 @@
                                         Start Date/Time
                                     </label>
                                     <input type="datetime-local" name="start_date_time" id="start_date_time" autocomplete="given-name"
-                                        value="{{ old('start_date_time', $gig->start_time) }}" class="@error('start_date_time') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('start_date_time', date('Y-m-d\TH:i', strtotime($gig->start_time))) }}" class="@error('start_date_time') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     @error('start_date_time')
                                         <div class="alert text-red-500">{{ $message }}</div>
                                     @enderror
@@ -83,7 +83,7 @@
                                         End Date/Time
                                     </label>
                                     <input type="datetime-local" name="end_date_time" id="end_date_time" autocomplete="given-name"
-                                        value="{{ old('end_date_time', $gig->end_time) }}" class="@error('end_date_time') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        value="{{ old('end_date_time', date('Y-m-d\TH:i', strtotime($gig->end_time))) }}" class="@error('end_date_time') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     @error('end_date_time')
                                         <div class="alert text-red-500">{{ $message }}</div>
                                     @enderror
@@ -201,7 +201,7 @@
                         </h3>
                         @if(count($gig->bookedMusicians()) > 0)
                             <div class="mx-auto">
-                                <a href="mailto:{{ implode(', ', $gig->bookedMusicians()) }}">
+                                <a href="mailto:{{ implode(', ', $gig->bookedMusicians()) }}?subject=Details for {{ $gig->event_type }} on {{ date_format($gig->start_time, 'F j, Y') }}">
                                     <button type="button" class="max-w-fit rounded-md bg-indigo-600 py-1.5 pl-3 pr-4 text-center items-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline w-4 h-4 mb-[2px]">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
