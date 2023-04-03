@@ -190,6 +190,11 @@ class GigController extends Controller
             if ($job['fill_status'] == 'unfilled') {
                 NewJobAvailableJob::dispatch($gig, $newJob);
             }
+
+            if ($job['fill_status'] == 'choose') {
+                // get the musician from input
+                //
+            }
         }
 
         return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully.');
@@ -259,7 +264,6 @@ class GigController extends Controller
      */
     public function update(Request $request, $gig)
     {
-
         $gig = Gig::find($gig);
         if (is_null($gig)) {
             return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to update was either deleted or did not exist.');
@@ -513,7 +517,7 @@ class GigController extends Controller
         $user_id = request()->query('user');
         $user = User::find($user_id);
 
-        if ($job->gig->user->id != Auth::id() && !Auth::user()->isAdmin()) {
+        if ($job->gig->user->id != Auth::id() && ! Auth::user()->isAdmin()) {
             return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
         }
 
@@ -531,7 +535,6 @@ class GigController extends Controller
 
     public function removeApp($job)
     {
-
         $job = Job::find($job);
 
         if (is_null($job)) {
