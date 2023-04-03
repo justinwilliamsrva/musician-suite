@@ -83,7 +83,7 @@ $(document).ready(function() {
                     url: `${window.location.origin}/musician-select?number=${e.target.dataset.number}`,
                     type: 'GET',
                     complete: function() {
-                        alert('Please do not select a musician without first confirming with them directly.');
+                        alert('Please do not select a specific musician without first confirming with them directly.');
                     },
                     success: function(result) {
                         $(e.target).after(result);
