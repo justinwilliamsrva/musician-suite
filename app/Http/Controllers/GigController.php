@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ChosenForJobJob;
-use App\Jobs\FillJobRequestJob;
-use App\Jobs\GigRemovedJob;
-use App\Jobs\NewJobAvailableJob;
+use Carbon\Carbon;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Jobs\GigRemovedJob;
 use Illuminate\Http\Request;
+use App\Jobs\ChosenForJobJob;
+use App\Jobs\FillJobRequestJob;
+use Illuminate\Validation\Rule;
+use App\Jobs\NewJobAvailableJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class GigController extends Controller
 {
@@ -192,8 +193,9 @@ class GigController extends Controller
             }
 
             if ($job['fill_status'] == 'choose') {
-                // get the musician from input
-                //
+                $user = User::find($job['musician_select']);
+                $newJob->users()->attach($user->id, ['status' => 'Booked']);
+                ChosenForJobJob::dispatch($user->id, $newJob, true);
             }
         }
 
@@ -550,5 +552,31 @@ class GigController extends Controller
         $job->users()->detach(Auth::id());
 
         return redirect()->back()->with('success', 'You\'ve successfully removed your application.');
+    }
+
+    public function removeBooking()
+    {
+        $job_id = request()->query('job_id');
+        $job = Job::find($job_id);
+        $user_id = request()->query('user_id');
+        $user = User::find($user_id);
+        $host_id = request()->query('host_id');
+        $host = User::find($host_id);
+
+        $user->jobs()->detach($job->id);
+
+        $lines[1] = 'The following User booked '.$user->name.' without confirming with them first';
+        $lines[2] = 'User: '.$host->name.' '.$host->email;
+        $lines[3] = route('gigs.show', $job->gig->id);
+        $message_body = implode(' ', $lines);
+        Mail::raw($message_body, function($message) use ($host) {
+            $message->to('info@classicalconnectionrva.com');
+            $message->subject($host->name.' Broke Booking Rules.');
+        });
+
+        $message = 'You were removed from this gig';
+
+        return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', $message);
+
     }
 }

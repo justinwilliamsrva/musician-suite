@@ -27,10 +27,12 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/finder', [GigController::class, 'index'])->name('musician-finder.dashboard');
     Route::resource('/gigs', GigController::class)->except('index');
+
     Route::post('/applyToJob/{job}', [GigController::class, 'applyToJob'])->name('applyToJob');
     Route::post('/removeApp/{job}', [GigController::class, 'removeApp'])->name('removeApp');
     Route::get('/applyToJob', [GigController::class, 'applyToJobGet'])->name('applyToJobGet');
     Route::get('/bookJob', [GigController::class, 'bookJobGet'])->name('bookJobGet');
+    Route::get('/removeBooking', [GigController::class, 'removeBooking'])->name('removeBooking');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

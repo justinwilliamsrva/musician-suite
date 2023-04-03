@@ -20,15 +20,18 @@ class ChosenForJobJob implements ShouldQueue
 
     public Job $newJob;
 
+    public bool $canReject;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user_id, $newJob)
+    public function __construct($user_id, $newJob, $canReject = false)
     {
         $this->user_id = $user_id;
         $this->newJob = $newJob;
+        $this->canReject = $canReject;
     }
 
     /**
@@ -39,6 +42,6 @@ class ChosenForJobJob implements ShouldQueue
     public function handle()
     {
         $user = User::find($this->user_id);
-        Mail::to($user->email)->send(new ChosenForJob($user, $this->newJob));
+        Mail::to($user->email)->send(new ChosenForJob($user, $this->newJob, $this->canReject));
     }
 }
