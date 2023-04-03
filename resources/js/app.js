@@ -54,13 +54,13 @@ $(document).ready(function() {
             },
             success: function(result) {
                 $('#jobs-list').append(result);
-                jQuery('.musician-name-with-specific-musicians').on('change', function(e) {
+                $('.musician-name-with-specific-musicians').on('change', function(e) {
                     if (e.target.value == 'choose') {
                         $.ajax({
                             url: `${window.location.origin}/musician-select?number=${e.target.dataset.number}`,
                             type: 'GET',
                             complete: function() {
-                                alert('Please do not select a musician with confirming with them directly first.')
+                                alert('Please do not select a musician without first confirming with them directly.');
                             },
                             success: function(result) {
                                 $(e.target).after(result);
@@ -89,13 +89,13 @@ $(document).ready(function() {
     }
 
     // Select Musician
-    jQuery('.musician-name-with-specific-musicians').on('change', function(e) {
+    $('.musician-name-with-specific-musicians').on('change', function(e) {
         if (e.target.value == 'choose') {
             $.ajax({
                 url: `${window.location.origin}/musician-select?number=${e.target.dataset.number}`,
                 type: 'GET',
                 complete: function() {
-                    alert('Please do not select a musician with confirming with them directly first.')
+                    alert('Please do not select a musician without first confirming with them directly.');
                 },
                 success: function(result) {
                     $(e.target).after(result);

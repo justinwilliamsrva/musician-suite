@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\GigController;
-use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GigController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +66,7 @@ Route::middleware('auth', 'verified')->group(function () {
         $data = [
             'musicianNumber' => $number,
             'allMusicians' => User::where('admin', '!=', 1)
+                ->where('can_book', '=', true)
                 ->where('id', '!=', 1)
                 ->select('id', 'name')
                 ->get(),
