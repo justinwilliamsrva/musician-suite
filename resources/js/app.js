@@ -54,6 +54,20 @@ $(document).ready(function() {
             },
             success: function(result) {
                 $('#jobs-list').append(result);
+                jQuery('.musician-name-with-specific-musicians').on('change', function(e) {
+                    if (e.target.value == 'choose') {
+                        $.ajax({
+                            url: `${window.location.origin}/musician-select?number=${e.target.dataset.number}`,
+                            type: 'GET',
+                            complete: function() {
+                                alert('Please do not select a musician with confirming with them directly first.')
+                            },
+                            success: function(result) {
+                                $(e.target).after(result);
+                            }
+                        })
+                    }
+                });
             }
         });
     }
@@ -73,6 +87,22 @@ $(document).ready(function() {
             }
         });
     }
+
+    // Select Musician
+    jQuery('.musician-name-with-specific-musicians').on('change', function(e) {
+        if (e.target.value == 'choose') {
+            $.ajax({
+                url: `${window.location.origin}/musician-select?number=${e.target.dataset.number}`,
+                type: 'GET',
+                complete: function() {
+                    alert('Please do not select a musician with confirming with them directly first.')
+                },
+                success: function(result) {
+                    $(e.target).after(result);
+                }
+            })
+        }
+    });
 
     // Clear Form
     $('#clear-create-gig-form').on('click', function(){

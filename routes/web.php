@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\GigController;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,6 +58,20 @@ Route::middleware('auth', 'verified')->group(function () {
         ]);
 
         return view('components.finder-components.edit-job', $data)->render();
+    });
+
+    Route::get('/musician-select', function () {
+        $number = request()->query('number', 1);
+
+        $data = [
+            'musicianNumber' => $number,
+            'allMusicians' => User::where('admin', '!=', 1)
+                ->where('id', '!=', 1)
+                ->select('id', 'name')
+                ->get(),
+        ];
+
+        return view('components.finder-components.musician-select2', $data)->render();
     });
 
     Route::fallback(function () {
