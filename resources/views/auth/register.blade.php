@@ -71,7 +71,7 @@
 
         <!-- Can Book -->
         <div class="mt-4">
-            <x-input-label for="can_book" :value="__('Would you like to allow users to invite you to a gig directly?')" />
+            <x-input-label for="can_book" :value="__('Would you like to allow users to select you for gigs directly?')" />
                 <div class="flex items-center">
                     <input @if(old('can_book')) checked @endif checked class="mr-1" type="radio" id="yes" name="can_book" value=1>
                     <label class="mr-3"for="yes">Yes</label>
