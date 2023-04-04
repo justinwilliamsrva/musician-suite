@@ -54,6 +54,7 @@ $(document).ready(function() {
             },
             success: function(result) {
                 $('#jobs-list').append(result);
+                $('.musician-name-with-specific-musicians').off('change');
                 addSelectMusicianDomEvent();
             }
         });

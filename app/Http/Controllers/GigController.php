@@ -110,7 +110,15 @@ class GigController extends Controller
      */
     public function create()
     {
-        return view('musician-finder.create');
+        $allMusicians = User::where('admin', '!=', 1)
+            ->where('can_book', '=', true)
+            ->where('id', '!=', 1)
+            ->where('id', '!=', Auth::id())
+            ->orderBy('name')
+            ->select('id', 'name')
+            ->get();
+
+        return view('musician-finder.create')->with('allMusicians', $allMusicians);
     }
 
     /**
@@ -121,6 +129,13 @@ class GigController extends Controller
      */
     public function store(Request $request)
     {
+        $allMusicians = User::where('admin', '!=', 1)
+        ->where('can_book', '=', true)
+        ->where('id', '!=', 1)
+        ->where('id', '!=', Auth::id())
+        ->orderBy('name')
+        ->pluck('id');
+        // dd($request->all());
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
             'start_date_time' => 'required|date',
@@ -134,6 +149,7 @@ class GigController extends Controller
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|max:6',
             'musicians.*.fill_status' => 'required|string',
+            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose', Rule::in($allMusicians)],
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
@@ -150,6 +166,8 @@ class GigController extends Controller
 
             'musicians.*.fill_status.required' => 'The fill status field is required.',
             'musicians.*.fill_status.string' => 'The fill status field must be a string.',
+
+            'musicians.*.musician_select.required_if' => 'A musician is required if "Select Specific Musician" is selected',
 
             'musicians.*.payment.required' => 'The payment field is required.',
             'musicians.*.payment.numeric' => 'The payment field must be a number.',

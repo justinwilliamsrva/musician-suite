@@ -1,10 +1,7 @@
 @props(['$musicianNumber', '$allMusicians'])
 
-@php
-    $instrumentErrors = !is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.instruments');
-@endphp
-
-<select multiple name="musicians[{{ $musicianNumber }}][musician_select]" id="{{ 'musician-select'.$musicianNumber }}" class="@if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.instruments')) input-validation-error @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+<select name="musicians[{{ $musicianNumber }}][musician_select]" id="{{ 'musician-select'.$musicianNumber }}" class="@if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.instruments')) input-validation-error @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+    <option selected value="">Select a Musician</option>
     @foreach($allMusicians as $musician)
         <option @if(old("musicians.$musicianNumber.musician_select") == $musician->id) selected @endif value="{{ $musician->id }}">{{ $musician->name }}</option>
     @endforeach
@@ -13,9 +10,9 @@
 <script>
     var number = {{ $musicianNumber }};
     $('#musician-select'+number).select2({
-        minimumResultsForSearch: 0,
-        minimumInputLength: 5,
-        maximumSelectionLength: 1,
+        // minimumResultsForSearch: 0,
+        // minimumInputLength: 5,
+        // maximumSelectionLength: 1,
         placeholder: 'Search for Musician',
         // matcher: function(params, data) {
         //     // If there is no search term, return all options

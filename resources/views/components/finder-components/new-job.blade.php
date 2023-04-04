@@ -1,7 +1,7 @@
-@props(['$musicianNumber', '$payment', '$musician', '$errors'])
+@props(['$musicianNumber', '$payment', '$musician', '$errors', '$allMusicians'])
 
 @php
-$instrumentErrors = !is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.instruments');
+    $instrumentErrors = !is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.instruments');
 @endphp
 
 <div class="overflow-hidden shadow sm:rounded-md more-job-template">
@@ -20,6 +20,14 @@ $instrumentErrors = !is_array($errors) && $errors->has('musicians.'.$musicianNum
                 @if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.fill_status'))
                     <div class="alert text-red-500">
                     {{ $errors->first('musicians.'.$musicianNumber.'.fill_status') }}
+                    </div>
+                @endif
+                @if($errors && (!empty(old('musicians.'.$musicianNumber.'.musician_select')) || $errors->has('musicians.'.$musicianNumber.'.musician_select')))
+                    @include('components.finder-components.musician-select2', ['musicianNumber' => $musicianNumber, 'allMusicians' => $allMusicians])
+                @endif
+                @if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.musician_select'))
+                    <div class="alert text-red-500">
+                        {{ $errors->first('musicians.'.$musicianNumber.'.musician_select') }}
                     </div>
                 @endif
             </div>

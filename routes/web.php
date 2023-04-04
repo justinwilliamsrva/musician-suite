@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GigController;
 use App\Http\Controllers\ProfileController;
@@ -70,6 +71,8 @@ Route::middleware('auth', 'verified')->group(function () {
             'allMusicians' => User::where('admin', '!=', 1)
                 ->where('can_book', '=', true)
                 ->where('id', '!=', 1)
+                ->where('id', '!=', Auth::id())
+                ->orderBy('name')
                 ->select('id', 'name')
                 ->get(),
         ];

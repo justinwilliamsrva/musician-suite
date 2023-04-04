@@ -176,9 +176,9 @@
                         </h3>
                         <div id="jobs-list" class="flex flex-col space-y-4">
                             @forelse ($oldMusicians as $musician)
-                                @include('components.finder-components.new-job', ['musician' => $musician, 'musicianNumber' => $loop->iteration, 'errors' => $errors])
+                                @include('components.finder-components.new-job', ['musician' => $musician, 'musicianNumber' => $loop->iteration, 'allMusicians' => $allMusicians, 'errors' => $errors])
                             @empty
-                                @include('components.finder-components.new-job', ['musicianNumber' => 1, 'payment' => '', 'errors' => []])
+                                @include('components.finder-components.new-job', ['musicianNumber' => 1, 'payment' => '','allMusicians' => $allMusicians, 'errors' => []])
                             @endforelse
                         </div>
                     </div>
