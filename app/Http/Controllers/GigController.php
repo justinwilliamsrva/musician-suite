@@ -300,7 +300,7 @@ class GigController extends Controller
         if (Auth::user()->admin != 1) {
             $this->authorize('update', $gig);
         }
-        dump($request->all());
+
         $data = $request->all();
         $data['musicians'] = array_filter($data['musicians'], function ($musician) {
             $status = $musician['fill_status'] ?? $musician['musician_picked'];
