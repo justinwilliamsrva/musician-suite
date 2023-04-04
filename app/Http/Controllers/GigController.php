@@ -135,7 +135,7 @@ class GigController extends Controller
         ->where('id', '!=', Auth::id())
         ->orderBy('name')
         ->pluck('id');
-        // dd($request->all());
+
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
             'start_date_time' => 'required|date',
@@ -250,6 +250,14 @@ class GigController extends Controller
             $this->authorize('update', $gig);
         }
 
+        $allMusicians = User::where('admin', '!=', 1)
+            ->where('can_book', '=', true)
+            ->where('id', '!=', 1)
+            ->where('id', '!=', Auth::id())
+            ->orderBy('name')
+            ->select('id', 'name')
+            ->get();
+
         $jobsArray = $gig->jobs->toArray();
 
         foreach ($gig->jobs as $key => $job) {
@@ -272,7 +280,7 @@ class GigController extends Controller
             ];
         }
 
-        return view('musician-finder.edit', ['gig' => $gig, 'jobsArray' => $jobsArray]);
+        return view('musician-finder.edit', ['gig' => $gig, 'jobsArray' => $jobsArray, 'allMusicians' => $allMusicians]);
     }
 
     /**
@@ -292,13 +300,20 @@ class GigController extends Controller
         if (Auth::user()->admin != 1) {
             $this->authorize('update', $gig);
         }
-
+        dump($request->all());
         $data = $request->all();
         $data['musicians'] = array_filter($data['musicians'], function ($musician) {
             $status = $musician['fill_status'] ?? $musician['musician_picked'];
 
             return $status !== 'delete';
         });
+
+        $allMusicians = User::where('admin', '!=', 1)
+        ->where('can_book', '=', true)
+        ->where('id', '!=', 1)
+        ->where('id', '!=', Auth::id())
+        ->orderBy('name')
+        ->pluck('id');
 
         $requestDataWithoutDeletedJobs = $data;
         $validator = Validator::make($requestDataWithoutDeletedJobs, [
@@ -321,6 +336,7 @@ class GigController extends Controller
             'musicians.*.users' => 'sometimes',
             'musicians.*.fill_status' => 'sometimes|string|max:15',
             'musicians.*.musician_picked' => 'sometimes|string|max:15',
+            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose','required_if:musicians.*.musician_pickedß,choose', Rule::in($allMusicians)],
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
@@ -339,6 +355,8 @@ class GigController extends Controller
             'musicians.*.fill_status.max' => 'This field may not have more than :max items',
             'musicians.*.musician_picked.string' => 'This field must be a string.',
             'musicians.*.musician_picked.max' => 'This field may not have more than :max items',
+
+            'musicians.*.musician_select.required_if' => 'A musician is required if "Select Specific Musician" is selected',
 
             'musicians.*.payment.required' => 'The payment field is required.',
             'musicians.*.payment.numeric' => 'The payment field must be a number.',
@@ -425,6 +443,16 @@ class GigController extends Controller
                     $authUser = User::find(Auth::id());
                     $authUser->jobs()->detach($newJob->id);
                 } else {
+                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                }
+            }
+
+            if ($status == 'choose') {
+                $user = User::find($job['musician_select']);
+                $newJob->users()->attach($user->id, ['status' => 'Booked']);
+                ChosenForJobJob::dispatch($user->id, $newJob, true);
+                GigRemovedJob::dispatch($newJob, 'booked');
+                if(! empty($job['userBookedID'])) {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
             }
