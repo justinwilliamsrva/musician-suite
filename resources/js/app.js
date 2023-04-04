@@ -54,6 +54,8 @@ $(document).ready(function() {
             },
             success: function(result) {
                 $('#jobs-list').append(result);
+                $('.musician-name-with-specific-musicians').off('change');
+                addSelectMusicianDomEvent();
             }
         });
     }
@@ -73,6 +75,28 @@ $(document).ready(function() {
             }
         });
     }
+
+    // Select Musician
+    function addSelectMusicianDomEvent() {
+        $('.musician-name-with-specific-musicians').on('change', function(e) {
+            if (e.target.value == 'choose') {
+                $.ajax({
+                    url: `${window.location.origin}/musician-select?number=${e.target.dataset.number}`,
+                    type: 'GET',
+                    complete: function() {
+                        alert('Please do not select a specific musician without first confirming with them directly.');
+                    },
+                    success: function(result) {
+                        $(e.target).after(result);
+                    }
+                })
+            } else {
+                $(e.target).next('select').remove();
+                $(e.target).next('span').remove();
+            }
+        });
+    };
+    addSelectMusicianDomEvent();
 
     // Clear Form
     $('#clear-create-gig-form').on('click', function(){

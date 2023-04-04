@@ -212,7 +212,9 @@
                             </div>
                         @endif
                         <div id="jobs-list" class="flex flex-col space-y-4">
-                            @each('components.finder-components.edit-job', $jobsArray, 'job')
+                            @foreach($jobsArray as $job)
+                                @include('components.finder-components.edit-job', ['key' => $loop->index, 'job' => $job, 'allMusicians' => $allMusicians])
+                            @endforeach
                         </div>
                     </div>
                     <div class="flex justify-between mx-4 sm:mx-0">

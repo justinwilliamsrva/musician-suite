@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ChosenForJobJob;
-use App\Jobs\FillJobRequestJob;
-use App\Jobs\GigRemovedJob;
-use App\Jobs\NewJobAvailableJob;
+use Carbon\Carbon;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Jobs\GigRemovedJob;
 use Illuminate\Http\Request;
+use App\Jobs\ChosenForJobJob;
+use App\Jobs\FillJobRequestJob;
+use Illuminate\Validation\Rule;
+use App\Jobs\NewJobAvailableJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class GigController extends Controller
 {
@@ -109,7 +110,15 @@ class GigController extends Controller
      */
     public function create()
     {
-        return view('musician-finder.create');
+        $allMusicians = User::where('admin', '!=', 1)
+            ->where('can_book', '=', true)
+            ->where('id', '!=', 1)
+            ->where('id', '!=', Auth::id())
+            ->orderBy('name')
+            ->select('id', 'name')
+            ->get();
+
+        return view('musician-finder.create')->with('allMusicians', $allMusicians);
     }
 
     /**
@@ -120,6 +129,13 @@ class GigController extends Controller
      */
     public function store(Request $request)
     {
+        $allMusicians = User::where('admin', '!=', 1)
+        ->where('can_book', '=', true)
+        ->where('id', '!=', 1)
+        ->where('id', '!=', Auth::id())
+        ->orderBy('name')
+        ->pluck('id');
+
         $validated = $request->validate([
             'event_type' => 'required|string|min:3|max:50',
             'start_date_time' => 'required|date',
@@ -133,6 +149,7 @@ class GigController extends Controller
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|max:6',
             'musicians.*.fill_status' => 'required|string',
+            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose', Rule::in($allMusicians)],
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
@@ -149,6 +166,8 @@ class GigController extends Controller
 
             'musicians.*.fill_status.required' => 'The fill status field is required.',
             'musicians.*.fill_status.string' => 'The fill status field must be a string.',
+
+            'musicians.*.musician_select.required_if' => 'A musician is required if "Select Specific Musician" is selected',
 
             'musicians.*.payment.required' => 'The payment field is required.',
             'musicians.*.payment.numeric' => 'The payment field must be a number.',
@@ -190,6 +209,12 @@ class GigController extends Controller
             if ($job['fill_status'] == 'unfilled') {
                 NewJobAvailableJob::dispatch($gig, $newJob);
             }
+
+            if ($job['fill_status'] == 'choose') {
+                $user = User::find($job['musician_select']);
+                $newJob->users()->attach($user->id, ['status' => 'Booked']);
+                ChosenForJobJob::dispatch($user->id, $newJob, true);
+            }
         }
 
         return redirect()->route('musician-finder.dashboard')->with('success', $gig->event_type.' Created Successfully.');
@@ -225,6 +250,14 @@ class GigController extends Controller
             $this->authorize('update', $gig);
         }
 
+        $allMusicians = User::where('admin', '!=', 1)
+            ->where('can_book', '=', true)
+            ->where('id', '!=', 1)
+            ->where('id', '!=', Auth::id())
+            ->orderBy('name')
+            ->select('id', 'name')
+            ->get();
+
         $jobsArray = $gig->jobs->toArray();
 
         foreach ($gig->jobs as $key => $job) {
@@ -247,7 +280,7 @@ class GigController extends Controller
             ];
         }
 
-        return view('musician-finder.edit', ['gig' => $gig, 'jobsArray' => $jobsArray]);
+        return view('musician-finder.edit', ['gig' => $gig, 'jobsArray' => $jobsArray, 'allMusicians' => $allMusicians]);
     }
 
     /**
@@ -259,7 +292,6 @@ class GigController extends Controller
      */
     public function update(Request $request, $gig)
     {
-
         $gig = Gig::find($gig);
         if (is_null($gig)) {
             return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to update was either deleted or did not exist.');
@@ -268,13 +300,20 @@ class GigController extends Controller
         if (Auth::user()->admin != 1) {
             $this->authorize('update', $gig);
         }
-
+        dump($request->all());
         $data = $request->all();
         $data['musicians'] = array_filter($data['musicians'], function ($musician) {
             $status = $musician['fill_status'] ?? $musician['musician_picked'];
 
             return $status !== 'delete';
         });
+
+        $allMusicians = User::where('admin', '!=', 1)
+        ->where('can_book', '=', true)
+        ->where('id', '!=', 1)
+        ->where('id', '!=', Auth::id())
+        ->orderBy('name')
+        ->pluck('id');
 
         $requestDataWithoutDeletedJobs = $data;
         $validator = Validator::make($requestDataWithoutDeletedJobs, [
@@ -297,6 +336,7 @@ class GigController extends Controller
             'musicians.*.users' => 'sometimes',
             'musicians.*.fill_status' => 'sometimes|string|max:15',
             'musicians.*.musician_picked' => 'sometimes|string|max:15',
+            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose','required_if:musicians.*.musician_pickedß,choose', Rule::in($allMusicians)],
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
@@ -315,6 +355,8 @@ class GigController extends Controller
             'musicians.*.fill_status.max' => 'This field may not have more than :max items',
             'musicians.*.musician_picked.string' => 'This field must be a string.',
             'musicians.*.musician_picked.max' => 'This field may not have more than :max items',
+
+            'musicians.*.musician_select.required_if' => 'A musician is required if "Select Specific Musician" is selected',
 
             'musicians.*.payment.required' => 'The payment field is required.',
             'musicians.*.payment.numeric' => 'The payment field must be a number.',
@@ -401,6 +443,16 @@ class GigController extends Controller
                     $authUser = User::find(Auth::id());
                     $authUser->jobs()->detach($newJob->id);
                 } else {
+                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                }
+            }
+
+            if ($status == 'choose') {
+                $user = User::find($job['musician_select']);
+                $newJob->users()->attach($user->id, ['status' => 'Booked']);
+                ChosenForJobJob::dispatch($user->id, $newJob, true);
+                GigRemovedJob::dispatch($newJob, 'booked');
+                if(! empty($job['userBookedID'])) {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
             }
@@ -513,7 +565,7 @@ class GigController extends Controller
         $user_id = request()->query('user');
         $user = User::find($user_id);
 
-        if ($job->gig->user->id != Auth::id() && !Auth::user()->isAdmin()) {
+        if ($job->gig->user->id != Auth::id() && ! Auth::user()->isAdmin()) {
             return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
         }
 
@@ -531,7 +583,6 @@ class GigController extends Controller
 
     public function removeApp($job)
     {
-
         $job = Job::find($job);
 
         if (is_null($job)) {
@@ -547,5 +598,31 @@ class GigController extends Controller
         $job->users()->detach(Auth::id());
 
         return redirect()->back()->with('success', 'You\'ve successfully removed your application.');
+    }
+
+    public function removeBooking()
+    {
+        $job_id = request()->query('job_id');
+        $job = Job::find($job_id);
+        $user_id = request()->query('user_id');
+        $user = User::find($user_id);
+        $host_id = request()->query('host_id');
+        $host = User::find($host_id);
+
+        $user->jobs()->detach($job->id);
+
+        $lines[1] = 'The following User booked '.$user->name.' without confirming with them first';
+        $lines[2] = 'User: '.$host->name.' '.$host->email;
+        $lines[3] = route('gigs.show', $job->gig->id);
+        $message_body = implode(' ', $lines);
+        Mail::raw($message_body, function($message) use ($host) {
+            $message->to('info@classicalconnectionrva.com');
+            $message->subject($host->name.' Broke Booking Rules.');
+        });
+
+        $message = 'You were removed from this gig';
+
+        return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', $message);
+
     }
 }

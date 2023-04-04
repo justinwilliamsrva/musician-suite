@@ -35,6 +35,13 @@ class RegisteredUserController extends Controller
         $name = $request->input('name');
 
         $request->validate([
+            'email' => Rule::exists('emails')->where('email', $email),
+        ],
+        [
+            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="'.$this->getEmailString($email, $name).'">info@classicalconnectionrva.com</a> to add this email address to the database.',
+        ]);
+
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -48,7 +55,7 @@ class RegisteredUserController extends Controller
             ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone_number' => [
-                'required',
+                'nullable',
                 'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/',
                 'unique:users',
                 // Rule::unique('users')->where(function ($query) {
@@ -56,13 +63,7 @@ class RegisteredUserController extends Controller
                 // }),
             ],
             'instruments' => ['required', 'array', 'min:1', 'max:10'],
-        ]);
-
-        $request->validate([
-            'email' => Rule::exists('emails')->where('email', $email),
-        ],
-        [
-            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="'.$this->getEmailString($email, $name).'">info@classicalconnectionrva.com</a> to add this email address to the database.',
+            'can_book' => ['required', 'boolean'],
         ]);
 
         $user = User::create([
@@ -72,6 +73,7 @@ class RegisteredUserController extends Controller
             'phone_number' => $request->phone_number,
             'instruments' => json_encode($request->instruments),
             'admin' => 0,
+            'can_book' => $request->can_book,
         ]);
 
         event(new Registered($user));
@@ -89,9 +91,7 @@ class RegisteredUserController extends Controller
         $lines[1] = '';
         $lines[2] = '1. Please provide your name: '.$name;
         $lines[3] = '2. Please provide the email you would like at add: '.$email;
-        $lines[4] = '3. When was the last time you performed for CRRVA? ex: Incarnations in Spring of 2022.';
-        $lines[5] = '';
-        $lines[6] = 'NOTE: It may take 1-2 days to confirm your membership. You will receive an email once your membership has been verified.';
+        $lines[4] = '3. When was the last time you performed for CRRVA? EX: Incarnations in Spring of 2022.';
 
         $body = '&body='.implode('%0D%0A', $lines);
 

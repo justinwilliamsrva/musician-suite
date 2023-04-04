@@ -1,8 +1,9 @@
-@props(['$musicianNumber', '$payment', '$musician', '$errors'])
+@props(['$musicianNumber', '$payment', '$musician', '$errors', '$allMusicians'])
 
 @php
-$instrumentErrors = !is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.instruments');
+    $instrumentErrors = !is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.instruments');
 @endphp
+
 <div class="overflow-hidden shadow sm:rounded-md more-job-template">
     <div class="bg-white px-4 py-5 sm:p-6">
         <div class="grid grid-cols-6 gap-6">
@@ -10,14 +11,23 @@ $instrumentErrors = !is_array($errors) && $errors->has('musicians.'.$musicianNum
                 <label for="musician_name" class="block text-sm font-medium text-gray-700">
                     Musician #{{ $musicianNumber }}
                 </label>
-                <select name="musicians[{{ $musicianNumber }}][fill_status]" id="musician_name" class=" @if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.fill_status')) border-red-500 @endif mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                <select data-number="{{ $musicianNumber }}" name="musicians[{{ $musicianNumber }}][fill_status]" id="musician_name" class="@if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.fill_status')) border-red-500 @endif musician-name-with-specific-musicians mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                     <option @if(old("musicians.$musicianNumber.fill_status") == 'unfilled') selected @endif value="unfilled">Need To Book</option>
                     <option @if(old("musicians.$musicianNumber.fill_status") == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                     <option @if(old("musicians.$musicianNumber.fill_status") == 'myself') selected @endif value="myself">Book Myself</option>
+                    <option @if(old("musicians.$musicianNumber.fill_status") == 'choose') selected @endif value="choose">Select Specific Musician</option>
                 </select>
                 @if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.fill_status'))
                     <div class="alert text-red-500">
                     {{ $errors->first('musicians.'.$musicianNumber.'.fill_status') }}
+                    </div>
+                @endif
+                @if($errors && (!empty(old('musicians.'.$musicianNumber.'.musician_select')) || $errors->has('musicians.'.$musicianNumber.'.musician_select')))
+                    @include('components.finder-components.musician-select2', ['musicianNumber' => $musicianNumber, 'allMusicians' => $allMusicians])
+                @endif
+                @if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.musician_select'))
+                    <div class="alert text-red-500">
+                        {{ $errors->first('musicians.'.$musicianNumber.'.musician_select') }}
                     </div>
                 @endif
             </div>

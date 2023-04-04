@@ -52,17 +52,27 @@
         </div>
         <div>
             <x-input-label for="phone_number" :value="__('Phone Number')" />
-            <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full" :value="old('phone_number', $user->phone_number)" required autofocus autocomplete="phone_number" />
+            <x-text-input id="phone_number" name="phone_number" type="text" class="mt-1 block w-full" :value="old('phone_number', $user->phone_number)" autofocus autocomplete="phone_number" />
             <x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
         </div>
         <div>
-            <x-input-label for="phone_number" :value="__('Instruments')" />
-            <select id="select2" name="instruments[]" multiple="multiple" id="instrument" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            <x-input-label for="instrument" :value="__('Instruments')" />
+            <select id="select2" name="instruments[]" multiple="multiple" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                 @foreach(config('gigs.instruments') as $instrument)
                     <option value="{{ $instrument }}" @if(in_array($instrument, json_decode($user->instruments)) || in_array($instrument, $oldInstruments)) selected @endif>{{ $instrument }}</option>
                 @endforeach
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('instruments')" />
+        </div>
+        <div>
+            <x-input-label for="can_book" :value="__('Would you like to allow users to select you for gigs directly?')" />
+            <div class="flex items-center">
+                <input @if(old('can_book', $user->can_book) == true) checked @endif class="mr-1" type="radio" id="yes" name="can_book" value=1>
+                <label class="mr-3"for="yes">Yes</label>
+                <input @if(old('can_book', $user->can_book) == false) checked @endif class="mr-1" type="radio" id="no" name="can_book" value=0>
+                <label for="no">No</label>
+            </div>
+            <x-input-error class="mt-2" :messages="$errors->get('can_book')" />
         </div>
 
         <div class="flex items-center gap-4">

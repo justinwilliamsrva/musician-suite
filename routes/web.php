@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GigController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +28,12 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/finder', [GigController::class, 'index'])->name('musician-finder.dashboard');
     Route::resource('/gigs', GigController::class)->except('index');
+
     Route::post('/applyToJob/{job}', [GigController::class, 'applyToJob'])->name('applyToJob');
     Route::post('/removeApp/{job}', [GigController::class, 'removeApp'])->name('removeApp');
     Route::get('/applyToJob', [GigController::class, 'applyToJobGet'])->name('applyToJobGet');
     Route::get('/bookJob', [GigController::class, 'bookJobGet'])->name('bookJobGet');
+    Route::get('/removeBooking', [GigController::class, 'removeBooking'])->name('removeBooking');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -57,6 +61,23 @@ Route::middleware('auth', 'verified')->group(function () {
         ]);
 
         return view('components.finder-components.edit-job', $data)->render();
+    });
+
+    Route::get('/musician-select', function () {
+        $number = request()->query('number', 1);
+
+        $data = [
+            'musicianNumber' => $number,
+            'allMusicians' => User::where('admin', '!=', 1)
+                ->where('can_book', '=', true)
+                ->where('id', '!=', 1)
+                ->where('id', '!=', Auth::id())
+                ->orderBy('name')
+                ->select('id', 'name')
+                ->get(),
+        ];
+
+        return view('components.finder-components.musician-select2', $data)->render();
     });
 
     Route::fallback(function () {

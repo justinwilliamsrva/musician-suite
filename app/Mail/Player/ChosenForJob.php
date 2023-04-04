@@ -18,15 +18,18 @@ class ChosenForJob extends Mailable
 
     public Job $newJob;
 
+    public bool $canReject;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $newJob)
+    public function __construct($user, $newJob, $canReject)
     {
         $this->user = $user;
         $this->newJob = $newJob;
+        $this->canReject = $canReject;
     }
 
     /**
@@ -53,6 +56,7 @@ class ChosenForJob extends Mailable
             with: [
                 'job' => $this->newJob,
                 'user' => $this->user,
+                'canReject' => $this->canReject,
             ],
         );
     }
