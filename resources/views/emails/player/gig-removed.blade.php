@@ -37,8 +37,9 @@
 
     <p><strong>Email:</strong> <a href="mailto:{{ $job->gig->user->email }}">{{ $job->gig->user->email }}</a></p>
 
-    <p><strong>Phone Number: </strong><a href="tel:{{ $job->gig->user->phone_number }}">{{ $job->gig->user->phone_number }}</a></p>
-
+    @if ($job->gig->user->phone_number)
+        <p><strong>Phone Number: </strong><a href="tel:{{ $job->gig->user->phone_number }}">{{ $job->gig->user->phone_number }}</a></p>
+    @endif
     <br/>
 
     <p>Please check the <a href="{{ route('musician-finder.dashboard') }}">Musician Finder Dashboard</a> for new gigs.</p>
