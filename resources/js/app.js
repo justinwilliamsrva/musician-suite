@@ -98,6 +98,11 @@ $(document).ready(function() {
     };
     addSelectMusicianDomEvent();
 
+    // Alert booked Dropdown
+    $('.booked-user').one('change', function(){
+        alert('You are making changes to a job with a booked user. Please inform the musician directly before making any changes here.');
+    })
+
     // Clear Form
     $('#clear-create-gig-form').on('click', function(){
         if (confirm('Are you sure you want to clear this gig and all musicians') == true) {
