@@ -6,7 +6,7 @@
 <body>
     <p>Hi {{ $user->name }},</p>
 
-    <p>The following gig has been removed your performances because {{ $reason }}.</p>
+    <p>The following gig has been removed for your upcoming performances because {{ $reason }}.</p>
 
     <br/>
 
