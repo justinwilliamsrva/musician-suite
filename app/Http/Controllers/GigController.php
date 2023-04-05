@@ -430,7 +430,7 @@ class GigController extends Controller
             if ($status == 'filled') {
                 $newJob->users()->attach(1, ['status' => 'Booked']);
                 if (! empty($job['userBookedID'])) {
-                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician');
+                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician', $job['userBookedID']);
                 } else {
                     GigRemovedJob::dispatch($newJob, 'booked');
                 }
@@ -439,7 +439,7 @@ class GigController extends Controller
             if ($status == 'myself') {
                 $newJob->users()->attach(Auth::id(), ['status' => 'Booked']);
                 if (! empty($job['userBookedID'])) {
-                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician');
+                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician', $job['userBookedID']);
                 } else {
                     GigRemovedJob::dispatch($newJob, 'booked');
                 }
@@ -463,7 +463,7 @@ class GigController extends Controller
                 $newJob->users()->attach($user->id, ['status' => 'Booked']);
                 ChosenForJobJob::dispatch($user->id, $newJob, true);
                 if (! empty($job['userBookedID'])) {
-                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician');
+                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician', $job['userBookedID']);
                 } else {
                     GigRemovedJob::dispatch($newJob, 'booked');
                 }

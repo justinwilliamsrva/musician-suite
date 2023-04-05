@@ -2,14 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Mail\Player\GigRemoved;
 use App\Models\Job;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
+use App\Mail\Player\GigRemoved;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
 
 class GigRemovedJob implements ShouldQueue
 {
@@ -19,15 +20,18 @@ class GigRemovedJob implements ShouldQueue
 
     public string $typeOfDelete;
 
+    public int|null $bookedUserID;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($removedJob, $typeOfDelete)
+    public function __construct($removedJob, $typeOfDelete, $bookedUserID = null)
     {
         $this->typeOfDelete = $typeOfDelete;
         $this->removedJob = $removedJob;
+        $this->bookedUserID = $bookedUserID;
     }
 
     /**
@@ -53,9 +57,7 @@ class GigRemovedJob implements ShouldQueue
             }
         } elseif ($this->typeOfDelete == 'onlyBookedMusician') {
             $reason = 'the Host booked another musician';
-            $bookedUser = Job::find($this->removedJob->id)->users()->select(['users.*'])
-                    ->wherePivot('status', 'Booked')
-                    ->first();
+            $bookedUser = User::find($this->bookedUserID);
             $bookedUser->jobs()->updateExistingPivot($this->removedJob->id, ['status' => 'Applied']);
             Mail::to($bookedUser->email)->send(new GigRemoved($bookedUser, $this->removedJob, $reason));
         }
