@@ -15,7 +15,7 @@
                     <option @if(old("musicians.$musicianNumber.fill_status") == 'unfilled') selected @endif value="unfilled">Need To Book</option>
                     <option @if(old("musicians.$musicianNumber.fill_status") == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                     <option @if(old("musicians.$musicianNumber.fill_status") == 'myself') selected @endif value="myself">Book Myself</option>
-                    <option @if(old("musicians.$musicianNumber.fill_status") == 'choose') selected @endif value="choose">Select Specific Musician</option>
+                    <option @if(old("musicians.$musicianNumber.fill_status") == 'choose') selected @endif value="choose">Book Specific Musician</option>
                 </select>
                 @if(!is_array($errors) && $errors->has('musicians.'.$musicianNumber.'.fill_status'))
                     <div class="alert text-red-500">

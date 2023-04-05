@@ -172,7 +172,7 @@ class GigController extends Controller
             'musicians.*.fill_status.required' => 'The fill status field is required.',
             'musicians.*.fill_status.string' => 'The fill status field must be a string.',
 
-            'musicians.*.musician_select.required_if' => 'A musician is required if "Select Specific Musician" is selected',
+            'musicians.*.musician_select.required_if' => 'A musician is required if "Book Specific Musician" is selected',
 
             'musicians.*.payment.required' => 'The payment field is required.',
             'musicians.*.payment.numeric' => 'The payment field must be a number.',
@@ -361,7 +361,7 @@ class GigController extends Controller
             'musicians.*.musician_picked.string' => 'This field must be a string.',
             'musicians.*.musician_picked.max' => 'This field may not have more than :max items',
 
-            'musicians.*.musician_select.required_if' => 'A musician is required if "Select Specific Musician" is selected',
+            'musicians.*.musician_select.required_if' => 'A musician is required if "Book Specific Musician" is selected',
 
             'musicians.*.payment.required' => 'The payment field is required.',
             'musicians.*.payment.numeric' => 'The payment field must be a number.',

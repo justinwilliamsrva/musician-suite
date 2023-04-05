@@ -41,8 +41,8 @@
                         @if ($userBookedName != Auth::id() && !Auth::user()->isAdmin())
                             <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
-                        <option @if($fillStatus == 'choose') selected @endif value="choose">Select Specific Musician</option>
-                        <option @if($fillStatus == 'delete') selected @endif value="delete">Remove Musician</option>
+                        <option @if($fillStatus == 'choose') selected @endif value="choose">Book Specific Musician</option>
+                        <option @if($fillStatus == 'delete') selected @endif value="delete">{{ 'Delete Musician #'.$musicianNumber + 1 }}</option>
                     </select>
                 @elseif($numberOfJobApplicants > 0)
                     <select data-number="{{ $musicianNumber }}" name="musicians[{{ $musicianNumber }}][musician_picked]" class="@if(isset($errors['musician_picked'])) border-red-500 @endif musician-name-with-specific-musicians mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
@@ -56,8 +56,8 @@
                         @if(!Auth::user()->isAdmin())
                             <option @if($musicianPicked == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
-                        <option @if($musicianPicked == 'choose') selected @endif value="choose">Select Specific Musician</option>
-                        <option @if($musicianPicked == 'delete') selected @endif value="delete">Remove Musician</option>
+                        <option @if($musicianPicked == 'choose') selected @endif value="choose">Book Specific Musician</option>
+                        <option @if($musicianPicked == 'delete') selected @endif value="delete">{{ 'Delete Musician #'.$musicianNumber + 1 }}</option>
                     </select>
                 @else
                     <select data-number="{{ $musicianNumber }}" name="musicians[{{ $musicianNumber }}][fill_status]" class="@if(isset($errors['fill_status'])) border-red-500 @endif musician-name-with-specific-musicians mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
@@ -67,8 +67,8 @@
                         @if(!Auth::user()->isAdmin())
                             <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
-                        <option @if($fillStatus == 'choose') selected @endif value="choose">Select Specific Musician</option>
-                        <option @if($fillStatus == 'delete') selected @endif value="delete">Remove Musician</option>
+                        <option @if($fillStatus == 'choose') selected @endif value="choose">Book Specific Musician</option>
+                        <option @if($fillStatus == 'delete') selected @endif value="delete">{{ 'Delete Musician #'.$musicianNumber + 1 }}</option>
                     </select>
                 @endif
                 @if($errors && (!empty(old('musicians.'.$musicianNumber.'.musician_select')) || $errors->has('musicians.'.$musicianNumber.'.musician_select')))
