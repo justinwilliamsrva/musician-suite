@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ChosenForJobJob;
-use App\Jobs\FillJobRequestJob;
-use App\Jobs\GigRemovedJob;
-use App\Jobs\NewJobAvailableJob;
+use Carbon\Carbon;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Jobs\GigRemovedJob;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use App\Jobs\ChosenForJobJob;
+use Illuminate\Mail\Mailable;
+use App\Jobs\FillJobRequestJob;
+use Illuminate\Validation\Rule;
+use App\Jobs\NewJobAvailableJob;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
+use Symfony\Component\Mime\Part\HtmlPart;
+use Symfony\Component\Mime\Part\AbstractPart;
 
 class GigController extends Controller
 {
@@ -246,7 +251,7 @@ class GigController extends Controller
             return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to access was either deleted or did not exist.');
         }
 
-        if (Auth::user()->admin != 1) {
+        if (! Auth::user()->isAdmin()) {
             $this->authorize('update', $gig);
         }
 
@@ -297,7 +302,7 @@ class GigController extends Controller
             return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to update was either deleted or did not exist.');
         }
 
-        if (Auth::user()->admin != 1) {
+        if (! Auth::user()->isAdmin()) {
             $this->authorize('update', $gig);
         }
 
@@ -482,7 +487,7 @@ class GigController extends Controller
             return redirect()->route('musician-finder.dashboard')->with('warning', 'The gig you tried to delete has either already been deleted or did not exist.');
         }
 
-        if (Auth::user()->admin != 1) {
+        if (! Auth::user()->isAdmin()) {
             $this->authorize('update', $gig);
         }
 
@@ -570,6 +575,7 @@ class GigController extends Controller
         }
 
         $job->users()->updateExistingPivot($user->id, ['status' => 'Booked']);
+
         if ($user->id != Auth::id()) {
             ChosenForJobJob::dispatch($user->id, $job);
         }
@@ -586,7 +592,7 @@ class GigController extends Controller
         $job = Job::find($job);
 
         if (is_null($job)) {
-            return redirect()->route('musician-finder.dashboard')->with('warning', 'The job you tried to remove your application from has been deleted or did not exist');
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'The position you tried to withdraw your application from has been deleted or did not exist in our system');
         }
 
         $bookedUserID = $job->users()->select(['users.*'])->wherePivot('status', 'Booked')->first()->id ?? '';
@@ -608,6 +614,10 @@ class GigController extends Controller
         $user = User::find($user_id);
         $host_id = request()->query('host_id');
         $host = User::find($host_id);
+
+        if ($user_id != Auth::id() && ! Auth::user()->isAdmin()) {
+            return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
+        }
 
         $user->jobs()->detach($job->id);
 

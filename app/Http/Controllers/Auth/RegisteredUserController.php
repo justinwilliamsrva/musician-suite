@@ -90,7 +90,7 @@ class RegisteredUserController extends Controller
         $lines[0] = 'Please answer the following three questions to confirm your membership with CRRVA and allow us to add your email to the database.';
         $lines[1] = '';
         $lines[2] = '1. Please provide your name: '.$name;
-        $lines[3] = '2. Please provide the email you would like at add: '.$email;
+        $lines[3] = '2. Please provide the email you would like to use: '.$email;
         $lines[4] = '3. When was the last time you performed for CRRVA? EX: Incarnations in Spring of 2022.';
 
         $body = '&body='.implode('%0D%0A', $lines);
