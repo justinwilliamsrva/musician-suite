@@ -430,17 +430,19 @@ class GigController extends Controller
             if ($status == 'filled') {
                 $newJob->users()->attach(1, ['status' => 'Booked']);
                 if (! empty($job['userBookedID'])) {
-                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician');
+                } else {
+                    GigRemovedJob::dispatch($newJob, 'booked');
                 }
-                GigRemovedJob::dispatch($newJob, 'booked');
             }
 
             if ($status == 'myself') {
                 $newJob->users()->attach(Auth::id(), ['status' => 'Booked']);
                 if (! empty($job['userBookedID'])) {
-                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician');
+                } else {
+                    GigRemovedJob::dispatch($newJob, 'booked');
                 }
-                GigRemovedJob::dispatch($newJob, 'booked');
             }
 
             if ($status == 'unfilled' && ! empty($job['userBookedID'])) {
@@ -461,9 +463,10 @@ class GigController extends Controller
                 $newJob->users()->attach($user->id, ['status' => 'Booked']);
                 ChosenForJobJob::dispatch($user->id, $newJob, true);
                 if (! empty($job['userBookedID'])) {
-                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician');
+                } else {
+                    GigRemovedJob::dispatch($newJob, 'booked');
                 }
-                GigRemovedJob::dispatch($newJob, 'booked');
             }
 
             if (is_numeric($status)) {

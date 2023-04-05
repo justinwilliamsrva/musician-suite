@@ -51,6 +51,12 @@ class GigRemovedJob implements ShouldQueue
             foreach ($usersWhoApplied as $user) {
                 Mail::to($user->email)->send(new GigRemoved($user, $this->removedJob, $reason));
             }
+        } elseif ($this->typeOfDelete == 'onlyBookedMusician') {
+            $reason = 'the Host booked another musician';
+            $bookedUser = Job::find($this->removedJob->id)->users()->select(['users.*'])
+                    ->wherePivot('status', 'Booked')
+                    ->first();
+            $bookedUser->jobs()->updateExistingPivot($this->removedJob->id, ['status' => 'Applied']);
+            Mail::to($bookedUser->email)->send(new GigRemoved($bookedUser, $this->removedJob, $reason));
         }
-    }
 }
