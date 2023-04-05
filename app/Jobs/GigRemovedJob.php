@@ -59,4 +59,5 @@ class GigRemovedJob implements ShouldQueue
             $bookedUser->jobs()->updateExistingPivot($this->removedJob->id, ['status' => 'Applied']);
             Mail::to($bookedUser->email)->send(new GigRemoved($bookedUser, $this->removedJob, $reason));
         }
+    }
 }
