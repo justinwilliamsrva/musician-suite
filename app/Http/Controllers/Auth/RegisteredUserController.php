@@ -37,9 +37,9 @@ class RegisteredUserController extends Controller
         $request->validate([
             'email' => Rule::exists('emails')->where('email', $email),
         ],
-        [
-            'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="'.$this->getEmailString($email, $name).'">info@classicalconnectionrva.com</a> to add this email address to the database.',
-        ]);
+            [
+                'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="'.$this->getEmailString($email, $name).'">info@classicalconnectionrva.com</a> to add this email address to the database.',
+            ]);
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -83,8 +83,8 @@ class RegisteredUserController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
-    public function getEmailString($email, $name) {
-
+    public function getEmailString($email, $name)
+    {
         $subject = '?subject=Add my email to CRRVA\'s Database';
 
         $lines[0] = 'Please answer the following three questions to confirm your membership with CRRVA and allow us to add your email to the database.';
@@ -95,6 +95,6 @@ class RegisteredUserController extends Controller
 
         $body = '&body='.implode('%0D%0A', $lines);
 
-        return 'mailto:'.$email.$subject.$body;
+        return 'mailto:info@classicalconnectionrva.com'.$subject.$body;
     }
 }

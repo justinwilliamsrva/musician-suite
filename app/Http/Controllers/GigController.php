@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Jobs\ChosenForJobJob;
+use App\Jobs\FillJobRequestJob;
+use App\Jobs\GigRemovedJob;
+use App\Jobs\NewJobAvailableJob;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
-use App\Jobs\GigRemovedJob;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Jobs\ChosenForJobJob;
-use App\Jobs\FillJobRequestJob;
-use Illuminate\Validation\Rule;
-use App\Jobs\NewJobAvailableJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class GigController extends Controller
 {
@@ -336,7 +336,7 @@ class GigController extends Controller
             'musicians.*.users' => 'sometimes',
             'musicians.*.fill_status' => 'sometimes|string|max:15',
             'musicians.*.musician_picked' => 'sometimes|string|max:15',
-            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose','required_if:musicians.*.musician_pickedß,choose', Rule::in($allMusicians)],
+            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose', 'required_if:musicians.*.musician_pickedß,choose', Rule::in($allMusicians)],
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
             'musicians.*.payment' => 'required|numeric|min:0',
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
@@ -452,7 +452,7 @@ class GigController extends Controller
                 $newJob->users()->attach($user->id, ['status' => 'Booked']);
                 ChosenForJobJob::dispatch($user->id, $newJob, true);
                 GigRemovedJob::dispatch($newJob, 'booked');
-                if(! empty($job['userBookedID'])) {
+                if (! empty($job['userBookedID'])) {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
             }
@@ -615,7 +615,7 @@ class GigController extends Controller
         $lines[2] = 'User: '.$host->name.' '.$host->email;
         $lines[3] = route('gigs.show', $job->gig->id);
         $message_body = implode(' ', $lines);
-        Mail::raw($message_body, function($message) use ($host) {
+        Mail::raw($message_body, function ($message) use ($host) {
             $message->to('info@classicalconnectionrva.com');
             $message->subject($host->name.' Broke Booking Rules.');
         });
@@ -623,6 +623,5 @@ class GigController extends Controller
         $message = 'You were removed from this gig';
 
         return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', $message);
-
     }
 }

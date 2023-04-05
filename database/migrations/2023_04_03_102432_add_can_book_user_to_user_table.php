@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-                $table->boolean('can_book')->default(true);
-            });
+            $table->boolean('can_book')->default(true);
+        });
     }
 
     /**
