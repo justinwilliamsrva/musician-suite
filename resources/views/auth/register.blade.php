@@ -75,7 +75,7 @@
                 <div class="flex items-center">
                     <input @if(old('can_book') == 1) checked @endif checked class="mr-1" type="radio" id="yes" name="can_book" value=1>
                     <label class="mr-3"for="yes">Yes</label>
-                    <input @if(old('can_book') == 0) checked @endif class="mr-1" type="radio" id="no" name="can_book" value=0>
+                    <input @if(!is_null(old('can_book')) && old('can_book') == 0) checked @endif class="mr-1" type="radio" id="no" name="can_book" value=0>
                     <label for="no">No</label>
                 </div>
             <x-input-error class="mt-2" :messages="$errors->get('can_book')" />
