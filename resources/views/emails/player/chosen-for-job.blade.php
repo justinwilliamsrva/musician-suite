@@ -48,7 +48,7 @@
 
     <br/>
     @if($canReject)
-        <p>If you have no knowledge of this gig and do not plan to participate in it, please click the link below to remove your name from this position.</p>
+        <p>If you had no knowledge of this gig before this email and do not plan to participate in it, please click the link below to remove your name from this position.</p>
         <a href="{{ route('removeBooking', ['job_id' => $job->id, 'user_id' => $user->id, 'host_id' => $job->gig->user->id]) }}" style="background-color:#ef4444;border:none;color:white;padding:15px 32px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;margin:4px 2px;cursor:pointer;">Remove Booking</a>
     @endif
 
