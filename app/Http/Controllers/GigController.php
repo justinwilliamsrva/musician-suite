@@ -397,6 +397,7 @@ class GigController extends Controller
                     continue;
                 }
 
+                // Don't allow users to delete if it is the only job
                 if (count($request->input('musicians')) <= 1) {
                     continue;
                 }
@@ -431,6 +432,7 @@ class GigController extends Controller
                 if (! empty($job['userBookedID'])) {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
+                GigRemovedJob::dispatch($newJob, 'booked');
             }
 
             if ($status == 'myself') {
@@ -438,6 +440,7 @@ class GigController extends Controller
                 if (! empty($job['userBookedID'])) {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
+                GigRemovedJob::dispatch($newJob, 'booked');
             }
 
             if ($status == 'unfilled' && ! empty($job['userBookedID'])) {
@@ -450,16 +453,17 @@ class GigController extends Controller
                 } else {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
+                // Don't sent here GigRemovedJob since the job is still in performances queue
             }
 
             if ($status == 'choose') {
                 $user = User::find($job['musician_select']);
                 $newJob->users()->attach($user->id, ['status' => 'Booked']);
                 ChosenForJobJob::dispatch($user->id, $newJob, true);
-                GigRemovedJob::dispatch($newJob, 'booked');
                 if (! empty($job['userBookedID'])) {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
                 }
+                GigRemovedJob::dispatch($newJob, 'booked');
             }
 
             if (is_numeric($status)) {
@@ -540,7 +544,7 @@ class GigController extends Controller
             return redirect()->route('musician-finder.dashboard')->with('warning', 'You can no longer apply to this job since it has been deleted');
         }
 
-        if (! Gate::forUser($user)->allows('apply-to-job', $job)) {
+        if (Gate::denies('apply-to-job', $job)) {
             return redirect()->route('musician-finder.dashboard')->with('warning', 'You are not allowed to access this route.');
         }
 
