@@ -44,7 +44,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="mt-8 flow-root @container">
+                <div class="mt-8 flow-root @container min-h-[80px]">
                     <div class="-my-2 overflow-x-auto">
                         <div class="inline-block min-w-full py-2 align-middle">
                             <table class="min-w-full divide-y divide-gray-300">
@@ -116,7 +116,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="mt-8 flow-root @container">
+                    <div class="mt-8 flow-root @container min-h-[80px]">
                         <div class="-my-2 overflow-x-auto ">
                             <div class="inline-block min-w-full py-2 align-middle">
                                 <table class="min-w-full divide-y divide-gray-300">
@@ -193,7 +193,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="mt-8 flow-root @container">
+                    <div class="mt-8 flow-root @container min-h-[80px]">
                         <div class="-my-2 overflow-x-auto">
                             <div class="inline-block min-w-full py-2 align-middle">
                                 <table class="min-w-full divide-y divide-gray-300">
