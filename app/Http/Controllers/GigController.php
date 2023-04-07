@@ -454,6 +454,7 @@ class GigController extends Controller
                     $authUser->jobs()->detach($newJob->id);
                 } else {
                     $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
+                    // Need to send email that they were are not booked anymore
                 }
                 // Don't sent here GigRemovedJob since the job is still in performances queue
             }
