@@ -11,6 +11,8 @@ window.Alpine = Alpine;
 Alpine.start();
 
 $(document).ready(function() {
+    document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + 'px');
+
     // Add new Job, add highlighting to musician-number inputs and pass in payment information
     $("input[name = 'musician-number']").on('click', function(e) {
         let numberOfRequestedJobs = e.currentTarget.value;
