@@ -2,10 +2,13 @@
 
 return [
     'instruments' => [
+        'Accordion',
         'Bass Guitar',
         'Bassoon',
+        'Bagpipes',
         'Cello',
         'Clarinet',
+        'Conductor',
         'Double Bass',
         'Drum Kit',
         'English Horn',
