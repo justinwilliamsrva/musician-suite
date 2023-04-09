@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -15,6 +16,16 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        if (Auth::user()->isAdmin()) {
+            return [
+                'name' => ['string', 'max:255'],
+                'email' => ['email', 'max:255',],
+                'phone_number' => ['nullable', 'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/'],
+                'instruments' => ['nullable'],
+                'can_book' => ['nullable'],
+            ];
+        }
+
         return [
             'name' => ['string', 'max:255'],
             'email' => ['email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
