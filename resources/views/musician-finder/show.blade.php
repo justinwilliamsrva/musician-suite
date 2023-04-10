@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
-                                        Date/Time
+                                        Date & Time
                                     </label>
                                    <p>{!! date_format($gig->start_time, 'D, m/d/y g:i a').$gig->getEndTime() !!}</p>
                                 </div>

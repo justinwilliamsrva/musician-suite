@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-span-6 sm:col-span-3 lg:col-span-2">
                                     <label for="start_date_time" class="block text-sm font-medium text-gray-700">
-                                        Start Date/Time
+                                        Arrival Date/Time
                                     </label>
                                     <input type="datetime-local" name="start_date_time" id="start_date_time" autocomplete="given-name"
                                         value="{{ old('start_date_time', date('Y-m-d\TH:i', strtotime($gig->start_time))) }}" class="@error('start_date_time') border-red-500 @enderror mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">

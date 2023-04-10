@@ -181,6 +181,8 @@ class GigController extends Controller
             'musicians.*.extra_info.string' => 'The extra info field must be a string.',
             'musicians.*.extra_info.min' => 'The extra info field must be at least :min characters.',
             'musicians.*.extra_info.max' => 'The extra info field may not be greater than :max characters.',
+        ], [
+            'start_date_time' => 'arrival date time'
         ]);
 
         $gig = Gig::create([
@@ -370,6 +372,8 @@ class GigController extends Controller
             'musicians.*.extra_info.string' => 'The extra info field must be a string.',
             'musicians.*.extra_info.min' => 'The extra info field must be at least :min characters.',
             'musicians.*.extra_info.max' => 'The extra info field may not be greater than :max characters.',
+        ], [
+            'start_date_time' => 'arrival date time',
         ]);
 
         if ($validator->fails()) {
