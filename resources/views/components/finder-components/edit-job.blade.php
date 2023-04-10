@@ -9,6 +9,7 @@
     $numberOfJobApplicants = $job['numberOfJobApplicants'] ?? 0;
     $musicianPicked = $job['musician_picked'] ?? '';
     $fillStatus = $job['fill_status'] ?? 'booked';
+    $musicianSelect = $job['musician_select'] ?? '';
     $jobInstruments = $job['instruments'] ?? [];
     $jobUsers = $job['users'] ?? json_encode([]);
     $extra_info = $job['extra_info'] ?? '';
