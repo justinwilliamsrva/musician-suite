@@ -71,7 +71,7 @@
                         <option @if($fillStatus == 'delete') selected @endif value="delete">{{ 'Delete Musician #'.$musicianNumber + 1 }}</option>
                     </select>
                 @endif
-                @if($errors && (!empty(old('musicians.'.$musicianNumber.'.musician_select')) || $errors->has('musicians.'.$musicianNumber.'.musician_select')))
+                @if($errors && ($musicianSelect || (isset($errors['musician_select']))))
                     @include('components.finder-components.musician-select2', ['musicianNumber' => $musicianNumber, 'allMusicians' => $allMusicians])
                 @endif
                 @if(isset($errors['fill_status']))
@@ -79,7 +79,7 @@
                 @elseif(isset($errors['musician_picked']))
                     <div class="alert text-red-500">{{ $errors['musician_picked'] }}</div>
                 @elseif(isset($errors['musician_select']))
-                    <div class="alert text-red-500">{{ $errors['musician_picked'] }}</div>
+                    <div class="alert text-red-500">{{ $errors['musician_select'] }}</div>
                 @endif
             </div>
             <div class="col-span-3 sm:col-span-2 lg:col-span-1">
