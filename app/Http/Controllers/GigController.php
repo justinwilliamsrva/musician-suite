@@ -150,7 +150,6 @@ class GigController extends Controller
             'musician-number' => 'numeric',
             'state' => ['required', Rule::in(config('gigs.states'))],
             'zip_code' => 'required|digits:5|numeric',
-            'payment-all' => 'required_if:payment-method,same',
             'description' => 'string|min:3|max:255|nullable',
             'musicians' => 'required|array|max:6',
             'musicians.*.fill_status' => 'required|string',
@@ -171,8 +170,6 @@ class GigController extends Controller
             ],
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ], [
-            'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
-
             'musicians' => 'The number of musicians must be between 1 and 6',
 
             'musicians.*.instruments.required' => 'The instrument field is required.',
@@ -341,7 +338,6 @@ class GigController extends Controller
             'end_date_time' => 'required|date|after_or_equal:start_date_time',
             'street_address' => 'required|string|min:3|max:255',
             'city' => 'required|string|max:30',
-            'payment-all' => 'required_if:payment-method,same',
             'musician-number' => 'numeric',
             'state' => ['required', Rule::in(config('gigs.states'))],
             'zip_code' => 'required|digits:5|numeric',
@@ -372,8 +368,6 @@ class GigController extends Controller
             ],
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ], [
-            'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
-
             'musicians' => 'The number of musicians must be between 1 and 6',
 
             'musicians.*.instruments.required' => 'The instrument field is required.',
