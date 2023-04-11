@@ -39,7 +39,7 @@
                         @if ($userBookedName != 'Filled Outside CRRVA')
                             <option @if($fillStatus == 'filled') selected @endif value="filled">Booked Outside CRRVA</option>
                         @endif
-                        @if ($userBookedName != Auth::id() && !Auth::user()->isAdmin())
+                        @if ($userBookedID != Auth::id() && !Auth::user()->isAdmin())
                             <option @if($fillStatus == 'myself') selected @endif value="myself">Book Myself</option>
                         @endif
                         <option @if($fillStatus == 'choose') selected @endif value="choose">Book Specific Musician</option>
