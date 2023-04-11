@@ -156,7 +156,19 @@ class GigController extends Controller
             'musicians.*.fill_status' => 'required|string',
             'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose', Rule::in($allMusicians)],
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
-            'musicians.*.payment' => 'required|numeric|min:0',
+            'musicians.*.payment' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->input('payment-method') === 'same') {
+                        $payments = collect($request->input('musicians'))->pluck('payment')->unique();
+                        if ($payments->count() > 1) {
+                            $fail('All payment values for each musician must be the same.');
+                        }
+                    }
+                },
+            ],
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ], [
             'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
@@ -343,9 +355,21 @@ class GigController extends Controller
             'musicians.*.users' => 'sometimes',
             'musicians.*.fill_status' => 'sometimes|string|max:15',
             'musicians.*.musician_picked' => 'sometimes|string|max:15',
-            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose', 'required_if:musicians.*.musician_pickedß,choose', Rule::in($allMusicians)],
+            'musicians.*.musician_select' => ['required_if:musicians.*.fill_status,choose', 'required_if:musicians.*.musician_picked,choose', Rule::in($allMusicians)],
             'musicians.*.instruments' => ['required', 'array', 'min:1', 'max:10', Rule::in(config('gigs.instruments'))],
-            'musicians.*.payment' => 'required|numeric|min:0',
+            'musicians.*.payment' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->input('payment-method') === 'same') {
+                        $payments = collect($request->input('musicians'))->pluck('payment')->unique();
+                        if ($payments->count() > 1) {
+                            $fail('All payment values for each musician must be the same.');
+                        }
+                    }
+                },
+            ],
             'musicians.*.extra_info' => 'string|min:3|max:255|nullable',
         ], [
             'payment-all.required_if' => 'The payment field is required when the same payment question is answered is "Yes".',
