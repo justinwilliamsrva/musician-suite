@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Jobs\ChosenForJobJob;
+use App\Jobs\FillJobRequestJob;
+use App\Jobs\GigRemovedJob;
+use App\Jobs\NewJobAvailableJob;
+use App\Mail\Player\GigRemoved;
 use App\Models\Gig;
 use App\Models\Job;
 use App\Models\User;
-use App\Jobs\GigRemovedJob;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Message;
-use App\Jobs\ChosenForJobJob;
-use Illuminate\Mail\Mailable;
-use App\Jobs\FillJobRequestJob;
-use Illuminate\Validation\Rule;
-use App\Jobs\NewJobAvailableJob;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\Mime\Part\HtmlPart;
-use Symfony\Component\Mime\Part\AbstractPart;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class GigController extends Controller
 {
@@ -191,7 +187,7 @@ class GigController extends Controller
             'musicians.*.extra_info.min' => 'The extra info field must be at least :min characters.',
             'musicians.*.extra_info.max' => 'The extra info field may not be greater than :max characters.',
         ], [
-            'start_date_time' => 'arrival date time'
+            'start_date_time' => 'arrival date time',
         ]);
 
         $gig = Gig::create([
@@ -425,7 +421,15 @@ class GigController extends Controller
                 }
 
                 $jobToDelete = Job::find($job['id']);
-                GigRemovedJob::dispatch($jobToDelete, 'all');
+                $usersWhoApplied = User::find($job['userBookedID']) ?? $jobToDelete->users()->get();
+                $reason = 'the job was deleted';
+                if ($usersWhoApplied instanceof User) {
+                    Mail::to($usersWhoApplied->email)->send(new GigRemoved($usersWhoApplied, $jobToDelete, $reason));
+                } else {
+                    foreach ($usersWhoApplied as $user) {
+                        Mail::to($user->email)->send(new GigRemoved($user, $jobToDelete, $reason));
+                    }
+                }
                 $jobToDelete->users()->detach();
                 Job::destroy($jobToDelete->id);
 
@@ -444,7 +448,7 @@ class GigController extends Controller
 
             $newJob->save();
 
-            if ($newJob->wasRecentlyCreated) {
+            if ($newJob->wasRecentlyCreated && ! $job['musician_select']) {
                 NewJobAvailableJob::dispatch($gig, $newJob);
             }
 
@@ -524,7 +528,13 @@ class GigController extends Controller
         }
 
         Job::where('gig_id', $gig->id)->each(function ($job) {
-            GigRemovedJob::dispatch($job, 'all');
+            $usersWhoApplied = $job->users()->get();
+            $reason = 'the gig was deleted';
+
+            foreach ($usersWhoApplied as $user) {
+                Mail::to($user->email)->send(new GigRemoved($user, $job, $reason));
+            }
+
             $job->users()->detach();
             $job->delete();
         });
@@ -669,12 +679,8 @@ class GigController extends Controller
 
     protected function removeBookedUser($job, $user_id, $send_email = true)
     {
-        if ($user_id == 1) {
-            $filledOutsideCRRVA = User::find(1);
-            $filledOutsideCRRVA->jobs()->detach($job->id);
-        } elseif ($user_id == Auth::id()) {
-            $authUser = User::find(Auth::id());
-            $authUser->jobs()->detach($job->id);
+        if ($user_id == 1 || $user_id == Auth::id()) {
+            $job->users()->detach($user_id);
         } else {
             $job->users()->updateExistingPivot($user_id, ['status' => 'Applied']);
             if ($send_email) {

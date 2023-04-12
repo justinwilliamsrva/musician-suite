@@ -42,6 +42,7 @@ class GigRemovedJob implements ShouldQueue
     public function handle()
     {
         if ($this->typeOfDelete == 'all') {
+            // this if is not being used to the moment.
             $reason = 'the gig was deleted';
             $usersWhoApplied = Job::find($this->removedJob->id)->users()->get();
             foreach ($usersWhoApplied as $user) {
