@@ -44,6 +44,8 @@
 
     <p>Please check the <a href="{{ route('musician-finder.dashboard') }}">Musician Finder Dashboard</a> for new gigs.</p>
 
-    <p>Thank you for using Classical Connection RVA!</p>
+    </br>
+
+    <p>Thank you for using <a href="{{ route('dashboard') }}">Classical Connection RVA!</a></p>
 </body>
 </html>

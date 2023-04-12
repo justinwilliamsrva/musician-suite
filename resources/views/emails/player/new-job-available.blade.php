@@ -48,6 +48,6 @@
 
     <br/>
 
-    <p>Thank you for using Classical Connection RVA!</p>
+    <p>Thank you for using <a href="{{ route('dashboard') }}">Classical Connection RVA!</a></p>
 </body>
 </html>

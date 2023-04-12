@@ -44,7 +44,9 @@
 
     <p>Please add this gig to your calendar. You will also receive a reminder email two days before the event.</p>
 
-    <p>Thank you for using Classical Connection RVA!</p>
+    </br>
+
+    <p>Thank you for using <a href="{{ route('dashboard') }}">Classical Connection RVA!</a></p>
 
     <br/>
     @if($canReject)
