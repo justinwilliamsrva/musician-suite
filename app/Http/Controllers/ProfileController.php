@@ -28,6 +28,9 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
+        $request->user()->phone_number = $request->input('phone_number');
+        $request->user()->instruments = $request->input('instruments');
+
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
