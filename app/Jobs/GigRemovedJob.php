@@ -44,7 +44,10 @@ class GigRemovedJob implements ShouldQueue
         if ($this->typeOfDelete == 'all') {
             // this if is not being used to the moment.
             $reason = 'the gig was deleted';
-            $usersWhoApplied = Job::find($this->removedJob->id)->users()->get();
+            $usersWhoApplied = Job::find($this->removedJob->id)->users()
+                    ->whereNotIn('id', [1])
+                    ->where('admin', '<>', 1)
+                    ->get();
             foreach ($usersWhoApplied as $user) {
                 Mail::to($user->email)->send(new GigRemoved($user, $this->removedJob, $reason));
             }

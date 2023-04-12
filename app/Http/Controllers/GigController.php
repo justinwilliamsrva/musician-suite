@@ -421,7 +421,10 @@ class GigController extends Controller
                 }
 
                 $jobToDelete = Job::find($job['id']);
-                $usersWhoApplied = User::find($job['userBookedID']) ?? $jobToDelete->users()->get();
+                $usersWhoApplied = User::find($job['userBookedID']) ?? $jobToDelete->users()
+                            ->whereNotIn('id', [1])
+                            ->where('admin', '<>', 1)
+                            ->get();
                 $reason = 'the job was deleted';
                 if ($usersWhoApplied instanceof User) {
                     Mail::to($usersWhoApplied->email)->send(new GigRemoved($usersWhoApplied, $jobToDelete, $reason));
@@ -472,8 +475,7 @@ class GigController extends Controller
             }
 
             if ($status == 'unfilled' && ! empty($job['userBookedID'])) {
-                // Don't sent GigRemovedJob her since the job is still in performances queue
-                $this->removeBookedUser($newJob, $job['userBookedID'], false);
+                $this->removeBookedUser($newJob, $job['userBookedID'], true);
             }
 
             if ($status == 'choose') {
@@ -528,11 +530,18 @@ class GigController extends Controller
         }
 
         Job::where('gig_id', $gig->id)->each(function ($job) {
-            $usersWhoApplied = $job->users()->get();
+            $usersWhoApplied = $job->users()
+                ->whereNotIn('id', [1])
+                ->where('admin', '<>', 1)
+                ->get();
             $reason = 'the gig was deleted';
 
-            foreach ($usersWhoApplied as $user) {
-                Mail::to($user->email)->send(new GigRemoved($user, $job, $reason));
+            if ($usersWhoApplied instanceof User) {
+                Mail::to($usersWhoApplied->email)->send(new GigRemoved($usersWhoApplied, $job, $reason));
+            } else {
+                foreach ($usersWhoApplied as $user) {
+                    Mail::to($user->email)->send(new GigRemoved($user, $job, $reason));
+                }
             }
 
             $job->users()->detach();
