@@ -491,6 +491,7 @@ class GigController extends Controller
                 }
             }
 
+            // An applied musician was chosen
             if (is_numeric($status)) {
                 $newJob->users()->updateExistingPivot($job['musician_picked'], ['status' => 'Booked']);
 
