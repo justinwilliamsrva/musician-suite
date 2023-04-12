@@ -451,7 +451,7 @@ class GigController extends Controller
 
             $newJob->save();
 
-            if ($newJob->wasRecentlyCreated && ! $job['musician_select']) {
+            if ($newJob->wasRecentlyCreated && !isset($job['musician_select'])) {
                 NewJobAvailableJob::dispatch($gig, $newJob);
             }
 
