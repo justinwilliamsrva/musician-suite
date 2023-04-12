@@ -23,6 +23,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        $this->removeSessionMessages();
         return view('auth.register', ['emailVerified' => false]);
     }
 
@@ -34,6 +35,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $task = request()->input('task');
+        $this->removeSessionMessages();
 
         if ($task == 'register-email') {
             $email = $request->input('email');
@@ -140,5 +142,15 @@ class RegisteredUserController extends Controller
         $body = '&body='.implode('%0D%0A', $lines);
 
         return 'mailto:info@classicalconnectionrva.com'.$subject.$body;
+    }
+
+    public function removeSessionMessages() {
+        if (session()->has('success')) {
+            session()->forget('success');
+        }
+
+        if (session()->has('warning')) {
+            session()->forget('warning');
+        }
     }
 }
