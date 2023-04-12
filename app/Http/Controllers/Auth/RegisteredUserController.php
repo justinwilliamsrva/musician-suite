@@ -86,7 +86,7 @@ class RegisteredUserController extends Controller
 
             session()->flash('success', $message);
 
-            return view('auth.register', ['emailVerified' => true]);
+            return view('auth.register', ['emailVerified' => false]);
 
         } elseif($task == 'store') {
 
