@@ -20,7 +20,7 @@
                     </div>
                 @elseif($errors->has('email'))
                     <div class="alert mt-2 text-sm text-red-600 space-y-1">
-                        This email could not be found in CRRVA's database. Please try registering with a different email address or complete the 'Add New Email Request' below to add your email address to the database.
+                        This email could not be found in Classical Revolution RVA's database. Please either try registering again with a different personal email address or complete the 'Add New Email Request' below to request that your email address be added to the database.
                     </div>
                 @endif
             </div>
@@ -64,7 +64,7 @@
 
                     <div class="mt-4">
                         <x-input-label for="recent_performance" :value="__('List a Classical Revolution RVA event that you have performed for.*')" />
-                        <x-text-input id="recent_performance" placeholder='ex: Performed violin for Incarnations in May 2022' class="block mt-1 w-full text-sm" type="text" name="recent_performance" :value="old('recent_performance')" required />
+                        <textarea id="recent_performance" name="recent_performance" placeholder='ex: Performed violin for Incarnations in May 2022' class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-[69px]">{{ old('recent_performance') }}</textarea>
                         <x-input-error :messages="$errors->get('recent_performance')" class="mt-2" />
                     </div>
                     <div class="flex justify-end">
