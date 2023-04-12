@@ -452,7 +452,7 @@ class GigController extends Controller
             if ($status == 'filled') {
                 $newJob->users()->attach(1, ['status' => 'Booked']);
                 if (! empty($job['userBookedID'])) {
-                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician', $job['userBookedID']);
+                    $this->removeBookedUser($newJob, $job['userBookedID']);
                 } else {
                     GigRemovedJob::dispatch($newJob, 'booked');
                 }
@@ -461,32 +461,31 @@ class GigController extends Controller
             if ($status == 'myself') {
                 $newJob->users()->attach(Auth::id(), ['status' => 'Booked']);
                 if (! empty($job['userBookedID'])) {
-                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician', $job['userBookedID']);
+                    $this->removeBookedUser($newJob, $job['userBookedID']);
                 } else {
                     GigRemovedJob::dispatch($newJob, 'booked');
                 }
             }
 
             if ($status == 'unfilled' && ! empty($job['userBookedID'])) {
-                if ($job['userBookedID'] == 1) {
-                    $filledOutsideCRRVA = User::find(1);
-                    $filledOutsideCRRVA->jobs()->detach($newJob->id);
-                } elseif ($job['userBookedID'] == Auth::id()) {
-                    $authUser = User::find(Auth::id());
-                    $authUser->jobs()->detach($newJob->id);
-                } else {
-                    $newJob->users()->updateExistingPivot($job['userBookedID'], ['status' => 'Applied']);
-                    // Need to send email that they were are not booked anymore
-                }
-                // Don't sent here GigRemovedJob since the job is still in performances queue
+                // Don't sent GigRemovedJob her since the job is still in performances queue
+                $this->removeBookedUser($newJob, $job['userBookedID'], false);
             }
 
             if ($status == 'choose') {
                 $user = User::find($job['musician_select']);
-                $newJob->users()->attach($user->id, ['status' => 'Booked']);
+
+                //Duplicate check
+                if ($newJob->users()->wherePivot('user_id', $user->id)->exists()) {
+                    $newJob->users()->updateExistingPivot($user->id, ['status' => 'Booked']);
+                } else {
+                    $newJob->users()->attach($user->id, ['status' => 'Booked']);
+                }
+
                 ChosenForJobJob::dispatch($user->id, $newJob, true);
+
                 if (! empty($job['userBookedID'])) {
-                    GigRemovedJob::dispatch($newJob, 'onlyBookedMusician', $job['userBookedID']);
+                    $this->removeBookedUser($newJob, $job['userBookedID']);
                 } else {
                     GigRemovedJob::dispatch($newJob, 'booked');
                 }
@@ -494,9 +493,11 @@ class GigController extends Controller
 
             if (is_numeric($status)) {
                 $newJob->users()->updateExistingPivot($job['musician_picked'], ['status' => 'Booked']);
+
                 if ($job['musician_picked'] != Auth::id()) {
                     ChosenForJobJob::dispatch($job['musician_picked'], $newJob);
                 }
+                // There is no need for ! empty($job['userBookedID']) conditional since the user must have already selected open job back up to get to this point.
                 GigRemovedJob::dispatch($newJob, 'booked');
             }
         }
@@ -663,5 +664,21 @@ class GigController extends Controller
         $message = 'You were removed from this gig';
 
         return redirect()->route('gigs.show', ['gig' => $job->gig->id])->with('success', $message);
+    }
+
+    protected function removeBookedUser($job, $user_id, $send_email = true)
+    {
+        if ($user_id == 1) {
+            $filledOutsideCRRVA = User::find(1);
+            $filledOutsideCRRVA->jobs()->detach($job->id);
+        } elseif ($user_id == Auth::id()) {
+            $authUser = User::find(Auth::id());
+            $authUser->jobs()->detach($job->id);
+        } else {
+            $job->users()->updateExistingPivot($user_id, ['status' => 'Applied']);
+            if ($send_email) {
+                GigRemovedJob::dispatch($job, 'onlyBookedMusician', $user_id);
+            }
+        }
     }
 }
