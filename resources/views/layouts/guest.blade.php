@@ -37,13 +37,6 @@
                         </div>
                     </div>
                 @endif
-                @if($errors->any())
-                    <div id="flash-message" class="flex justify-center">
-                        <div class="min-w-[250px] bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-center" role="alert">
-                            <strong class="font-bold">Invalid Information Entered</strong>
-                        </div>
-                    </div>
-                @endif
             </div>
             <div class="text-3xl text-[#7B7C7C] cursor-default">
                 <h1 class="font-oswald font-extralight">CLASSICAL<span class="text-[#F26D5C] font-normal">CONNECTION</span>RVA</h1>

@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="recent_performance" :value="__('Input a Classical Revolution RVA event you performed for recently.*')" />
+                        <x-input-label for="recent_performance" :value="__('List a Classical Revolution RVA event that you have performed for.*')" />
                         <x-text-input id="recent_performance" placeholder='ex: Performed violin for Incarnation in May 2022' class="block mt-1 w-full text-sm" type="text" name="recent_performance" :value="old('recent_performance')" required />
                         <x-input-error :messages="$errors->get('recent_performance')" class="mt-2" />
                     </div>
