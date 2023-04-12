@@ -84,7 +84,9 @@ class RegisteredUserController extends Controller
 
             $message = 'Your request was sent. You will be emailed when your email has been added to the database';
 
-            return redirect()->route('register')->with('success', $message);
+            session()->flash('success', $message);
+
+            return view('auth.register', ['emailVerified' => true]);
 
         } elseif($task == 'store') {
 
