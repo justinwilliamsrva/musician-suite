@@ -145,14 +145,4 @@ class RegisteredUserController extends Controller
 
         return 'mailto:info@classicalconnectionrva.com'.$subject.$body;
     }
-
-    public function removeSessionMessages() {
-        if (session()->has('success')) {
-            session()->forget('success');
-        }
-
-        if (session()->has('warning')) {
-            session()->forget('warning');
-        }
-    }
 }

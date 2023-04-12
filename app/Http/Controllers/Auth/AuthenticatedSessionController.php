@@ -17,6 +17,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        $this->removeSessionMessages();
+
         return view('auth.login');
     }
 

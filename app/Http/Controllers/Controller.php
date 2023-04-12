@@ -10,4 +10,14 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function removeSessionMessages() {
+        if (session()->has('success')) {
+            session()->forget('success');
+        }
+
+        if (session()->has('warning')) {
+            session()->forget('warning');
+        }
+    }
 }
