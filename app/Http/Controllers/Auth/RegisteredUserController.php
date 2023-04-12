@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class RegisteredUserController extends Controller
 {
@@ -21,7 +23,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('auth.register', ['emailVerified' => false]);
     }
 
     /**
@@ -29,58 +31,100 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $email = $request->input('email');
-        $name = $request->input('name');
+        $task = request()->input('task');
 
-        $request->validate([
-            'email' => Rule::exists('emails')->where('email', $email),
-        ],
-            [
-                'email.exists' => 'This email could not be found in CRRVA\'s database. Please try registering with a different email address or contact <a class="underline text-blue-500"href="'.$this->getEmailString($email, $name).'">info@classicalconnectionrva.com</a> to add this email address to the database.',
+        if ($task == 'register-email') {
+            $email = $request->input('email');
+            $request->validate([
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    'unique:users',
+                    Rule::exists('emails')->where('email', $email),
+                ]
             ]);
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                'unique:users',
-                // Rule::unique('users')->where(function ($query) {
-                //     $query->whereNotNull('email_verified_at');
-                // }),
-            ],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'phone_number' => [
-                'nullable',
-                'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/',
-                'unique:users',
-                // Rule::unique('users')->where(function ($query) {
-                //     $query->whereNotNull('email_verified_at');
-                // }),
-            ],
-            'instruments' => ['required', 'array', 'min:1', 'max:10'],
-            'can_book' => ['required', 'boolean'],
-        ]);
+            $message = 'Congratulations! Your Email Was Registered';
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'phone_number' => $request->phone_number,
-            'instruments' => json_encode($request->instruments),
-            'admin' => 0,
-            'can_book' => $request->can_book,
-        ]);
+            session()->flash('success', $message);
 
-        event(new Registered($user));
+            return view('auth.register', ['emailVerified' => true, 'email' => $email]);
+        } elseif ($task == 'send-to-CCRVA') {
+            $validator = Validator::make($request->all(),[
+                'email' => 'required|email|max:255|',
+                'name' =>  'required|string|max:255',
+                'recent_performance' => 'required|string|max:255',
+            ]);
 
-        Auth::login($user);
+            if ($validator->fails()) {
+                $message = 'Attempted to Submit Invalid Data';
 
-        return redirect(RouteServiceProvider::HOME);
+                return redirect()->route('register')->with('warning', $message);
+            }
+
+            $name = $request->input('name');
+            $email = $request->input('email');
+            $recent_performance = $request->input('recent_performance');
+
+            $lines[1] = $name;
+            $lines[2] = $email;
+            $lines[3] = $recent_performance;
+            $message_body = implode(' ', $lines);
+
+            Mail::raw($message_body, function ($message) use ($name) {
+                $message->to('info@classicalconnectionrva.com');
+                $message->subject($name.' Wants to be added to CCRVA Database.');
+            });
+
+            $message = 'Your request was sent. You will be emailed when your email has been added to the database';
+
+            return redirect()->route('register')->with('success', $message);
+
+        } elseif($task == 'store') {
+
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    'unique:users',
+                    Rule::exists('emails')->where('email', $request->input('email')),
+                ],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'phone_number' => [
+                    'nullable',
+                    'regex:/^\(?([0-9]{3})\)?[ -]?([0-9]{3})[ -]?([0-9]{4})$/',
+                    'unique:users',
+                    // Rule::unique('users')->where(function ($query) {
+                    //     $query->whereNotNull('email_verified_at');
+                    // }),
+                ],
+                'instruments' => ['required', 'array', 'min:1', 'max:10'],
+                'can_book' => ['required', 'boolean'],
+            ]);
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone_number' => $request->phone_number,
+                'instruments' => json_encode($request->instruments),
+                'admin' => 0,
+                'can_book' => $request->can_book,
+            ]);
+
+            event(new Registered($user));
+
+            Auth::login($user);
+
+            return redirect(RouteServiceProvider::HOME);
+        }
     }
 
     public function getEmailString($email, $name)
